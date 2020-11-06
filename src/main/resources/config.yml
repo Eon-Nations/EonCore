@@ -1,0 +1,177 @@
+# Eon Survival Config File
+
+
+# Join/Leave Message
+Welcome-Message: "&b&lWelcome <player> to Eon Survival!! <player> has logged in for the first time!"
+
+Join-Message: "&7[&a&l+&r&7] &b<player>"
+
+Leave-Message: "&7[&4&l-&r&7] &b<player>"
+
+# Gamemode Messages
+
+Survival-Message: "&7[&5&lEon Survival&r&7] &bSurvival Time!"
+Survival-Other: "&7[&5&lEon Survival&r&7] &bYou have set <target> into survival mode!"
+
+Creative-Message: "&7[&5&lEon Survival&r&7] &bCreative Time!"
+Creative-Other: "&7[&5&lEon Survival&r&7] &bYou have set <target> into creative mode!"
+
+Spectator-Message: "&7[&5&lEon Survival&r&7] &bSpectator Time!"
+Spectator-Other: "&7[&5&lEon Survival&r&7] &bYou have set <target> into spectator mode!"
+
+# Heal/Feed Message
+
+Heal-Message: "&7[&5&lEon Survival&r&7] &bHealed!"
+Heal-Other: "&7[&5&lEon Survival&r&7] &b<player> has been healed!"
+
+Feed-Message: "&7[&5&lEon Survival&r&7] &bYou have been fed"
+Feed-Other: "&b<target> has been fed"
+Feed-Cooldown-Message: "&bYou are on cooldown for /feed"
+
+# Clear Inventory Message
+
+Clear-Self-Inventory: "&bYour inventory has been cleared"
+Target-Clear-Inventory: "&bYour inventory has been cleared"
+Clear-Other-Inventory: "&b<target> inventory has been cleared"
+
+# Extinguish Message
+
+Extinguish-Message: "&6Extinguished"
+Extinguish-Other-Message: "&a<target> has been extinguished"
+Target-Extinguish-Message: "&aYou have been extinguished"
+
+# Discord Message
+
+Discord-Message: "&7[&6Discord&7] >> &r&b&nhttps://discord.gg/rDBm9wE"
+
+# Vanish Messages
+
+Vanish-Message: "&7[&a&lEon Moderation&r&7] &aVanished from sight"
+Unvanish-Message: "&7[&a&lEon Moderation&r&7] &aYou can now be seen by other players"
+
+# Burn Messages
+
+Target-Burn-Message: ""
+Burn-Message: "&b<target> has been burned for <seconds>"
+
+# Night Vision Messages
+
+NV-Message: "&7[&b&lEon Admin&r&7] &bGranted Night Vision"
+NV-Off: "&7[&b&lEon Admin&r&7] &bNight Vision removed"
+Target-NV-Message: "&7[&b&lEon Admin&r&7] &b<target> now has infinite night vision"
+
+# F Message (In case I want everyone to say other than F)
+
+F-Message: "F"
+
+# Gamemode Check Messages
+
+GamemodeCheck-Message: "&7[&a&lEon Moderation&r&7] &b<target> is in <gamemode>"
+
+# Pickup Command
+
+Pickup-Off: "&7[&a&lEon Moderation&r&7] &b<target> can no longer pickup items"
+Pickup-On: "&7[&a&lEon Moderation&r&7] &b<target> can now pickup items"
+
+# Fly Messages
+
+Fly-On: "&7[&b&lEon Fly&r&7] &bFly On"
+Fly-Off: "&7[&b&lEon Fly&r&7] &bFly Off"
+
+Target-Fly-On: "&7[&b&lEon Fly&r&7] <target> can now fly"
+Target-Fly-Off: "&7[&b&lEon Fly&r&7] <target> can no longer fly"
+
+# Command Spy Messages
+
+CommandSpy-On: "&7[&6&lCommandSpy&r&7] &aCommand Spy On"
+CommandSpy-Off: "&7[&6&lCommandSpy&r&7] &aCommand Spy Off"
+CommandSpy-Message: "&7[&6&lCommandSpy&r&7] <player>: <command>"
+
+# Freeze Messages
+
+Freeze-Immune: "&b&lPlayer cannot be &nfrozen&r&b&l!"
+
+Target-Unfrozen: "&b&lYou have been &nunfrozen&r&b&l!"
+Target-Frozen: "&b&lYou have been &nfrozen&r&b&l!"
+
+Player-Frozen: "&b<player> has been frozen!"
+Player-Unfrozen: "&b<player> has been unfrozen!"
+
+# Top Message
+
+Top-Message: "&bTeleported to the Top!"
+
+# Teleport Messages
+
+Teleport-Message: "&bSuccessfully teleported to <player>"
+Tphere-Message: "&bSuccessfully teleported <target> to your location"
+
+Cooldown-Teleport-Message: "&7Teleporting in <seconds> seconds..."
+Tpa-Player-Message: "&7Teleport request sent"
+Tpa-Target-Message: "&7Teleport request received from <player>\n&7>> To accept, do /tpaccept\n>> To deny, do /tpdeny"
+Teleport-Deny-Message: "&7Teleport request has been denied"
+Teleport-Successful: "&7Teleport successful"
+Unsafe-Tp-Target-Message: "&&Teleportation unsuccessful. Please try again"
+
+Delay-Seconds: 3
+
+No-Pending-Requests: "&7You have no pending requests to accept at this time"
+Pending-Request: "&7You already have a pending request to that player"
+
+Death-Back-Message: "&7Do /back to go back to your death location"
+Back-Message: "Teleporting back to your death location"
+
+# Kit Messages
+
+Kit-Received-Message: "&aYou have received the kit <name>"
+
+# Spawn Messages
+
+Spawn-Message: "&bTeleported to spawn"
+SetSpawn-Message: "&bSpawn has been set!"
+
+# Auto Announcement Messages
+
+# Delay is in seconds
+Announcement-Delay: 300
+
+Messages:
+  - 'Join the discord for free daily giveaways and announcements! >> /discord'
+  - 'The Market is a great place to set up a shop >> /market'
+  - 'Get pets by slapping mobs down to one heart with a lead'
+  - 'Obtain ranks with in game currency to gain perks (/ranks for more info)'
+  - 'McMMO has various helpful skills. Do /help and go to the McMMO area to see additional info'
+  - 'Jobs are the best way to make money. Do /jobs browse to see what jobs fit your playstyle'
+  - 'This is a NO Grief Survival. Even if it is unclaimed action will be taken. To protect your claims, do /kit claim'
+  - 'Make sure to read over the server rules >> /rules'
+  - 'To claim giveaways, make a ticket either in game or in the discord'
+
+# Warp Message
+
+Warp-Cooldown: 300
+Warp-Delay: 3
+
+Warp-Message: "&bTeleporting to <warp>"
+
+# Ranks and Amount of Homes Per Rank
+Ranks-List:
+  member: 3
+
+Too-Many-Homes: ""
+No-Homes-To-Delete: ""
+
+# Revive Messages
+
+Success-Revive-Message: "&bYou have successfully been revived"
+
+# Admin GUI Messages
+
+Time-Set-Day: "&bDay has come!"
+Time-Set-Night: "&bNight has come!"
+Weather-Set-Clear: "&bRain has been cleared"
+Weather-Set-Rain: "&bSummoned the rain"
+
+# Other Messages
+Reload-Message: "&bSuccessfully reloaded"
+No-Perms: "Unknown command. Type /help for help"
+Target-Null: "&bThat player is offline!"
