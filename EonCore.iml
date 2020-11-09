@@ -36,15 +36,6 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.ow2.asm:asm-analysis:8.0.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.github.MilkBowl:VaultAPI:1.7" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.bukkit:bukkit:1.13.1-R0.1-SNAPSHOT" level="project" />
-    <orderEntry type="module-library">
-      <library name="Maven: de.xxschrandxx.awm:AsyncWorldManager:0.1.0">
-        <CLASSES>
-          <root url="jar://$USER_HOME$/Downloads/AsyncWorldManager-0.1.0.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.luckperms:api:5.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.sk89q.worldguard:worldguard-bukkit:7.0.4" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.spigotmc:spigot-api:1.16.2-R0.1-SNAPSHOT" level="project" />

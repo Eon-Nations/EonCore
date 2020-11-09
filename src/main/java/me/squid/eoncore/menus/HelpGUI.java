@@ -8,16 +8,18 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HelpGUI {
 
     public Inventory Main(Player p) {
         Inventory inv = Bukkit.createInventory(null, 54, Utils.chat("&a&lHelp Menu"));
 
-        Utils.createItem(inv, Material.PLAYER_HEAD, 1, 5, String.format("%s%s", ChatColor.GREEN, p.getName()),
-                "&bHealth: " + p.getHealth(),
-                "&bFood Level: " + p.getFoodLevel(),
-                "&bRank: " + StringUtils.capitalize(EonCore.getPerms().getUserManager().getUser(p.getUniqueId()).getPrimaryGroup()));
+        inv.setItem(6, getPlayerHead(p));
         Utils.createItem(inv, Material.DIAMOND_HOE, 1, 20, "&a&lJobs", "&fGet money for doing in game tasks");
         Utils.createItem(inv, Material.EXPERIENCE_BOTTLE, 1, 23, "&5&lKits", "&fHere you can find kits that you claim for your rank");
         Utils.createItem(inv, Material.OAK_LEAVES, 1, 26, "&2&lWild", "&fClick here to be teleported to the wild");
@@ -27,6 +29,20 @@ public class HelpGUI {
         Utils.makeDummySlots(inv);
 
         return inv;
+    }
+
+    private ItemStack getPlayerHead(Player p) {
+        ItemStack item = new ItemStack(Material.PLAYER_HEAD, 1);
+        SkullMeta skull = (SkullMeta) item.getItemMeta();
+        skull.setOwningPlayer(p);
+        skull.setDisplayName(p.getName());
+
+        List<String> lore = new ArrayList<>();
+        lore.add(Utils.chat("&bHealth: " + p.getHealth()));
+        lore.add(Utils.chat("&bFood Level: " + p.getFoodLevel()));
+        lore.add(Utils.chat("&bWorld: " + StringUtils.capitalize(EonCore.getPerms().getUserManager().getUser(p.getUniqueId()).getPrimaryGroup())));
+        skull.setLore(lore);
+        return item;
     }
 
 }

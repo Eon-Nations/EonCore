@@ -27,6 +27,7 @@ me/squid/eoncore/listeners/KitListener$1.class
 me/squid/eoncore/commands/TphereCommand.class
 me/squid/eoncore/commands/ClearChatCommand.class
 me/squid/eoncore/listeners/PhantomSpawnListener.class
+me/squid/eoncore/listeners/ChatFormatListener.class
 me/squid/eoncore/commands/StaffChatCommand.class
 me/squid/eoncore/events/BackToDeathLocationEvent.class
 me/squid/eoncore/commands/BurnCommand.class

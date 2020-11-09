@@ -1,6 +1,9 @@
 package me.squid.eoncore.commands;
 
 import me.squid.eoncore.EonCore;
+import me.squid.eoncore.events.WildTeleportEvent;
+import me.squid.eoncore.utils.Utils;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -17,7 +20,7 @@ public class WildTpCommand implements CommandExecutor {
 
     public WildTpCommand(EonCore plugin) {
         this.plugin = plugin;
-        Objects.requireNonNull(plugin.getCommand("wild")).setExecutor(this);
+        plugin.getCommand("wild").setExecutor(this);
     }
 
     @Override
@@ -26,6 +29,7 @@ public class WildTpCommand implements CommandExecutor {
         if (sender instanceof Player) {
             Player p = (Player) sender;
             if (list.contains(p.getUniqueId())) {
+                Bukkit.getPluginManager().callEvent(new WildTeleportEvent(p, Utils.generateLocation()));
                 return true;
             } else {
                 list.add(p.getUniqueId());
