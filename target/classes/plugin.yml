@@ -5,7 +5,6 @@ api-version: 1.16
 authors: [Squid]
 depend: [LuckPerms, WorldGuard]
 softdepend: [AsyncWorldManager]
-loadbefore: [Rankup]
 description: Epic description
 commands:
   gmc:

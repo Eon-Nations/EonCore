@@ -1,6 +1,8 @@
 package me.squid.eoncore.tasks;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.bukkit.adapter.BukkitImplAdapter;
+import com.sk89q.worldedit.world.World;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
@@ -10,7 +12,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @SuppressWarnings("ConstantConditions")
-public class UtilityDoorTask extends BukkitRunnable {
+public class UtilityDoorTask implements Runnable {
 
     EonCore plugin;
 
@@ -28,6 +29,7 @@ public class UtilityDoorTask extends BukkitRunnable {
 
     RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
     RegionManager region = container.get(BukkitAdapter.adapt(Bukkit.getWorld("spawn")));
+
     ProtectedRegion stall1 = region.getRegion("utilitystall1");
     ProtectedRegion stall2 = region.getRegion("utilitystall2");
     ProtectedRegion stall3 = region.getRegion("utilitystall3");
