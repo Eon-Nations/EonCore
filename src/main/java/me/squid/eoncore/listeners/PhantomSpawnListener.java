@@ -2,6 +2,7 @@ package me.squid.eoncore.listeners;
 
 import me.squid.eoncore.EonCore;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Phantom;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,6 +20,10 @@ public class PhantomSpawnListener implements Listener {
     @EventHandler
     public void onSpawn(CreatureSpawnEvent e) {
         if (e.getEntity() instanceof Phantom) {
+            e.getEntity().remove();
+        }
+
+        if (e.getEntity() instanceof EnderDragon && e.getEntity().getWorld().equals(Bukkit.getWorld("spawn"))) {
             e.getEntity().remove();
         }
     }

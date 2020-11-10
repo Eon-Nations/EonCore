@@ -29,7 +29,6 @@ public class WildTpCommand implements CommandExecutor {
         if (sender instanceof Player) {
             Player p = (Player) sender;
             if (list.contains(p.getUniqueId())) {
-                Bukkit.getPluginManager().callEvent(new WildTeleportEvent(p, Utils.generateLocation()));
                 return true;
             } else {
                 list.add(p.getUniqueId());

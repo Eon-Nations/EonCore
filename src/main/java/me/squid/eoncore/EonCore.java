@@ -1,21 +1,22 @@
 package me.squid.eoncore;
 
-import com.sk89q.worldedit.bukkit.BukkitAdapter;
-import com.sk89q.worldguard.WorldGuard;
 import me.squid.eoncore.commands.*;
 import me.squid.eoncore.files.BanMessages;
 import me.squid.eoncore.files.MutedPlayers;
 import me.squid.eoncore.listeners.*;
 import me.squid.eoncore.tasks.AutoAnnouncementTask;
+import me.squid.eoncore.tasks.PortalTeleportTask;
 import me.squid.eoncore.tasks.UtilityDoorTask;
 import me.squid.eoncore.utils.Utils;
 import net.luckperms.api.LuckPerms;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.GameRule;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
-import java.util.Objects;
 
 public class EonCore extends JavaPlugin {
 
@@ -127,7 +128,7 @@ public class EonCore extends JavaPlugin {
 
     public void runTasks() {
         new AutoAnnouncementTask(this).runTaskTimerAsynchronously(this, 0, getConfig().getLong("Announcement-Delay") * 20L);
-        // new PortalTeleportTask(this).runTaskTimerAsynchronously(this, 0, 20L);
+        new PortalTeleportTask(this).runTaskTimerAsynchronously(this, 0, 20L);
         Bukkit.getScheduler().runTaskTimerAsynchronously(this, new UtilityDoorTask(this), 0, 20L);
     }
 

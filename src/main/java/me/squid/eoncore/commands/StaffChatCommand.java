@@ -24,8 +24,8 @@ public class StaffChatCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (args.length > 0) {
-            String message = Arrays.toString(args);
-            String prefix = "&5&lStaffChat &7&l>> " + sender.getName() + " ";
+            String message = getMessage(args);
+            String prefix = "&5&lStaffChat &7>> " + sender.getName() + ": ";
             for (Player online : Bukkit.getOnlinePlayers()) {
                 if (online.hasPermission("eoncommands.staffchat")) {
                     online.sendMessage(Utils.chat(prefix + message));
@@ -35,5 +35,14 @@ public class StaffChatCommand implements CommandExecutor {
             sender.sendMessage(Utils.chat(EonCore.prefix + "&7Usage: /sc <message>"));
         }
         return true;
+    }
+
+    private String getMessage(String[] args) {
+        StringBuilder sb = new StringBuilder();
+        for (String arg : args) {
+            sb.append(arg).append(" ");
+        }
+        String allArgs = sb.toString().trim();
+        return Utils.chat(allArgs);
     }
 }
