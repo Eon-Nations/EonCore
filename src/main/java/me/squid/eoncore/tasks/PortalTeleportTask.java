@@ -28,17 +28,16 @@ public class PortalTeleportTask extends BukkitRunnable {
     public void run() {
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionManager regions = container.get(BukkitAdapter.adapt(Bukkit.getWorld("spawn")));
-
         ProtectedRegion wildPortal = regions.getRegion("wildportal");
 
         for (Player p : Bukkit.getOnlinePlayers()) {
 
             if (wildPortal.contains(p.getLocation().getBlockX(), p.getLocation().getBlockY(), p.getLocation().getBlockZ())) {
-                Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> Bukkit.getPluginManager().callEvent(new WildTeleportEvent(p, Utils.generateLocation())));
+                Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> Bukkit.getPluginManager().callEvent(new WildTeleportEvent(p, Utils.generateLocation(), true)));
             }
 
             if (WildTpCommand.isInList(p)) {
-                Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> Bukkit.getPluginManager().callEvent(new WildTeleportEvent(p, Utils.generateLocation())));
+                Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> Bukkit.getPluginManager().callEvent(new WildTeleportEvent(p, Utils.generateLocation(), false)));
                 WildTpCommand.removeFromList(p);
             }
         }

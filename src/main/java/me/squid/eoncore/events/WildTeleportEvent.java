@@ -11,11 +11,13 @@ public class WildTeleportEvent extends Event {
 
     Player p;
     Location toTp;
+    boolean isInPortal;
 
-    public WildTeleportEvent(Player p, Location toTp) {
+    public WildTeleportEvent(Player p, Location toTp, boolean isInPortal) {
         super(true);
         this.p = p;
         this.toTp = toTp;
+        this.isInPortal = isInPortal;
     }
 
     public Player getPlayer() {
@@ -25,6 +27,8 @@ public class WildTeleportEvent extends Event {
     public Location getLocation() {
         return toTp;
     }
+
+    public boolean isInPortal() { return isInPortal; }
 
     public HandlerList getHandlers() {
         return handlers;

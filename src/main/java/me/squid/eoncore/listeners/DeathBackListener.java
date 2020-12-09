@@ -36,10 +36,7 @@ public class DeathBackListener implements Listener {
     public void onRespawn(PlayerRespawnEvent e) {
         Player p = e.getPlayer();
         p.sendMessage(Utils.chat(prefix + plugin.getConfig().getString("Death-Back-Message")));
-        double x = -546.3696854992578;
-        double y = 46.0;
-        double z = -568.5314282419047;
-        e.setRespawnLocation(new Location(Bukkit.getWorld("spawn"), x, y, z));
+        e.setRespawnLocation(getSpawnLoc());
     }
 
     @EventHandler
@@ -66,5 +63,12 @@ public class DeathBackListener implements Listener {
             p.teleport(toTeleport);
             p.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Teleport-Successful")));
         };
+    }
+
+    private Location getSpawnLoc() {
+        double x = -687.5;
+        double y = 140.0;
+        double z = -708.5;
+        return new Location(Bukkit.getWorld("spawn"), x, y, z);
     }
 }

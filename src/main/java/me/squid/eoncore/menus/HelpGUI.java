@@ -19,7 +19,7 @@ public class HelpGUI {
     public Inventory Main(Player p) {
         Inventory inv = Bukkit.createInventory(null, 54, Utils.chat("&a&lHelp Menu"));
 
-        inv.setItem(6, getPlayerHead(p));
+        inv.setItem(5, getPlayerHead(p));
         Utils.createItem(inv, Material.DIAMOND_HOE, 1, 20, "&a&lJobs", "&fGet money for doing in game tasks");
         Utils.createItem(inv, Material.EXPERIENCE_BOTTLE, 1, 23, "&5&lKits", "&fHere you can find kits that you claim for your rank");
         Utils.createItem(inv, Material.OAK_LEAVES, 1, 26, "&2&lWild", "&fClick here to be teleported to the wild");
@@ -40,8 +40,10 @@ public class HelpGUI {
         List<String> lore = new ArrayList<>();
         lore.add(Utils.chat("&bHealth: " + p.getHealth()));
         lore.add(Utils.chat("&bFood Level: " + p.getFoodLevel()));
-        lore.add(Utils.chat("&bWorld: " + StringUtils.capitalize(EonCore.getPerms().getUserManager().getUser(p.getUniqueId()).getPrimaryGroup())));
+        lore.add(Utils.chat("&bRank: " + StringUtils.capitalize(EonCore.getPerms().getUserManager().getUser(p.getUniqueId()).getPrimaryGroup())));
         skull.setLore(lore);
+
+        item.setItemMeta(skull);
         return item;
     }
 

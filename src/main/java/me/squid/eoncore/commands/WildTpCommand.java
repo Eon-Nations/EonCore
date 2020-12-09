@@ -28,10 +28,10 @@ public class WildTpCommand implements CommandExecutor {
 
         if (sender instanceof Player) {
             Player p = (Player) sender;
-            if (list.contains(p.getUniqueId())) {
-                return true;
-            } else {
+            if (list.contains(p.getUniqueId())) return true;
+            else {
                 list.add(p.getUniqueId());
+                p.sendMessage(Utils.chat("&7[&6&lWild&7] &aFinding a safe place for you to teleport to"));
             }
         }
         return true;

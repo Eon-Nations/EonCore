@@ -29,12 +29,14 @@ public class WildTpListener implements Listener {
         Location toTp = e.getLocation();
 
         if (!isOnCoolDown(p)) {
-            p.sendMessage(Utils.chat("&7[&6&lWild&7] &aFinding a safe place for you to teleport to"));
             p.sendMessage(Utils.chat("&7[&6&lWild&7] &aFound a location. Loading..."));
             p.sendMessage(Utils.chat("&7[&6&lWild&7] &r&5You have been teleported to the coords: x:" + toTp.getBlockX() + " y:" + toTp.getBlockY() + " z:" + toTp.getBlockZ()));
             Bukkit.getScheduler().runTask(plugin, () -> p.teleport(toTp));
+            p.setInvulnerable(true);
             addCoolDown(p, 300000);
+            Bukkit.getScheduler().runTaskLater(plugin, () -> p.setInvulnerable(false), 100L);
         } else {
+            if (e.isInPortal()) p.teleportAsync(getSpawnLoc());
             p.sendMessage(Utils.chat("&7[&6&lWild&7] &r&aYou are on cooldown for " + ((cooldown.get(p.getUniqueId()) - System.currentTimeMillis()) / 1000) + " more seconds"));
         }
     }
@@ -44,9 +46,7 @@ public class WildTpListener implements Listener {
              if (System.currentTimeMillis() > cooldown.get(p.getUniqueId())) {
                  cooldown.remove(p.getUniqueId());
                  return false;
-             } else {
-                 return true;
-             }
+             } else return true;
          }
          return false;
     }
@@ -55,5 +55,12 @@ public class WildTpListener implements Listener {
         if (!p.isOp()) {
             cooldown.put(p.getUniqueId(), System.currentTimeMillis() + length);
         }
+    }
+
+    private Location getSpawnLoc() {
+        double x = -687.5;
+        double y = 140.0;
+        double z = -708.5;
+        return new Location(Bukkit.getWorld("spawn"), x, y, z);
     }
 }

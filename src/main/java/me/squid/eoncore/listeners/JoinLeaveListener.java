@@ -4,13 +4,17 @@ import me.squid.eoncore.EonCore;
 import me.squid.eoncore.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class JoinLeaveListener implements Listener {
@@ -30,12 +34,12 @@ public class JoinLeaveListener implements Listener {
             .replace("<player>", p.getName())));
             p.sendTitle(Utils.chat("&5&lEon Survival"), Utils.chat("&bWelcome back!"), 30, 30, 30);
             if (p.isOp()) p.setSleepingIgnored(true);
+            if (p.isOp()) p.setAffectsSpawning(false);
         } else {
-            Location spawnLoc = new Location(Bukkit.getWorld("spawn"), -546.3696854992578, 46.0
-            , -568.5314282419047);
             e.setJoinMessage(Utils.chat(Objects.requireNonNull(plugin.getConfig().getString("Welcome-Message"))
             .replace("<player>", p.getName())));
-            p.teleportAsync(spawnLoc);
+            p.teleportAsync(getSpawnLoc());
+            givePlayerStarterKit(p);
             p.getWorld().spawnEntity(p.getLocation(), EntityType.FIREWORK);
             p.sendTitle(Utils.chat("&5&lEon Survival"), Utils.chat("&bWelcome " + p.getName()) + "!", 30, 30, 30);
         }
@@ -44,7 +48,27 @@ public class JoinLeaveListener implements Listener {
     @EventHandler
     public void LeaveMessage(PlayerQuitEvent e) {
         Player p = e.getPlayer();
-        e.setQuitMessage(Utils.chat(Objects.requireNonNull(plugin.getConfig().getString("Leave-Message"))
+        e.setQuitMessage(Utils.chat(plugin.getConfig().getString("Leave-Message")
         .replace("<player>", p.getName())));
+    }
+
+    private Location getSpawnLoc() {
+        double x = -687.5;
+        double y = 140.0;
+        double z = -708.5;
+        return new Location(Bukkit.getWorld("spawn"), x, y, z);
+    }
+
+    private void givePlayerStarterKit(Player p) {
+        List<ItemStack> itemsToGive = new ArrayList<>();
+        itemsToGive.add(Utils.createKitItem(Material.WOODEN_SWORD, 1, "&7Stick", null, null));
+        itemsToGive.add(Utils.createKitItem(Material.WOODEN_PICKAXE, 1, "&7Pick", null, null));
+        itemsToGive.add(Utils.createKitItem(Material.WOODEN_AXE, 1, "&7Wood", null, null));
+        itemsToGive.add(Utils.createKitItem(Material.WOODEN_SHOVEL, 1, "&7Spoon", null, null));
+        itemsToGive.add(new ItemStack(Material.COOKED_BEEF, 8));
+
+        for (ItemStack item : itemsToGive) {
+            p.getInventory().addItem(item);
+        }
     }
 }

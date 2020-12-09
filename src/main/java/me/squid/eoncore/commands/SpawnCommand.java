@@ -26,7 +26,11 @@ public class SpawnCommand implements CommandExecutor {
 
         if (args.length == 0 && sender instanceof Player) {
             Player p = (Player) sender;
-            p.teleportAsync(getSpawnLoc());
+            if (p.hasPermission("eoncommands.spawn.cooldown.immune")) p.teleportAsync(getSpawnLoc());
+            else {
+                p.sendMessage(Utils.chat(EonCore.prefix + "&7Teleporting in 3 seconds..."));
+                Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> p.teleportAsync(getSpawnLoc()), 60L);
+            }
             p.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Spawn-Message")));
         } else if (args.length == 1) {
             Player target = Bukkit.getPlayer(args[0]);
@@ -34,17 +38,15 @@ public class SpawnCommand implements CommandExecutor {
                 target.teleportAsync(getSpawnLoc());
                 target.playSound(target.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
                 target.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Spawn-Message")));
-            } else {
-                sender.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Target-Null")));
-            }
+            } else sender.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Target-Null")));
         }
         return true;
     }
 
     private Location getSpawnLoc() {
-        double x = -775.5;
-        double y = 159.0;
-        double z = -798.5;
+        double x = -687.5;
+        double y = 140.0;
+        double z = -708.5;
         return new Location(Bukkit.getWorld("spawn"), x, y, z);
     }
 }

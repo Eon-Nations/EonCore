@@ -26,7 +26,7 @@ public class WarpsListener implements Listener {
     }
 
     @SuppressWarnings("ConstantConditions")
-    @EventHandler (priority = EventPriority.HIGH)
+    @EventHandler
     public void onWarp(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
 
@@ -70,7 +70,7 @@ public class WarpsListener implements Listener {
 
     public void initializeWarps() {
         utilities = new Location(Bukkit.getWorld("spawn"), -595.5, 81, -225.5);
-        crates = new Location(Bukkit.getWorld("spawn"), -584 ,46, -569, 90, 0);
+        crates = new Location(Bukkit.getWorld("spawn"), -687.5 ,174, -714.5, 90, 0);
         market = new Location(Bukkit.getWorld("spawn"), -323, 90, -590, 180, 0);
         chilis = new Location(Bukkit.getWorld("spawn"), -630, 62, -527, 90, 0);
     }
