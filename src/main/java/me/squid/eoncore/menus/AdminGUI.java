@@ -4,6 +4,7 @@ import me.squid.eoncore.utils.Utils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -11,13 +12,14 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class AdminGUI {
 
     public Inventory GUI () {
         Inventory inv = Bukkit.createInventory(null, 27, Utils.chat("&5&lEon Admin GUI"));
 
-        Utils.createItem(inv, Material.PLAYER_HEAD, 1, 12, "&b");
+        Utils.createItem(inv, Material.PLAYER_HEAD, 1, 12, "&bPlayer Menu");
         Utils.createItem(inv, Material.PAPER, 1, 14, "&bReload Config");
         Utils.createItem(inv, Material.CLOCK, 1, 16, Utils.chat("&bChange Time/Weather"));
         Utils.makeDummySlots(inv);
@@ -40,6 +42,7 @@ public class AdminGUI {
         , "&5Weather: " + weather);
         Utils.createItem(inv, Material.GRAY_CONCRETE, 1, 20, "&7Change to Night");
         Utils.createItem(inv, Material.LIGHT_GRAY_CONCRETE, 1, 26, "&7Change to Stormy");
+        Utils.makeDummySlots(inv);
 
         return inv;
     }
@@ -68,13 +71,82 @@ public class AdminGUI {
     }
 
     public Inventory PeopleOptionsGUI(ItemStack head) {
-        Inventory inv = Bukkit.createInventory(null, 27, Utils.chat(""));
+        Inventory inv = Bukkit.createInventory(null, 27, Utils.chat("&a&lPlayer Options"));
 
-        String uuid = head.getItemMeta().getLore().get(3);
-        List<String> list = new ArrayList<>();
-        list.add(uuid);
-        head.getItemMeta().setLore(list);
-        inv.setItem(6, head);
+        inv.setItem(4, head);
+        Utils.createItem(inv, Material.WOODEN_AXE, 1,  11, "&c&lBan");
+        Utils.createItem(inv, Material.GOLDEN_CARROT, 1, 13, "&a&lFeed");
+        Utils.createItem(inv, Material.ENDER_PEARL, 1, 15, "&b&lTeleport");
+        Utils.createItem(inv, Material.WOODEN_SHOVEL, 1, 17, "&a&lMute");
+        Utils.makeDummySlots(inv);
+
+        return inv;
+    }
+
+    public Inventory getBanReasons(UUID uuid) {
+        Inventory inv = Bukkit.createInventory(null, 27,  Utils.chat("&bBan Reasons"));
+
+        Utils.createItem(inv, Material.WOODEN_AXE, 1, 5, "&bSelect a reason to ban", "&fUUID: " + uuid.toString());
+        Utils.createItem(inv, Material.MAGENTA_WOOL, 1, 10, "&6Advertising other servers/products are not allowed", "&f(30d ban -> IP Ban)");
+        Utils.createItem(inv, Material.GREEN_WOOL, 1, 11, "&6DoX and DDoS threats are now allowed", Utils.chat("&f(Perm Ban)"));
+        Utils.createItem(inv, Material.YELLOW_WOOL, 1, 12, "&6Exploiting bugs including duping is not allowed", "&f(14d ban -> IP Ban)");
+        Utils.createItem(inv, Material.YELLOW_WOOL, 1, 13, "&6Ban Evasion is not allowed", "&f(Perm IP Ban)");
+        Utils.createItem(inv, Material.YELLOW_WOOL, 1, 14, "&6Mute Evasion is not allowed", "&f(7d ban -> Perm Ban)");
+        Utils.createItem(inv, Material.YELLOW_WOOL, 1, 15, "&6Forging a ban is not allowed", "&f(7d ban -> 30d ban)");
+        Utils.createItem(inv, Material.YELLOW_WOOL, 1, 16, "&6Inappropriate names are not allowed", "&f(Kick -> 5d ban)");
+        Utils.createItem(inv, Material.YELLOW_WOOL, 1, 17, "&6Scamming others is not allowed", "&f(7d ban -> Perm Ban)");
+        Utils.createItem(inv, Material.YELLOW_WOOL, 1, 18, "&6Player killing is not allowed", "&f(14d ban -> 60d ban)");
+        Utils.createItem(inv, Material.YELLOW_WOOL, 1, 19, "&6Use of a hacked client is not allowed", "&f(30d ban -> IP Ban)");
+        Utils.createItem(inv, Material.YELLOW_WOOL, 1, 20, "&6No building near someone without permission", "&f(250 blocks)", "&f(1-30d ban)");
+        Utils.createItem(inv, Material.YELLOW_WOOL, 1, 21, "&6No harassing other players", "&f(1-30d ban)");
+        Utils.createItem(inv, Material.YELLOW_WOOL, 1, 22, "&6No inappropriate public builds", "&f(7-30d ban)");
+        Utils.createItem(inv, Material.YELLOW_WOOL, 1, 23, "&6X-Ray Texture Packs/Mods are not allowed", "&f(14d -> Perm Ban)");
+        Utils.createItem(inv, Material.YELLOW_WOOL, 1, 24, "&6No griefing other players. Even if it is unclaimed", "&f(7d ban -> Perm Ban)");
+        Utils.makeDummySlots(inv);
+
+        return inv;
+    }
+
+    public Inventory getMuteReasons(UUID uuid) {
+        Inventory inv = Bukkit.createInventory(null, 27, Utils.chat("&bMute Reasons"));
+
+        Utils.createItem(inv, Material.WOODEN_SHOVEL, 1, 5, "&bSelect a reason to mute", "&fUUID: " + uuid.toString());
+        Utils.createItem(inv, Material.BLUE_WOOL, 1, 10, "&6No personal information in public chat", Utils.chat("&f(24h mute -> Perm Mute"));
+        Utils.createItem(inv, Material.PURPLE_WOOL, 1, 11, "&6Offensive language is not allowed", Utils.chat("&f(2 Verbal Warnings -> 24h mute)"));
+        Utils.createItem(inv, Material.LIGHT_BLUE_WOOL, 1, 12, "&6Bigotry/hate speech is not allowed", Utils.chat("&f(2 Verbal Warnings -> 24h mute)"));
+        Utils.createItem(inv, Material.MAGENTA_WOOL, 1, 13, "&6Misleading players is not allowed", Utils.chat("&f(Verbal Warning -> 1h mute)"));
+        Utils.createItem(inv, Material.ORANGE_WOOL, 1, 14, "&6Harassing players/staff members is not allowed", Utils.chat("&f(2 Verbal Warnings -> 1h mute)"));
+        Utils.createItem(inv, Material.GREEN_WOOL, 1, 15, "&6Excessive swearing is not allowed", Utils.chat("&f(Verbal Warning -> 5h mute)"));
+        Utils.createItem(inv, Material.GRAY_WOOL, 1, 16, "&6No political discussions/statements allowed", Utils.chat("&f(2 Verbal Warnings -> 3h mute)"));
+        Utils.createItem(inv, Material.RED_WOOL, 1, 17, "&6No sexual statements/discussions in chat", Utils.chat("&f(2 Verbal Warnings -> 3h mute)"));
+        Utils.createItem(inv, Material.BLUE_WOOL, 1, 1, "&6Indirect advertising is not allowed", "&f(2 Verbal Warnings -> 3h mute)");
+        Utils.makeDummySlots(inv);
+
+        return inv;
+    }
+
+    public Inventory getLengthGUI(UUID uuid, String action, String reason) {
+        Inventory inv = Bukkit.createInventory(null, 27, Utils.chat("&aLength"));
+
+        if (action.equals("mute")) {
+            Utils.createItem(inv, Material.WOODEN_SWORD, 1, 5, "&bUUID: " + uuid.toString(), "&fReason: " + reason, "&fAction: " + action);
+            Utils.createItem(inv, Material.RED_WOOL, 1, 10, "&c&l1 Hour");
+            Utils.createItem(inv, Material.RED_WOOL, 1, 12, "&c&l3 Hours");
+            Utils.createItem(inv, Material.RED_WOOL, 1, 14, "&c&l12 Hours");
+            Utils.createItem(inv, Material.RED_WOOL, 1, 16, "&c&l24 Hours");
+            Utils.createItem(inv, Material.RED_WOOL, 1, 18, "&c&l7 Days");
+            Utils.createItem(inv, Material.PURPLE_WOOL, 1, 22, "&5&lPerm Mute");
+            Utils.createItem(inv, Material.PURPLE_WOOL, 1, 24, "&5&lPerm Mute");
+        } else {
+            Utils.createItem(inv, Material.WOODEN_SWORD, 1, 5, "&bUUID: " + uuid.toString(), "&fReason: " + reason, "&fAction: " + action);
+            Utils.createItem(inv, Material.RED_WOOL, 1, 10, "&c&l1 Day");
+            Utils.createItem(inv, Material.RED_WOOL, 1, 12, "&c&l3 Days");
+            Utils.createItem(inv, Material.RED_WOOL, 1, 14, "&c&l7 Days");
+            Utils.createItem(inv, Material.RED_WOOL, 1, 16, "&c&l14 Days");
+            Utils.createItem(inv, Material.RED_WOOL, 1, 18, "&c&l30 Days");
+            Utils.createItem(inv, Material.PURPLE_WOOL, 1, 22, "&5&lPerm Ban");
+            Utils.createItem(inv, Material.PURPLE_WOOL, 1, 24, "&5&lPerm Ban");
+        }
 
         return inv;
     }

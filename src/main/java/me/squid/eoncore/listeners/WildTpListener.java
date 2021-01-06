@@ -36,7 +36,7 @@ public class WildTpListener implements Listener {
             addCoolDown(p, 300000);
             Bukkit.getScheduler().runTaskLater(plugin, () -> p.setInvulnerable(false), 100L);
         } else {
-            if (e.isInPortal()) p.teleportAsync(getSpawnLoc());
+            if (e.isInPortal()) Bukkit.getScheduler().runTask(plugin, () -> p.teleport(getSpawnLoc()));
             p.sendMessage(Utils.chat("&7[&6&lWild&7] &r&aYou are on cooldown for " + ((cooldown.get(p.getUniqueId()) - System.currentTimeMillis()) / 1000) + " more seconds"));
         }
     }

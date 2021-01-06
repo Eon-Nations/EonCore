@@ -23,11 +23,8 @@ public class AnvilCommand implements CommandExecutor {
 
         if (sender instanceof Player){
             Player p = (Player) sender;
-            if (p.hasPermission(getPermissionNode())) {
-                p.sendMessage(Utils.chat(EonCore.prefix + "&bFor the time being, /anvil is disabled. Expect this to change very soon"));
-            } else {
-                p.sendMessage(Utils.chat(plugin.getConfig().getString("No-Perms")));
-            }
+            if (p.hasPermission(getPermissionNode())) p.sendMessage(Utils.chat(EonCore.prefix + "&bFor the time being, /anvil is disabled. Expect this to change very soon"));
+            else p.sendMessage(Utils.chat(plugin.getConfig().getString("No-Perms")));
         }
 
         return true;

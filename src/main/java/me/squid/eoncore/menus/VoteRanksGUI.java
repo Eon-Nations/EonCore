@@ -21,60 +21,60 @@ public class VoteRanksGUI {
     }
 
     public Inventory VoterOfTheMonthGUI() {
-        Inventory inv = Bukkit.createInventory(null, 9, Utils.chat("&a&lVoter Of The Month"));
+        Inventory inv = Bukkit.createInventory(null, 27, Utils.chat("&a&lVoter Of The Month"));
 
-        Utils.createItem(inv, Material.EMERALD, 1, 1, "&a&l$20,000");
-        Utils.createItem(inv, Material.TRIPWIRE_HOOK, 1, 2, "&5&l5 Galactic Keys");
-        Utils.createItem(inv, Material.BARRIER, 1, 9, "&4&lExit");
-        Utils.createItem(inv, Material.COMMAND_BLOCK, 1, 3, "&a&lCommand: /fly for 1 month");
+        Utils.createItem(inv, Material.EMERALD, 1, 13, "&a&l$20,000");
+        Utils.createItem(inv, Material.TRIPWIRE_HOOK, 1, 14, "&5&l5 Galactic Keys");
+        Utils.createItem(inv, Material.BARRIER, 1, 23, "&4&lExit");
+        Utils.createItem(inv, Material.COMMAND_BLOCK, 1, 15, "&a&lCommand: /fly for 1 month");
         Utils.makeDummySlots(inv);
 
         return inv;
     }
 
     public Inventory VoterIGUI() {
-        Inventory inv = Bukkit.createInventory(null, 9, Utils.chat("&a&lVoter I"));
+        Inventory inv = Bukkit.createInventory(null, 27, Utils.chat("&a&lVoter I"));
 
-        Utils.createItem(inv, Material.DIAMOND_SWORD, 1, 1, "&a&lVoter Set of Tools/Armor");
-        Utils.createItem(inv, Material.BARRIER, 1, 9, "&4&lExit");
-        Utils.createItem(inv, Material.DIAMOND_SWORD, 1, 2, "&a&l10 Vote Crate Keys");
-        Utils.createItem(inv, Material.TRIPWIRE_HOOK, 1, 3, "&5&l3 Galactic Keys");
+        Utils.createItem(inv, Material.DIAMOND_PICKAXE, 1, 13, "&a&lVoter Set of Tools/Armor");
+        Utils.createItem(inv, Material.BARRIER, 1, 23, "&4&lExit");
+        Utils.createItem(inv, Material.TRIPWIRE_HOOK, 10, 14, "&a&lVote Crate Key");
+        Utils.createItem(inv, Material.TRIPWIRE_HOOK, 3, 15, "&5&lGalactic Key");
         Utils.makeDummySlots(inv);
 
         return inv;
     }
 
     public Inventory VoterIIGUI() {
-        Inventory inv = Bukkit.createInventory(null, 9, Utils.chat("&a&lVoter II"));
+        Inventory inv = Bukkit.createInventory(null, 27, Utils.chat("&a&lVoter II"));
 
-        Utils.createItem(inv, Material.TRIPWIRE_HOOK, 1, 1, "&a&lVote Kit");
-        Utils.createItem(inv, Material.BARRIER, 1, 9, "&4&lExit");
-        Utils.createItem(inv, Material.DIAMOND_PICKAXE, 1, 2 ,"&a&lVoters Cave");
-        Utils.createItem(inv, Material.TRIPWIRE_HOOK, 1, 3, "&5&l5 Galactic Keys");
+        Utils.createItem(inv, Material.DIAMOND_CHESTPLATE, 1, 13, "&a&lVote Kit");
+        Utils.createItem(inv, Material.BARRIER, 1, 23, "&4&lExit");
+        Utils.createItem(inv, Material.DIAMOND_ORE, 1, 14 ,"&a&lVoters Cave");
+        Utils.createItem(inv, Material.TRIPWIRE_HOOK, 5, 15, "&5&lGalactic Key");
         Utils.makeDummySlots(inv);
 
         return inv;
     }
 
     public Inventory VoterIIIGUI() {
-        Inventory inv = Bukkit.createInventory(null, 9, Utils.chat("&a&lVoter III"));
+        Inventory inv = Bukkit.createInventory(null, 27, Utils.chat("&a&lVoter III"));
 
-        Utils.createItem(inv, Material.TRIPWIRE_HOOK, 1, 1, "&5&l10 Galactic Keys");
-        Utils.createItem(inv, Material.BARRIER, 1, 9, "&4&lExit");
-        Utils.createItem(inv, Material.COMMAND_BLOCK, 1, 2, "Command: /feed for two weeks");
+        Utils.createItem(inv, Material.TRIPWIRE_HOOK, 10, 13, "&5&lGalactic Key");
+        Utils.createItem(inv, Material.BARRIER, 23, 23, "&4&lExit");
+        Utils.createItem(inv, Material.COMMAND_BLOCK, 1, 14, "&fCommand: /feed for two weeks");
+        Utils.createItem(inv, Material.EMERALD, 1, 15, "$50000");
         Utils.makeDummySlots(inv);
 
         return inv;
     }
 
     public Inventory VoterIVGUI() {
-        Inventory inv = Bukkit.createInventory(null, 9, Utils.chat("&a&lVoter IV"));
+        Inventory inv = Bukkit.createInventory(null, 27, Utils.chat("&a&lVoter IV"));
 
-        Utils.createItem(inv, Material.TRIPWIRE_HOOK, 1, 1, "&5&l10 Galactic Keys");
-        Utils.createItem(inv, Material.DIAMOND_PICKAXE, 1, 2, "&5&lSet of Galactic Tools");
-        Utils.createItem(inv, Material.BARRIER, 1, 9, "&4&lExit");
-        Utils.createItem(inv, Material.DIAMOND_ORE, 1, 3, "&a&lAccess to Donator Cave");
-        Utils.createItem(inv, Material.COMMAND_BLOCK, 1, 4, "&a&lPermanent Access to /feed or /fly (Choice)");
+        Utils.createItem(inv, Material.DIAMOND_CHESTPLATE, 1, 13, "&5&lSet of Galactic Tools");
+        Utils.createItem(inv, Material.BARRIER, 1, 23, "&4&lExit");
+        Utils.createItem(inv, Material.DIAMOND_ORE, 1, 14, "&a&lAccess to Donator Cave");
+        Utils.createItem(inv, Material.COMMAND_BLOCK, 1, 15, "&a&lPermanent Access to /feed or /fly (Choice)");
         Utils.makeDummySlots(inv);
 
         return inv;

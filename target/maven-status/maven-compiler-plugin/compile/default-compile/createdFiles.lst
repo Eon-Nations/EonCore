@@ -2,6 +2,7 @@ me/squid/eoncore/menus/VoteRanksGUI.class
 me/squid/eoncore/listeners/WildTpListener.class
 me/squid/eoncore/commands/PickupCommand.class
 me/squid/eoncore/commands/GrindstoneCommand.class
+me/squid/eoncore/managers/CooldownManager.class
 me/squid/eoncore/tasks/AutoAnnouncementTask.class
 me/squid/eoncore/commands/TpaAcceptCommand.class
 me/squid/eoncore/commands/SudoCommand.class
@@ -9,6 +10,7 @@ me/squid/eoncore/commands/PTimeCommand.class
 me/squid/eoncore/commands/ClearInventoryCommand.class
 me/squid/eoncore/listeners/WarpsListener$1.class
 me/squid/eoncore/kit/kits/StarterKit.class
+me/squid/eoncore/listeners/MuteListener.class
 me/squid/eoncore/listeners/GenericMenusListener$1.class
 me/squid/eoncore/commands/SurvivalCommand.class
 me/squid/eoncore/tasks/TpaCooldownTask.class
@@ -46,6 +48,7 @@ me/squid/eoncore/tasks/UtilityDoorTask.class
 me/squid/eoncore/kit/Kit.class
 me/squid/eoncore/listeners/CommandSendListener.class
 me/squid/eoncore/commands/HelpCommand.class
+me/squid/eoncore/managers/Cooldown.class
 me/squid/eoncore/commands/RenameCommand.class
 me/squid/eoncore/commands/EnderChestCommand.class
 me/squid/eoncore/commands/KickCommand.class
