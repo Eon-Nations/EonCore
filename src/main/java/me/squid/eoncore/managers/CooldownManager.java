@@ -1,5 +1,7 @@
 package me.squid.eoncore.managers;
 
+import scala.concurrent.impl.FutureConvertersImpl;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -20,6 +22,12 @@ public class CooldownManager {
     public void remove(Cooldown cooldown) {
         final UUID uuid = cooldown.getUUID();
         cooldowns.remove(uuid);
+    }
+
+    public Cooldown getCooldown(UUID uuid) {
+        if (hasCooldown(uuid)) {
+            return cooldowns.get(uuid);
+        } else return null;
     }
 
     public boolean hasCooldown(UUID uuid) {

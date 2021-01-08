@@ -1,6 +1,7 @@
 package me.squid.eoncore.listeners;
 
 import me.squid.eoncore.EonCore;
+import me.squid.eoncore.managers.Cooldown;
 import me.squid.eoncore.managers.CooldownManager;
 import me.squid.eoncore.utils.Utils;
 import org.bukkit.Bukkit;
@@ -29,5 +30,4 @@ public class MuteListener implements Listener {
             e.getPlayer().sendMessage(Utils.chat("&7[&a&lEon Moderation&7] &4You are muted"));
         }
     }
-
 }

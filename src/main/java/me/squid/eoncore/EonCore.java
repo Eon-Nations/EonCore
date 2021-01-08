@@ -1,8 +1,6 @@
 package me.squid.eoncore;
 
 import me.squid.eoncore.commands.*;
-import me.squid.eoncore.files.BanMessages;
-import me.squid.eoncore.files.MutedPlayers;
 import me.squid.eoncore.listeners.*;
 import me.squid.eoncore.tasks.AutoAnnouncementTask;
 import me.squid.eoncore.tasks.PortalTeleportTask;
@@ -16,8 +14,6 @@ import org.bukkit.World;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.IOException;
-
 public class EonCore extends JavaPlugin {
 
     public static final String prefix = "&7[&5&lEon Survival&7] &r";
@@ -28,7 +24,6 @@ public class EonCore extends JavaPlugin {
         saveDefaultConfig();
         registerCommands();
         registerListeners();
-        setupFiles();
         disableRecipes();
         runTasks();
         setupLuckPerms();
@@ -38,14 +33,6 @@ public class EonCore extends JavaPlugin {
     @Override
     public void onDisable() {
         saveConfig();
-        BanMessages banMessages = new BanMessages();
-        MutedPlayers mutedPlayers = new MutedPlayers();
-        try {
-            banMessages.saveFile();
-            mutedPlayers.saveFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public void registerCommands(){
@@ -111,19 +98,7 @@ public class EonCore extends JavaPlugin {
         new KitListener(this);
         new WarpsListener(this);
         new PhantomSpawnListener(this);
-    }
-
-    public void setupFiles(){
-        BanMessages banMessages = new BanMessages();
-        banMessages.setupFile();
-        banMessages.getConfig().options().copyDefaults(true);
-        banMessages.loadDefaults();
-
-        MutedPlayers mutedPlayers = new MutedPlayers();
-        mutedPlayers.setupFile();
-        mutedPlayers.getConfig().options().copyDefaults(true);
-        mutedPlayers.loadDefaults();
-        mutedPlayers.saveFile();
+        new MuteListener(this);
     }
 
     public void runTasks() {

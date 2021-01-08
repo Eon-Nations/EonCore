@@ -28,6 +28,7 @@ public class SudoCommand implements CommandExecutor {
                     args[1] = args[1].replace("/", "");
                     Bukkit.dispatchCommand(target, getMessage(args));
                 } else if (target != null) {
+                    args[0] = "";
                     target.chat(getMessage(args));
                 }
             }

@@ -1,8 +1,6 @@
 package me.squid.eoncore.listeners;
 
 import me.squid.eoncore.EonCore;
-import me.squid.eoncore.files.BanMessages;
-import me.squid.eoncore.files.MutedPlayers;
 import me.squid.eoncore.managers.Cooldown;
 import me.squid.eoncore.managers.CooldownManager;
 import me.squid.eoncore.menus.AdminGUI;
@@ -15,7 +13,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 
@@ -126,12 +123,13 @@ public class AdminMenuManager implements Listener {
 
         // Reasons to ban on the server
         if (e.getView().getTitle().equalsIgnoreCase(Utils.chat("&bBan Reasons"))) {
-            if (!e.getCurrentItem().getType().equals(Material.WOODEN_SHOVEL)) {
+            if (e.getCurrentItem().getType() == Material.WOODEN_SHOVEL) {
+                e.setCancelled(true);
+            } else {
                 String u = e.getView().getItem(4).getItemMeta().getLore().get(0).split(": ")[1];
                 UUID uuid = UUID.fromString(u);
                 String reason = e.getCurrentItem().getItemMeta().getDisplayName();
                 String action = "ban";
-
                 p.openInventory(adminGUI.getLengthGUI(uuid, action, reason));
             }
             e.setCancelled(true);
@@ -139,12 +137,13 @@ public class AdminMenuManager implements Listener {
 
         // Reasons to mute on the server
         if (e.getView().getTitle().equalsIgnoreCase(Utils.chat("&bMute Reasons"))) {
-            if (!e.getCurrentItem().getType().equals(Material.WOODEN_SHOVEL)) {
+            if (e.getCurrentItem().getType() == Material.WOODEN_SHOVEL) {
+                e.setCancelled(true);
+            } else {
                 String u = e.getView().getItem(4).getItemMeta().getLore().get(0).split(": ")[1];
                 UUID uuid = UUID.fromString(u);
                 String reason = e.getCurrentItem().getItemMeta().getDisplayName();
                 String action = "mute";
-
                 p.openInventory(adminGUI.getLengthGUI(uuid, action, reason));
             }
             e.setCancelled(true);

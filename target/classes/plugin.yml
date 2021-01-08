@@ -3,7 +3,7 @@ version: 1.0
 main: me.squid.eoncore.EonCore
 api-version: 1.16
 authors: [Squid]
-depend: [LuckPerms, WorldGuard]
+depend: [LuckPerms, WorldGuard, Votifier]
 softdepend: [AsyncWorldManager]
 description: Epic description
 commands:

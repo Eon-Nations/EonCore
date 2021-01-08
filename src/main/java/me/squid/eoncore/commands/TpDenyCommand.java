@@ -29,11 +29,9 @@ public class TpDenyCommand implements CommandExecutor {
             if (TpaCommand.getRequests().containsKey(p.getUniqueId())) {
                 Player requester = Bukkit.getPlayer(TpaCommand.getRequests().get(p.getUniqueId()));
                 p.sendMessage(Utils.chat(plugin.getConfig().getString("Teleport-Deny-Message")));
-                Objects.requireNonNull(requester).sendMessage(Utils.chat(prefix + plugin.getConfig().getString("Teleport-Deny-Message")));
+                requester.sendMessage(Utils.chat(prefix + plugin.getConfig().getString("Teleport-Deny-Message")));
                 TpaCommand.getRequests().remove(p.getUniqueId());
-            } else {
-                p.sendMessage(Utils.chat(prefix + plugin.getConfig().getString("No-Pending-Requests")));
-            }
+            } else p.sendMessage(Utils.chat(prefix + plugin.getConfig().getString("No-Pending-Requests")));
         }
 
         return true;

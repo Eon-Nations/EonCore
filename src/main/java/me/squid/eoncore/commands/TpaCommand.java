@@ -37,18 +37,11 @@ public class TpaCommand implements CommandExecutor {
                         p.sendMessage(Utils.chat(prefix + plugin.getConfig().getString("Tpa-Player-Message")));
                         target.sendMessage(Utils.chat(prefix + Objects.requireNonNull(plugin.getConfig().getString("Tpa-Target-Message"))
                         .replace("<player>", p.getDisplayName())));
-                    } else {
-                        p.sendMessage(Utils.chat(prefix + plugin.getConfig().getString("Pending-Request")));
-                    }
-                } else {
-                    p.sendMessage(Utils.chat(prefix + plugin.getConfig().getString("Target-Null")));
-                }
-            } else {
-                p.sendMessage(Utils.chat(prefix + "&7Usage: /tpa <player>"));
-            }
-        } else {
-            System.out.println("Bruh you can't do this shit");
-        }
+                    } else p.sendMessage(Utils.chat(prefix + plugin.getConfig().getString("Pending-Request")));
+                } else p.sendMessage(Utils.chat(prefix + plugin.getConfig().getString("Target-Null")));
+            } else p.sendMessage(Utils.chat(prefix + "&7Usage: /tpa <player>"));
+        } else System.out.println("Bruh you can't do this");
+
 
         return true;
     }

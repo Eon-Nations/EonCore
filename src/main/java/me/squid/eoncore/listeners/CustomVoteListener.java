@@ -31,5 +31,7 @@ public class CustomVoteListener implements Listener {
             plugin.getLogger().warning("Username invalid (Player offline).");
         }
 
+
+
     }
 }
