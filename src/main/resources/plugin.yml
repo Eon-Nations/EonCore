@@ -164,3 +164,6 @@ commands:
   grindstone:
     description: Portable grindstone for use
     permission: eoncommands.grindstone
+  message:
+    description: Message other players
+    aliases: [msg, pm]

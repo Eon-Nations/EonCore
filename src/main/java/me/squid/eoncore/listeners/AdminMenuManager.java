@@ -218,5 +218,29 @@ public class AdminMenuManager implements Listener {
             }
             e.setCancelled(true);
         }
+
+        if (e.getView().getTitle().equals(Utils.chat("&b&lMuted Chat"))) {
+            if (e.getCurrentItem().getType().equals(Material.PLAYER_HEAD)) {
+                p.openInventory(adminGUI.mutedOptions(e.getCurrentItem()));
+            }
+            e.setCancelled(true);
+        }
+
+        if (e.getView().getTitle().equals(Utils.chat("&b&lMuted Options"))) {
+            UUID uuid = UUID.fromString(e.getView().getItem(4).getLore().get(1).split(": ")[1]);
+            switch (e.getCurrentItem().getType()) {
+                case EMERALD_BLOCK:
+                    cooldownManager.remove(cooldownManager.getCooldown(uuid));
+                    p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1, 1);
+                    p.closeInventory();
+                    p.sendMessage(Utils.chat("&aPlayer successfully unmuted."));
+                    break;
+                case RED_CONCRETE:
+                    p.closeInventory();
+                    p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1, 1);
+                    break;
+            }
+            e.setCancelled(true);
+        }
     }
 }

@@ -1,18 +1,23 @@
 package me.squid.eoncore.menus;
 
+import me.squid.eoncore.listeners.AdminMenuManager;
+import me.squid.eoncore.managers.CooldownManager;
 import me.squid.eoncore.utils.Utils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.LogRecord;
 
 public class AdminGUI {
 
@@ -147,6 +152,41 @@ public class AdminGUI {
             Utils.createItem(inv, Material.PURPLE_WOOL, 1, 22, "&5&lPerm Ban");
             Utils.createItem(inv, Material.PURPLE_WOOL, 1, 24, "&5&lPerm Ban");
         }
+
+        return inv;
+    }
+
+    public Inventory getMutedInventory() {
+        CooldownManager cooldownManager = AdminMenuManager.cooldownManager;
+        List<UUID> uuids = cooldownManager.getUUIDsFromCooldownMap();
+        Inventory inv = Bukkit.createInventory(null, 54, Utils.chat("&b&lMuted Chat"));
+
+        for (int i = 0; i < uuids.size(); i++) {
+            ItemStack head = new ItemStack(Material.PLAYER_HEAD, 1);
+            SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
+            OfflinePlayer p = Bukkit.getOfflinePlayer(uuids.get(i));
+            skullMeta.setOwningPlayer(p);
+            if (p.getPlayer() != null) {
+                skullMeta.setPlayerProfile(p.getPlayer().getPlayerProfile());
+            }
+
+            List<String> lore = new ArrayList<>();
+            skullMeta.setDisplayName(Utils.chat("&b" + p.getName()));
+            lore.add(Utils.chat("&b" + cooldownManager.getCooldown(p.getUniqueId()).getTimeRemaining() / 60000));
+            lore.add(Utils.chat("&bUUID: " + p.getUniqueId().toString()));
+            skullMeta.setLore(lore);
+            head.setItemMeta(skullMeta);
+            inv.setItem(i, head);
+        }
+        return inv;
+    }
+
+    public Inventory mutedOptions(ItemStack head) {
+        Inventory inv = Bukkit.createInventory(null, 27, Utils.chat("&b&lMuted Options"));
+
+        inv.setItem(4, head);
+        Utils.createItem(inv, Material.EMERALD_BLOCK, 1, 16, Utils.chat("&a&lConfirm"));
+        Utils.createItem(inv, Material.RED_CONCRETE, 1, 12, Utils.chat("&c&lGo Back"));
 
         return inv;
     }

@@ -2,9 +2,7 @@ package me.squid.eoncore.managers;
 
 import scala.concurrent.impl.FutureConvertersImpl;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class CooldownManager {
     private Map<UUID, Cooldown> cooldowns;
@@ -39,5 +37,9 @@ public class CooldownManager {
             return false;
         }
         return true;
+    }
+
+    public List<UUID> getUUIDsFromCooldownMap() {
+        return new ArrayList<>(cooldowns.keySet());
     }
 }

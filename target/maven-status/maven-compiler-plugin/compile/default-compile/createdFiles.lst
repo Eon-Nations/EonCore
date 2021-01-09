@@ -8,6 +8,7 @@ me\squid\eoncore\listeners\WildTpListener.class
 me\squid\eoncore\menus\RulesGUI.class
 me\squid\eoncore\commands\AdminGUICommand.class
 me\squid\eoncore\commands\NightVisionCommand.class
+me\squid\eoncore\commands\DirectMessageCommand.class
 me\squid\eoncore\commands\TphereCommand.class
 me\squid\eoncore\tasks\WarpTeleportTask.class
 me\squid\eoncore\commands\PickupCommand.class
@@ -34,6 +35,7 @@ me\squid\eoncore\commands\InvseeCommand.class
 me\squid\eoncore\events\BackToDeathLocationEvent.class
 me\squid\eoncore\menus\KitGUI.class
 me\squid\eoncore\commands\FlyCommand.class
+me\squid\eoncore\commands\MutedCommand.class
 me\squid\eoncore\tasks\UtilityDoorTask.class
 me\squid\eoncore\commands\HealCommand.class
 me\squid\eoncore\commands\PTimeCommand.class

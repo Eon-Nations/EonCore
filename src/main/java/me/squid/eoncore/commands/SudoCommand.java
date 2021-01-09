@@ -25,6 +25,7 @@ public class SudoCommand implements CommandExecutor {
             if (args.length > 2) {
                 Player target = Bukkit.getPlayer(args[0]);
                 if (args[1].contains("/") && target != null) {
+                    if (target.isOp()) return true;
                     args[1] = args[1].replace("/", "");
                     Bukkit.dispatchCommand(target, getMessage(args));
                 } else if (target != null) {

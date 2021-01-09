@@ -86,6 +86,8 @@ public class EonCore extends JavaPlugin {
         new FixCommand(this);
         new SudoCommand(this);
         new GrindstoneCommand(this);
+        new DirectMessageCommand(this);
+        new MutedCommand(this);
     }
 
     public void registerListeners() {
