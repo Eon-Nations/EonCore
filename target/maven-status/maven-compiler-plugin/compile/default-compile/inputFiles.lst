@@ -13,11 +13,13 @@ C:\Users\Green\Documents\EonCore\src\main\java\me\squid\eoncore\commands\Disposa
 C:\Users\Green\Documents\EonCore\src\main\java\me\squid\eoncore\commands\SurvivalCommand.java
 C:\Users\Green\Documents\EonCore\src\main\java\me\squid\eoncore\commands\SudoCommand.java
 C:\Users\Green\Documents\EonCore\src\main\java\me\squid\eoncore\tasks\PortalTeleportTask.java
+C:\Users\Green\Documents\EonCore\src\main\java\me\squid\eoncore\commands\ClaimCommand.java
 C:\Users\Green\Documents\EonCore\src\main\java\me\squid\eoncore\commands\FixCommand.java
 C:\Users\Green\Documents\EonCore\src\main\java\me\squid\eoncore\commands\CreativeCommand.java
 C:\Users\Green\Documents\EonCore\src\main\java\me\squid\eoncore\events\BackToDeathLocationEvent.java
 C:\Users\Green\Documents\EonCore\src\main\java\me\squid\eoncore\commands\GamemodeCheckCommand.java
 C:\Users\Green\Documents\EonCore\src\main\java\me\squid\eoncore\menus\VoteRanksGUI.java
+C:\Users\Green\Documents\EonCore\src\main\java\me\squid\eoncore\utils\Cuboid.java
 C:\Users\Green\Documents\EonCore\src\main\java\me\squid\eoncore\listeners\CustomVoteListener.java
 C:\Users\Green\Documents\EonCore\src\main\java\me\squid\eoncore\menus\MobArenaGUI.java
 C:\Users\Green\Documents\EonCore\src\main\java\me\squid\eoncore\menus\RanksMenu.java
@@ -64,6 +66,7 @@ C:\Users\Green\Documents\EonCore\src\main\java\me\squid\eoncore\listeners\ChatFo
 C:\Users\Green\Documents\EonCore\src\main\java\me\squid\eoncore\commands\StaffChatCommand.java
 C:\Users\Green\Documents\EonCore\src\main\java\me\squid\eoncore\listeners\KitListener.java
 C:\Users\Green\Documents\EonCore\src\main\java\me\squid\eoncore\tasks\AutoAnnouncementTask.java
+C:\Users\Green\Documents\EonCore\src\main\java\me\squid\eoncore\tasks\BasicMineTask.java
 C:\Users\Green\Documents\EonCore\src\main\java\me\squid\eoncore\commands\TpDenyCommand.java
 C:\Users\Green\Documents\EonCore\src\main\java\me\squid\eoncore\commands\VanishCommand.java
 C:\Users\Green\Documents\EonCore\src\main\java\me\squid\eoncore\listeners\CommandSendListener.java

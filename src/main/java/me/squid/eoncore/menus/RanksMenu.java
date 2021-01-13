@@ -13,7 +13,7 @@ public class RanksMenu {
         Utils.createItem(inv, Material.BLUE_BANNER, 1, 2, "&1&lTraveler", "&f$5,500",
                 "- &f2 Pet Slots", "- &f3 Sethomes", "- &fAccess to /hat");
         Utils.createItem(inv, Material.PURPLE_BANNER, 1, 3, "&5&lExplorer", "&f$10,000", "- &f5 Mob Arena Keys",
-                "- &f5 Sethomes", "- &f4 Pet Slots", "- &f12 Pet Slots", "- &f3000 Claim Blocks");
+                "- &f5 Sethomes", "- &f4 Pet Slots", "- &f3000 Claim Blocks");
         Utils.createItem(inv, Material.GREEN_BANNER, 1, 4, "&a&lRanger", "&f$25,000"
         , "- &f7 Sethomes", "- &f6 Pet Slots", "- &f10k Claim Blocks", "- &fBasic Mine");
         Utils.createItem(inv, Material.LIGHT_BLUE_BANNER, 1, 5, "&b&lSpaceman", "&f$75,000",

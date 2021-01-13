@@ -16,7 +16,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 public class WarpsListener implements Listener {
 
     EonCore plugin;
-    Location utilities, crates, market, chilis;
+    Location utilities, crates, market, endPortal;
     MobArenaGUI mobArenaGUI = new MobArenaGUI();
 
     public WarpsListener(EonCore plugin) {
@@ -45,9 +45,9 @@ public class WarpsListener implements Listener {
                     p.closeInventory();
                     teleportPlayerToWarp(p, market, name);
                     break;
-                case RED_TERRACOTTA:
+                case END_PORTAL_FRAME:
                     p.closeInventory();
-                    teleportPlayerToWarp(p, chilis, name);
+                    teleportPlayerToWarp(p, endPortal, name);
                     break;
                 case ZOMBIE_HEAD:
                     p.closeInventory();
@@ -72,6 +72,6 @@ public class WarpsListener implements Listener {
         utilities = new Location(Bukkit.getWorld("spawn"), -595.5, 81, -225.5);
         crates = new Location(Bukkit.getWorld("spawn"), -687.5 ,174, -714.5);
         market = new Location(Bukkit.getWorld("spawn"), -323, 90, -590, 180, 0);
-        chilis = new Location(Bukkit.getWorld("spawn"), -630, 62, -527, 90, 0);
+        endPortal = new Location(Bukkit.getWorld("spawn"), -630, 62, -527, 90, 0);
     }
 }

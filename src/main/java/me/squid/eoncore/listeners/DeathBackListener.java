@@ -28,8 +28,14 @@ public class DeathBackListener implements Listener {
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e) {
-        backLocations.put(e.getEntity(), e.getEntity().getLocation());
-        if (e.getEntity().isOp()) e.setKeepInventory(true);
+        if (!e.getEntity().getWorld().equals(Bukkit.getWorld("spawn"))) {
+            backLocations.put(e.getEntity(), e.getEntity().getLocation());
+        }
+        if (e.getEntity().isOp()) {
+            e.setKeepInventory(true);
+            e.getDrops().clear();
+        }
+
     }
 
     @EventHandler
@@ -61,6 +67,7 @@ public class DeathBackListener implements Listener {
     private Runnable doTeleportDelay(Player p, Location toTeleport) {
         return () -> {
             p.teleport(toTeleport);
+            backLocations.remove(p);
             p.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Teleport-Successful")));
         };
     }

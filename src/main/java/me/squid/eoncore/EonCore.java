@@ -3,14 +3,12 @@ package me.squid.eoncore;
 import me.squid.eoncore.commands.*;
 import me.squid.eoncore.listeners.*;
 import me.squid.eoncore.tasks.AutoAnnouncementTask;
+import me.squid.eoncore.tasks.BasicMineTask;
 import me.squid.eoncore.tasks.PortalTeleportTask;
 import me.squid.eoncore.tasks.UtilityDoorTask;
 import me.squid.eoncore.utils.Utils;
 import net.luckperms.api.LuckPerms;
-import org.bukkit.Bukkit;
-import org.bukkit.GameRule;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -88,6 +86,7 @@ public class EonCore extends JavaPlugin {
         new GrindstoneCommand(this);
         new DirectMessageCommand(this);
         new MutedCommand(this);
+        new ClaimCommand(this);
     }
 
     public void registerListeners() {
@@ -107,6 +106,9 @@ public class EonCore extends JavaPlugin {
         new AutoAnnouncementTask(this).runTaskTimerAsynchronously(this, 0, getConfig().getLong("Announcement-Delay") * 20L);
         new PortalTeleportTask(this).runTaskTimerAsynchronously(this, 0, 20L);
         Bukkit.getScheduler().runTaskTimerAsynchronously(this, new UtilityDoorTask(this), 0, 20L);
+        new BasicMineTask(this, new Location(Bukkit.getWorld("world"), -443, 94, -288),
+                new Location(Bukkit.getWorld("world"), -455, 73, -300),
+                new Location(Bukkit.getWorld("world"), -430, 94, -294)).runTaskTimerAsynchronously(this, 0, 12000L);
     }
 
     public void disableRecipes() {

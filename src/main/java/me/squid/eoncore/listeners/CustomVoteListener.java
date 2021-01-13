@@ -9,8 +9,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
-import java.util.logging.Level;
-
 public class CustomVoteListener implements Listener {
 
     EonCore plugin;
@@ -30,8 +28,6 @@ public class CustomVoteListener implements Listener {
         } catch (NullPointerException exception) {
             plugin.getLogger().warning("Username invalid (Player offline).");
         }
-
-
 
     }
 }

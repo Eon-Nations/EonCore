@@ -13,7 +13,7 @@ public class WarpsGUI {
         Utils.createItem(inv, Material.ANVIL, 1, 12, "&bUtilities");
         Utils.createItem(inv, Material.CHEST, 1, 13, "&bCrates");
         Utils.createItem(inv, Material.EMERALD, 1, 14, "&aMarket");
-        Utils.createItem(inv, Material.RED_TERRACOTTA, 1, 15, "&4Chilis");
+        Utils.createItem(inv, Material.END_PORTAL_FRAME, 1, 15, "&aEnd Portal");
         Utils.createItem(inv, Material.ZOMBIE_HEAD, 1, 16, "&8Mob Arena");
         Utils.makeDummySlots(inv);
 

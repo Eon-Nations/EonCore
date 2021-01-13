@@ -42,9 +42,9 @@ public class TpaAcceptCommand implements CommandExecutor {
             if (TpaCommand.getRequests().containsKey(p.getUniqueId())) {
                 Player target = Bukkit.getPlayer(TpaCommand.getRequests().get(p.getUniqueId()));
                 if (p.hasPermission("eoncommands.tpa.cooldown.bypass")) {
-                    Bukkit.getScheduler().runTask(plugin, teleportPlayer(p, target));
+                    Bukkit.getScheduler().runTask(plugin, teleportPlayer(target, p));
                 } else if (!p.hasPermission("eoncommands.tpa.cooldown.bypass")) {
-                    Bukkit.getScheduler().runTaskLater(plugin, teleportPlayer(p, target), delay * 20);
+                    Bukkit.getScheduler().runTaskLater(plugin, teleportPlayer(target, p), delay * 20);
                     target.sendMessage(Utils.chat(prefix + plugin.getConfig().getString("Cooldown-Teleport-Message")
                     .replace("<seconds>", String.valueOf(delay))));
                 }
