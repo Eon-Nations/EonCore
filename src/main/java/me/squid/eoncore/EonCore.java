@@ -2,19 +2,24 @@ package me.squid.eoncore;
 
 import me.squid.eoncore.commands.*;
 import me.squid.eoncore.listeners.*;
+import me.squid.eoncore.sql.SQLManager;
 import me.squid.eoncore.tasks.AutoAnnouncementTask;
 import me.squid.eoncore.tasks.BasicMineTask;
 import me.squid.eoncore.tasks.PortalTeleportTask;
 import me.squid.eoncore.tasks.UtilityDoorTask;
+import me.squid.eoncore.sql.MySQL;
 import me.squid.eoncore.utils.Utils;
 import net.luckperms.api.LuckPerms;
 import org.bukkit.*;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.sql.SQLException;
+
 public class EonCore extends JavaPlugin {
 
     public static final String prefix = "&7[&5&lEon Survival&7] &r";
+    public MySQL sql;
     private static LuckPerms api;
 
     @Override
@@ -26,11 +31,13 @@ public class EonCore extends JavaPlugin {
         runTasks();
         setupLuckPerms();
         setupGameRules();
+        connectToSQL();
     }
 
     @Override
     public void onDisable() {
         saveConfig();
+        sql.disconnect();
     }
 
     public void registerCommands(){
@@ -100,15 +107,16 @@ public class EonCore extends JavaPlugin {
         new WarpsListener(this);
         new PhantomSpawnListener(this);
         new MuteListener(this);
+        new CustomVoteListener(this);
     }
 
     public void runTasks() {
         new AutoAnnouncementTask(this).runTaskTimerAsynchronously(this, 0, getConfig().getLong("Announcement-Delay") * 20L);
         new PortalTeleportTask(this).runTaskTimerAsynchronously(this, 0, 20L);
         Bukkit.getScheduler().runTaskTimerAsynchronously(this, new UtilityDoorTask(this), 0, 20L);
-        new BasicMineTask(this, new Location(Bukkit.getWorld("world"), -443, 94, -288),
-                new Location(Bukkit.getWorld("world"), -455, 73, -300),
-                new Location(Bukkit.getWorld("world"), -430, 94, -294)).runTaskTimerAsynchronously(this, 0, 12000L);
+        new BasicMineTask(this, new Location(Bukkit.getWorld("spawn"), -443, 94, -288),
+               new Location(Bukkit.getWorld("spawn"), -455, 73, -300),
+               new Location(Bukkit.getWorld("spawn"), -430, 94, -294)).runTaskTimerAsynchronously(this, 3000L, 24000L);
     }
 
     public void disableRecipes() {
@@ -136,5 +144,18 @@ public class EonCore extends JavaPlugin {
 
     public static LuckPerms getPerms() {
         return api;
+    }
+
+    private void connectToSQL() {
+        sql = new MySQL(this);
+        try {
+            sql.connectToDatabase();
+        } catch (SQLException throwables) {
+            getLogger().warning("SQL Database connection has failed.");
+        }
+        if (sql.isConnected()) {
+            SQLManager sqlManager = new SQLManager(this);
+            sqlManager.createTable();
+        }
     }
 }

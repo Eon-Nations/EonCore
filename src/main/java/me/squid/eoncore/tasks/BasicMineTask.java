@@ -2,6 +2,7 @@ package me.squid.eoncore.tasks;
 
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.utils.Cuboid;
+import me.squid.eoncore.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -32,11 +33,14 @@ public class BasicMineTask extends BukkitRunnable {
     @Override
     public void run() {
         for (Player p : Bukkit.getOnlinePlayers()) {
-            if (cuboid.contains(p.getLocation())) p.teleport(mine);
+            if (cuboid.contains(p.getLocation())) p.teleportAsync(mine);
+            Bukkit.getScheduler().runTask(plugin, () -> p.sendMessage(Utils.chat(EonCore.prefix + "&bBasic Mine has reset")));
         }
 
         for (Block block : cuboid.getBlocks()) {
-            block.setType(getRandomOreMaterial(tempMaterials));
+            if (block.getType() == Material.AIR) {
+                Bukkit.getScheduler().runTask(plugin, () -> block.setType(getRandomOreMaterial(tempMaterials)));
+            }
         }
     }
 

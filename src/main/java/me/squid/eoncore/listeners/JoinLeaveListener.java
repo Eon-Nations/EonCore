@@ -1,6 +1,7 @@
 package me.squid.eoncore.listeners;
 
 import me.squid.eoncore.EonCore;
+import me.squid.eoncore.sql.SQLManager;
 import me.squid.eoncore.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -20,10 +21,12 @@ import java.util.Objects;
 public class JoinLeaveListener implements Listener {
 
     EonCore plugin;
+    SQLManager sqlManager;
 
     public JoinLeaveListener(EonCore plugin) {
         this.plugin = plugin;
         Bukkit.getPluginManager().registerEvents(this, plugin);
+        sqlManager = new SQLManager(plugin);
     }
 
     @EventHandler
@@ -43,6 +46,7 @@ public class JoinLeaveListener implements Listener {
             p.getWorld().spawnEntity(p.getLocation(), EntityType.FIREWORK);
             p.sendTitle(Utils.chat("&5&lEon Survival"), Utils.chat("&bWelcome " + p.getName()) + "!", 30, 30, 30);
         }
+        sqlManager.createPlayer(p);
     }
 
     @EventHandler

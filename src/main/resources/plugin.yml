@@ -42,8 +42,8 @@ commands:
   admin:
     permission: eoncommands.admin
     description: Opens the Admin GUI
-  vanish:
-    permission: eoncommands.vanish
+  softvanish:
+    permission: eoncommands.softvanish
     description: Vanish from people
   discord:
     description: Shows the server discord
@@ -167,3 +167,5 @@ commands:
   message:
     description: Message other players
     aliases: [msg, pm]
+  shovel:
+    description: Get a claim shovel for the claim plugin

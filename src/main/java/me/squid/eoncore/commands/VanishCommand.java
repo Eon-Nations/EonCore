@@ -19,7 +19,7 @@ public class VanishCommand implements CommandExecutor {
 
     public VanishCommand(EonCore plugin) {
         this.plugin = plugin;
-        Objects.requireNonNull(plugin.getCommand("vanish")).setExecutor(this);
+        Objects.requireNonNull(plugin.getCommand("softvanish")).setExecutor(this);
     }
 
     @Override
