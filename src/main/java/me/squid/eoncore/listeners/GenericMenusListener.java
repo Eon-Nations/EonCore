@@ -141,7 +141,8 @@ public class GenericMenusListener implements Listener {
                 case EXPERIENCE_BOTTLE:
                     p.closeInventory();
                     p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1, 1);
-                    Bukkit.dispatchCommand(p, "kits");
+                    Bukkit.dispatchCommand(p, "ranks");
+                    p.sendMessage(Utils.chat(EonCore.prefix + "&&You can rankup with /rankup once you have enough money"));
                     break;
                 case OAK_LEAVES:
                     p.closeInventory();
@@ -150,16 +151,12 @@ public class GenericMenusListener implements Listener {
                     break;
                 case TRIPWIRE_HOOK:
                     p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1, 1);
-                    p.sendMessage(Utils.chat(EonCore.prefix + "&bYou can get rewards for voting by doing /vote. " +
-                            "You can now see all the voting sites that you can vote on. " +
-                            "Click on one and visit the website and once you're done, you will receive in game rewards for your effort"));
-                    p.closeInventory();
-                    Bukkit.dispatchCommand(p, "vote");
+                    p.openInventory(voteRanksGUI.HelpVoteMenu());
                     break;
                 case SLIME_BALL:
                     p.closeInventory();
                     p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1, 1);
-                    Bukkit.dispatchCommand(p, "mcmmo");
+                    Bukkit.dispatchCommand(p, "mcstats");
                     break;
                 case ZOMBIE_HEAD:
                     p.openInventory(mobArenaGUI.MainGUI());
@@ -180,6 +177,23 @@ public class GenericMenusListener implements Listener {
                     p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1, 1);
                     p.closeInventory();
                     p.sendMessage(Utils.chat(EonCore.prefix + "&aHard Mob Arena Coming Soon!"));
+                    break;
+            }
+            e.setCancelled(true);
+        }
+
+        if (e.getView().getTitle().equalsIgnoreCase(Utils.chat("&a&lVote Help"))) {
+            switch (e.getCurrentItem().getType()) {
+                case TRIPWIRE_HOOK:
+                    p.closeInventory();
+                    Bukkit.dispatchCommand(p, "vote");
+                    break;
+                case DIAMOND_PICKAXE:
+                    p.openInventory(voteRanksGUI.MainGUI());
+                    p.sendMessage(Utils.chat(EonCore.prefix + "&7Explore the different vote ranks that you can obtain through voting."));
+                    break;
+                case BARRIER:
+                    p.closeInventory();
                     break;
             }
             e.setCancelled(true);

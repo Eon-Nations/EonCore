@@ -2,7 +2,7 @@ package me.squid.eoncore;
 
 import me.squid.eoncore.commands.*;
 import me.squid.eoncore.listeners.*;
-import me.squid.eoncore.sql.SQLManager;
+import me.squid.eoncore.sql.VotesManager;
 import me.squid.eoncore.tasks.AutoAnnouncementTask;
 import me.squid.eoncore.tasks.BasicMineTask;
 import me.squid.eoncore.tasks.PortalTeleportTask;
@@ -15,6 +15,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.SQLException;
+import java.util.Calendar;
 
 public class EonCore extends JavaPlugin {
 
@@ -154,8 +155,12 @@ public class EonCore extends JavaPlugin {
             getLogger().warning("SQL Database connection has failed.");
         }
         if (sql.isConnected()) {
-            SQLManager sqlManager = new SQLManager(this);
-            sqlManager.createTable();
+            VotesManager votesManager = new VotesManager(this);
+            votesManager.createTable();
+            if (Calendar.DAY_OF_MONTH == 1) {
+                votesManager.resetMonthlyVotes();
+                votesManager.dumpToFile();
+            }
         }
     }
 }

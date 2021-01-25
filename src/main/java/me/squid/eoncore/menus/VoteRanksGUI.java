@@ -80,4 +80,15 @@ public class VoteRanksGUI {
         return inv;
     }
 
+    public Inventory HelpVoteMenu() {
+        Inventory inv = Bukkit.createInventory(null, 27, Utils.chat("&a&lVote Help"));
+
+        Utils.createItem(inv, Material.TRIPWIRE_HOOK, 1, 11, "&a&lVote Now!");
+        Utils.createItem(inv, Material.DIAMOND_PICKAXE, 1, 14, "&a&lVote Ranks Info");
+        Utils.createItem(inv, Material.BARRIER, 1, 17, "&4&lExit");
+        Utils.makeDummySlots(inv);
+
+        return inv;
+    }
+
 }

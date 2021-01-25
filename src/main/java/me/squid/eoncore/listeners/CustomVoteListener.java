@@ -5,7 +5,7 @@ import com.vexsoftware.votifier.model.Vote;
 import com.vexsoftware.votifier.model.VotifierEvent;
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.sql.MySQL;
-import me.squid.eoncore.sql.SQLManager;
+import me.squid.eoncore.sql.VotesManager;
 import me.squid.eoncore.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -29,7 +29,7 @@ public class CustomVoteListener implements Listener {
     public void onVotifierEvent(VotifierEvent e) {
         Vote vote = e.getVote();
         Player p = null;
-        SQLManager sqlManager = new SQLManager(plugin);
+        VotesManager votesManager = new VotesManager(plugin);
 
         try {
             p = Bukkit.getPlayer(vote.getUsername());
@@ -38,9 +38,10 @@ public class CustomVoteListener implements Listener {
         }
 
         assert p != null;
-        if (!sqlManager.playerExists(p.getUniqueId())) sqlManager.createPlayer(p);
-        sqlManager.addVotes(p.getUniqueId(), 1);
-        sendVotingReward(p, sqlManager.getVotes(p.getUniqueId()));
+        if (!votesManager.playerExists(p.getUniqueId())) votesManager.createPlayer(p);
+        votesManager.addTotalVotes(p.getUniqueId(), 1);
+        votesManager.addMonthlyVotes(p.getUniqueId(), 1);
+        sendVotingReward(p, votesManager.getMonthlyVotes(p.getUniqueId()));
     }
 
     private void sendVotingReward(Player p, int votes) {

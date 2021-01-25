@@ -1,7 +1,7 @@
 package me.squid.eoncore.listeners;
 
 import me.squid.eoncore.EonCore;
-import me.squid.eoncore.sql.SQLManager;
+import me.squid.eoncore.sql.VotesManager;
 import me.squid.eoncore.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -21,12 +21,12 @@ import java.util.Objects;
 public class JoinLeaveListener implements Listener {
 
     EonCore plugin;
-    SQLManager sqlManager;
+    VotesManager votesManager;
 
     public JoinLeaveListener(EonCore plugin) {
         this.plugin = plugin;
         Bukkit.getPluginManager().registerEvents(this, plugin);
-        sqlManager = new SQLManager(plugin);
+        votesManager = new VotesManager(plugin);
     }
 
     @EventHandler
@@ -36,8 +36,10 @@ public class JoinLeaveListener implements Listener {
             e.setJoinMessage(Utils.chat(Objects.requireNonNull(plugin.getConfig().getString("Join-Message"))
             .replace("<player>", p.getName())));
             p.sendTitle(Utils.chat("&5&lEon Survival"), Utils.chat("&bWelcome back!"), 30, 30, 30);
-            if (p.isOp()) p.setSleepingIgnored(true);
-            if (p.isOp()) p.setAffectsSpawning(false);
+            if (p.isOp()) {
+                p.setSleepingIgnored(true);
+                p.setAffectsSpawning(false);
+            }
         } else {
             e.setJoinMessage(Utils.chat(Objects.requireNonNull(plugin.getConfig().getString("Welcome-Message"))
             .replace("<player>", p.getName())));
@@ -46,7 +48,7 @@ public class JoinLeaveListener implements Listener {
             p.getWorld().spawnEntity(p.getLocation(), EntityType.FIREWORK);
             p.sendTitle(Utils.chat("&5&lEon Survival"), Utils.chat("&bWelcome " + p.getName()) + "!", 30, 30, 30);
         }
-        sqlManager.createPlayer(p);
+        createSQLPlayers(p);
     }
 
     @EventHandler
@@ -74,5 +76,9 @@ public class JoinLeaveListener implements Listener {
         for (ItemStack item : itemsToGive) {
             p.getInventory().addItem(item);
         }
+    }
+
+    private void createSQLPlayers(Player p) {
+        votesManager.createPlayer(p);
     }
 }
