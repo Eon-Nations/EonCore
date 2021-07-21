@@ -17,7 +17,7 @@ public class SurvivalCommand implements CommandExecutor{
 
     public SurvivalCommand(EonCore plugin) {
         this.plugin = plugin;
-        Objects.requireNonNull(plugin.getCommand("gms")).setExecutor(this);
+        plugin.getCommand("gms").setExecutor(this);
     }
 
     @Override
@@ -26,7 +26,7 @@ public class SurvivalCommand implements CommandExecutor{
         if (sender instanceof Player){
             Player p = (Player) sender;
             if (p.hasPermission(getPermissionNode())){
-                if (args.length == 0){
+                if (args.length == 0) {
                     p.setGameMode(GameMode.SURVIVAL);
                     p.sendMessage(Utils.chat(plugin.getConfig().getString("Survival-Message")));
                 } else if (args.length == 1){

@@ -2,6 +2,7 @@ package me.squid.eoncore.commands;
 
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.events.WildTeleportEvent;
+import me.squid.eoncore.menus.WildMenu;
 import me.squid.eoncore.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -16,7 +17,6 @@ import java.util.UUID;
 public class WildTpCommand implements CommandExecutor {
 
     EonCore plugin;
-    private static ArrayList<UUID> list = new ArrayList<>();
 
     public WildTpCommand(EonCore plugin) {
         this.plugin = plugin;
@@ -25,23 +25,10 @@ public class WildTpCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        WildMenu menu = new WildMenu();
 
-        if (sender instanceof Player) {
-            Player p = (Player) sender;
-            if (list.contains(p.getUniqueId())) return true;
-            else {
-                list.add(p.getUniqueId());
-                p.sendMessage(Utils.chat("&7[&6&lWild&7] &aFinding a safe place for you to teleport to"));
-            }
-        }
+        if (sender instanceof Player) { ((Player) sender).openInventory(menu.MainGUI()); }
         return true;
     }
-
-    public static boolean isInList(Player p) {
-        return list.contains(p.getUniqueId());
-    }
-
-    public static void removeFromList(Player p) {
-        list.remove(p.getUniqueId());
-    }
 }
+

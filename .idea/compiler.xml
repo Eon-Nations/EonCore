@@ -9,8 +9,8 @@
         <module name="EonCore" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="EonCore" target="1.8" />
+    <bytecodeTargetLevel target="16">
+      <module name="EonCore" target="16" />
     </bytecodeTargetLevel>
   </component>
 </project>

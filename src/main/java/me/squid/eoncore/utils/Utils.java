@@ -1,15 +1,14 @@
 package me.squid.eoncore.utils;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import net.kyori.adventure.text.Component;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -18,7 +17,7 @@ import static org.bukkit.Bukkit.getServer;
 
 public class Utils {
 
-    public static String chat(String s) {
+    public static @NotNull String chat(String s) {
         return ChatColor.translateAlternateColorCodes('&', s);
     }
 
@@ -33,6 +32,19 @@ public class Utils {
             lore.add(Utils.chat(s));
         }
         meta.setLore(lore);
+        item.setItemMeta(meta);
+        inv.setItem(invSlot - 1, item);
+    }
+
+    public static void createItem(Inventory inv, Material material, int amount, int invSlot, Component displayName, Component... loreString) {
+        ItemStack item;
+        List<Component> lore = new ArrayList<>();
+        item = new ItemStack(material, amount);
+        ItemMeta meta = item.getItemMeta();
+
+        meta.displayName(displayName);
+        Collections.addAll(lore, loreString);
+        meta.lore(lore);
         item.setItemMeta(meta);
         inv.setItem(invSlot - 1, item);
     }
@@ -65,13 +77,13 @@ public class Utils {
         }
     }
 
-    public static Location generateLocation() {
+    public static Location generateLocation(World world) {
         Random random = new Random();
 
         int x = random.nextInt(17500) * (random.nextBoolean() ? -1 : 1);
         int y = 150;
         int z = random.nextInt(17500) * (random.nextBoolean() ? -1 : 1);
-        Location randomLoc = new Location(Bukkit.getWorld("world"), x, y, z);
+        Location randomLoc = new Location(world, x, y, z);
 
         y = randomLoc.getWorld().getHighestBlockYAt(randomLoc.add(0, 1, 0));
         randomLoc.setY(y);
@@ -81,7 +93,7 @@ public class Utils {
         }
 
         while (!isLocationSafe(randomLoc)) {
-            randomLoc = generateLocation();
+            randomLoc = generateLocation(world);
         }
 
         return randomLoc;
@@ -125,7 +137,7 @@ public class Utils {
         ItemStack item;
         item = new ItemStack(Material.BLACK_STAINED_GLASS_PANE, 1);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName("");
+        meta.displayName(Component.text(""));
         item.setItemMeta(meta);
 
         for (int i = 0; i < inv.getSize(); i++) {

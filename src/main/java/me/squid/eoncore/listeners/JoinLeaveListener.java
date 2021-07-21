@@ -3,6 +3,7 @@ package me.squid.eoncore.listeners;
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.sql.VotesManager;
 import me.squid.eoncore.utils.Utils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -33,19 +34,18 @@ public class JoinLeaveListener implements Listener {
     public void JoinMessage(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         if (p.hasPlayedBefore()){
-            e.setJoinMessage(Utils.chat(Objects.requireNonNull(plugin.getConfig().getString("Join-Message"))
-            .replace("<player>", p.getName())));
+            e.joinMessage(Component.text(Utils.chat(Objects.requireNonNull(plugin.getConfig().getString("Join-Message"))
+            .replace("<player>", p.getName()))));
             p.sendTitle(Utils.chat("&5&lEon Survival"), Utils.chat("&bWelcome back!"), 30, 30, 30);
             if (p.isOp()) {
                 p.setSleepingIgnored(true);
                 p.setAffectsSpawning(false);
             }
         } else {
-            e.setJoinMessage(Utils.chat(Objects.requireNonNull(plugin.getConfig().getString("Welcome-Message"))
-            .replace("<player>", p.getName())));
+            e.joinMessage(Component.text(Utils.chat(Objects.requireNonNull(plugin.getConfig().getString("Welcome-Message"))
+            .replace("<player>", p.getName()))));
             p.teleportAsync(getSpawnLoc());
             givePlayerStarterKit(p);
-            p.getWorld().spawnEntity(p.getLocation(), EntityType.FIREWORK);
             p.sendTitle(Utils.chat("&5&lEon Survival"), Utils.chat("&bWelcome " + p.getName()) + "!", 30, 30, 30);
         }
         createSQLPlayers(p);
@@ -59,9 +59,9 @@ public class JoinLeaveListener implements Listener {
     }
 
     private Location getSpawnLoc() {
-        double x = -687.5;
-        double y = 140.0;
-        double z = -708.5;
+        double x = 0;
+        double y = 64;
+        double z = 0;
         return new Location(Bukkit.getWorld("spawn"), x, y, z);
     }
 

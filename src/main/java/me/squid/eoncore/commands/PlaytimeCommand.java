@@ -20,9 +20,7 @@ public class PlaytimeCommand implements CommandExecutor {
 
 
     @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-
-
+    public boolean onCommand(CommandSender commandSender, Command command, String label, String[] strings) {
 
         return true;
     }

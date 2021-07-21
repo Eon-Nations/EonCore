@@ -43,9 +43,9 @@ public class SpawnCommand implements CommandExecutor {
     }
 
     private Location getSpawnLoc() {
-        double x = -687.5;
-        double y = 140.0;
-        double z = -708.5;
+        double x = 0;
+        double y = 64;
+        double z = 0;
         return new Location(Bukkit.getWorld("spawn"), x, y, z);
     }
 

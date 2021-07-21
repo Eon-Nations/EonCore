@@ -9,11 +9,14 @@ import me.squid.eoncore.tasks.PortalTeleportTask;
 import me.squid.eoncore.tasks.UtilityDoorTask;
 import me.squid.eoncore.sql.MySQL;
 import me.squid.eoncore.utils.Utils;
+import me.squid.eoncore.utils.VoidChunkGenerator;
 import net.luckperms.api.LuckPerms;
+import net.luckperms.api.LuckPermsProvider;
 import org.bukkit.*;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Calendar;
 
@@ -25,12 +28,12 @@ public class EonCore extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        loadWorlds();
         saveDefaultConfig();
         registerCommands();
         registerListeners();
         disableRecipes();
         runTasks();
-        setupLuckPerms();
         setupGameRules();
         connectToSQL();
     }
@@ -38,6 +41,7 @@ public class EonCore extends JavaPlugin {
     @Override
     public void onDisable() {
         saveConfig();
+        Bukkit.getScheduler().cancelTasks(this);
         sql.disconnect();
     }
 
@@ -95,6 +99,7 @@ public class EonCore extends JavaPlugin {
         new DirectMessageCommand(this);
         new MutedCommand(this);
         new ClaimCommand(this);
+        new WorldCommand(this);
     }
 
     public void registerListeners() {
@@ -109,15 +114,18 @@ public class EonCore extends JavaPlugin {
         new PhantomSpawnListener(this);
         new MuteListener(this);
         new CustomVoteListener(this);
+        new ChatFormatListener(this);
     }
 
     public void runTasks() {
         new AutoAnnouncementTask(this).runTaskTimerAsynchronously(this, 0, getConfig().getLong("Announcement-Delay") * 20L);
+        /*
         new PortalTeleportTask(this).runTaskTimerAsynchronously(this, 0, 20L);
         Bukkit.getScheduler().runTaskTimerAsynchronously(this, new UtilityDoorTask(this), 0, 20L);
         new BasicMineTask(this, new Location(Bukkit.getWorld("spawn"), -443, 94, -288),
                new Location(Bukkit.getWorld("spawn"), -455, 73, -300),
                new Location(Bukkit.getWorld("spawn"), -430, 94, -294)).runTaskTimerAsynchronously(this, 3000L, 24000L);
+         */
     }
 
     public void disableRecipes() {
@@ -126,11 +134,14 @@ public class EonCore extends JavaPlugin {
         Utils.removeRecipe(Material.TNT);
     }
 
-    private void setupLuckPerms() {
-        RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
-        if (provider != null) {
-            api = provider.getProvider();
-        } else System.out.println("LuckPerms is returning null");
+    private void loadWorlds() {
+        new WorldCreator("spawn").environment(World.Environment.THE_END).createWorld();
+        new WorldCreator("resource").environment(World.Environment.NORMAL).createWorld();
+        new WorldCreator("spawn_void").generator(new VoidChunkGenerator()).createWorld();
+
+        for (World world : Bukkit.getWorlds()) {
+            System.out.println(world.getName());
+        }
     }
 
     private void setupGameRules() {
@@ -141,10 +152,14 @@ public class EonCore extends JavaPlugin {
             world.setGameRule(GameRule.SPECTATORS_GENERATE_CHUNKS, false);
         }
         Bukkit.getWorld("spawn").setGameRule(GameRule.DO_MOB_SPAWNING, false);
+        Bukkit.getWorld("spawn_void").setGameRule(GameRule.DO_FIRE_TICK, false);
+        Bukkit.getWorld("spawn_void").setGameRule(GameRule.DO_WEATHER_CYCLE, false);
+        Bukkit.getWorld("spawn_void").setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+        Bukkit.getWorld("spawn_void").setGameRule(GameRule.DO_MOB_SPAWNING, false);
     }
 
     public static LuckPerms getPerms() {
-        return api;
+        return LuckPermsProvider.get();
     }
 
     private void connectToSQL() {

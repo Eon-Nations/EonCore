@@ -40,9 +40,7 @@ public class DeathBackListener implements Listener {
 
     @EventHandler
     public void onRespawn(PlayerRespawnEvent e) {
-        Player p = e.getPlayer();
-        p.sendMessage(Utils.chat(prefix + plugin.getConfig().getString("Death-Back-Message")));
-        e.setRespawnLocation(getSpawnLoc());
+        e.getPlayer().sendMessage(Utils.chat(prefix + plugin.getConfig().getString("Death-Back-Message")));
     }
 
     @EventHandler
@@ -62,7 +60,7 @@ public class DeathBackListener implements Listener {
             p.teleport(toTeleport);
             p.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Teleport-Successful")));
         }
-    }
+}
 
     private Runnable doTeleportDelay(Player p, Location toTeleport) {
         return () -> {

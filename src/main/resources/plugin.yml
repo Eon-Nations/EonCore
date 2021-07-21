@@ -1,7 +1,7 @@
 name: EonCore
 version: ${project.version}
 main: me.squid.eoncore.EonCore
-api-version: 1.16
+api-version: 1.17
 authors: [Squid]
 depend: [LuckPerms, WorldGuard, Votifier]
 softdepend: [AsyncWorldManager]
@@ -169,3 +169,6 @@ commands:
     aliases: [msg, pm]
   shovel:
     description: Get a claim shovel for the claim plugin
+  worldlist:
+    description: Teleport to worlds
+    permission: eoncommands.world

@@ -1,6 +1,7 @@
 package me.squid.eoncore.events;
 
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -12,11 +13,12 @@ public class WildTeleportEvent extends Event {
     Player p;
     Location toTp;
     boolean isInPortal;
+    World world;
 
-    public WildTeleportEvent(Player p, Location toTp, boolean isInPortal) {
+    public WildTeleportEvent(Player p, World world, boolean isInPortal) {
         super(true);
         this.p = p;
-        this.toTp = toTp;
+        this.world = world;
         this.isInPortal = isInPortal;
     }
 
@@ -24,11 +26,9 @@ public class WildTeleportEvent extends Event {
         return p;
     }
 
-    public Location getLocation() {
-        return toTp;
-    }
-
     public boolean isInPortal() { return isInPortal; }
+
+    public World getWorld() { return world; }
 
     public HandlerList getHandlers() {
         return handlers;

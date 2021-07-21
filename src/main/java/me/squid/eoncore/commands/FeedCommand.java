@@ -34,18 +34,21 @@ public class FeedCommand implements CommandExecutor {
                         if (!list.contains(p)) {
                             p.sendMessage(Utils.chat(plugin.getConfig().getString("Feed-Message")));
                             p.setFoodLevel(20);
+                            p.setSaturation(10);
                             list.add(p);
                             Bukkit.getScheduler().runTaskLater(plugin, () -> list.remove(p), 1200L);
                         } else p.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Feed-Cooldown-Message")));
                     } else {
                         p.sendMessage(Utils.chat(plugin.getConfig().getString("Feed-Message")));
                         p.setFoodLevel(20);
+                        p.setSaturation(10);
                     }
                 } else if (args.length == 1 && p.hasPermission(getOthersPermNode())){
                     Player target = Bukkit.getPlayer(args[0]);
                     if (target != null) {
                         target.sendMessage(Utils.chat(plugin.getConfig().getString("Feed-Message")));
                         target.setFoodLevel(20);
+                        target.setSaturation(10);
                         p.sendMessage(Utils.chat(Objects.requireNonNull(plugin.getConfig().getString("Feed-Other"))
                         .replace("<target>", target.getName())));
                     } else {
