@@ -52,7 +52,6 @@ public class EonCore extends JavaPlugin {
         new SpectatorCommand(this);
         new HealCommand(this);
         new FeedCommand(this);
-        new AnvilCommand(this);
         new EnderChestCommand(this);
         new ClearInventoryCommand(this);
         new ExtinguishCommand(this);
@@ -109,10 +108,8 @@ public class EonCore extends JavaPlugin {
         new GenericMenusListener(this);
         new DeathBackListener(this);
         new WildTpListener(this);
-        new KitListener(this);
         new WarpsListener(this);
         new PhantomSpawnListener(this);
-        new MuteListener(this);
         new CustomVoteListener(this);
         new ChatFormatListener(this);
     }

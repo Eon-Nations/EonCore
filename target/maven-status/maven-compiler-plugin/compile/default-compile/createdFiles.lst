@@ -1,4 +1,5 @@
 me/squid/eoncore/listeners/WildTpListener.class
+me/squid/eoncore/commands/RankupCommand.class
 me/squid/eoncore/commands/GrindstoneCommand.class
 me/squid/eoncore/tasks/AutoAnnouncementTask.class
 me/squid/eoncore/commands/TpaAcceptCommand.class
@@ -21,7 +22,6 @@ me/squid/eoncore/commands/InvseeCommand.class
 me/squid/eoncore/commands/ExtinguishCommand.class
 me/squid/eoncore/commands/TopCommand.class
 me/squid/eoncore/listeners/WarpsListener.class
-me/squid/eoncore/listeners/KitListener.class
 me/squid/eoncore/commands/FixCommand.class
 me/squid/eoncore/listeners/DeathBackListener.class
 me/squid/eoncore/listeners/WildTpListener$1.class
@@ -55,16 +55,13 @@ me/squid/eoncore/managers/CooldownManager.class
 me/squid/eoncore/commands/SudoCommand.class
 me/squid/eoncore/commands/PTimeCommand.class
 me/squid/eoncore/utils/Cuboid$CuboidIterator.class
-me/squid/eoncore/kit/kits/StarterKit.class
 me/squid/eoncore/commands/MutedCommand.class
-me/squid/eoncore/listeners/MuteListener.class
 me/squid/eoncore/commands/SurvivalCommand.class
 me/squid/eoncore/commands/HealCommand.class
 me/squid/eoncore/commands/AdminGUICommand.class
 me/squid/eoncore/commands/RanksCommand.class
 me/squid/eoncore/listeners/GenericMenusListener.class
 me/squid/eoncore/commands/ReviveCommand.class
-me/squid/eoncore/listeners/KitListener$1.class
 me/squid/eoncore/listeners/PhantomSpawnListener.class
 me/squid/eoncore/utils/Cuboid.class
 me/squid/eoncore/commands/StaffChatCommand.class
@@ -77,7 +74,6 @@ me/squid/eoncore/commands/PlaytimeCommand.class
 me/squid/eoncore/commands/TeleportCommand.class
 me/squid/eoncore/utils/Cuboid$1.class
 me/squid/eoncore/tasks/UtilityDoorTask.class
-me/squid/eoncore/kit/Kit.class
 me/squid/eoncore/utils/VoidChunkGenerator.class
 me/squid/eoncore/commands/HelpCommand.class
 me/squid/eoncore/commands/RenameCommand.class
@@ -93,7 +89,6 @@ me/squid/eoncore/EonCore.class
 me/squid/eoncore/commands/ClaimCommand.class
 me/squid/eoncore/menus/WarpsGUI.class
 me/squid/eoncore/commands/FreezeCommand.class
-me/squid/eoncore/menus/KitGUI.class
 me/squid/eoncore/tasks/FixCommandCooldownTask.class
 me/squid/eoncore/listeners/AdminMenuManager$1.class
 me/squid/eoncore/commands/TpDenyCommand.class
@@ -101,4 +96,3 @@ me/squid/eoncore/commands/TpaCommand.class
 me/squid/eoncore/sql/VotesManager.class
 me/squid/eoncore/commands/DiscordCommand.class
 me/squid/eoncore/commands/DisposalCommand.class
-me/squid/eoncore/kit/KitManager.class

@@ -69,11 +69,4 @@ public class DeathBackListener implements Listener {
             p.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Teleport-Successful")));
         };
     }
-
-    private Location getSpawnLoc() {
-        double x = -687.5;
-        double y = 140.0;
-        double z = -708.5;
-        return new Location(Bukkit.getWorld("spawn"), x, y, z);
-    }
 }

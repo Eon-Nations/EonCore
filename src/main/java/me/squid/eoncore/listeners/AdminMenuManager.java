@@ -5,12 +5,15 @@ import me.squid.eoncore.managers.Cooldown;
 import me.squid.eoncore.managers.CooldownManager;
 import me.squid.eoncore.menus.AdminGUI;
 import me.squid.eoncore.utils.Utils;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.w3c.dom.Text;
 
 import java.util.Date;
 import java.util.UUID;
@@ -149,7 +152,7 @@ public class AdminMenuManager implements Listener {
             e.setCancelled(true);
         }
 
-        if (e.getView().getTitle().equalsIgnoreCase(Utils.chat("&aLength"))) {
+        if (e.getView().title().equals(Component.text("Length").color(TextColor.color(0, 204, 0)))) {
             // Action and Reason from the Lore of the item
             String reason = e.getView().getItem(4).getItemMeta().getLore().get(0).split(": ")[1];
             String action = e.getView().getItem(4).getItemMeta().getLore().get(1).split(": ")[1];
@@ -183,11 +186,11 @@ public class AdminMenuManager implements Listener {
                 cooldown = new Cooldown(uuid, length, System.currentTimeMillis());
                 cooldownManager.add(cooldown);
                 if (player.getPlayer() != null) {
-                    player.getPlayer().sendMessage(Utils.chat("&7[&a&lEon Moderation&7] &aYou have been muted for " + reason + " by " + p.getName() + " for " + length / 60000 + " minutes"));
+                    player.getPlayer().sendMessage(Utils.chat("&7[&a&lEon Moderation&7] &aYou have been muted for " + reason + " by " + p.getName() + " for " + Utils.getFormattedTimeString(length)));
                 }
                 for (Player p1 : Bukkit.getOnlinePlayers()) {
                     if (p1.hasPermission("eoncommands.staffchat")) p1.sendMessage(Utils.chat("&7[&a&lEon Moderation&7] &a" + player.getName() + " has been muted for " + reason + " by " + p.getName() + " for "
-                            + length / 60000 + " minutes"));
+                            + Utils.getFormattedTimeString(length)));
                 }
             } else {
                 long day = 86400000;
@@ -217,6 +220,7 @@ public class AdminMenuManager implements Listener {
                 }
             }
             e.setCancelled(true);
+            System.out.println("Event successfully cancelled");
         }
 
         if (e.getView().getTitle().equals(Utils.chat("&b&lMuted Chat"))) {

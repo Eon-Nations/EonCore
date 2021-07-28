@@ -1,7 +1,6 @@
 /home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/commands/BurnCommand.java
 /home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/commands/TphereCommand.java
 /home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/listeners/ChatFormatListener.java
-/home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/menus/KitGUI.java
 /home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/commands/PWeatherCommand.java
 /home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/commands/ReviveCommand.java
 /home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/tasks/UtilityDoorTask.java
@@ -21,8 +20,6 @@
 /home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/commands/FeedCommand.java
 /home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/tasks/PortalTeleportTask.java
 /home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/commands/PlaytimeCommand.java
-/home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/kit/Kit.java
-/home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/listeners/KitListener.java
 /home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/commands/NightVisionCommand.java
 /home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/commands/HatCommand.java
 /home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/commands/FreezeCommand.java
@@ -46,11 +43,9 @@
 /home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/commands/TpaAcceptCommand.java
 /home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/commands/TpposCommand.java
 /home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/commands/RanksCommand.java
-/home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/listeners/MuteListener.java
 /home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/commands/VoteRanksCommand.java
 /home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/listeners/WarpsListener.java
 /home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/commands/ClearInventoryCommand.java
-/home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/kit/kits/StarterKit.java
 /home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/commands/TopCommand.java
 /home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/listeners/DeathBackListener.java
 /home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/commands/PTimeCommand.java
@@ -68,7 +63,6 @@
 /home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/commands/BackCommand.java
 /home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/commands/VanishCommand.java
 /home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/menus/RanksMenu.java
-/home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/kit/KitManager.java
 /home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/commands/WildTpCommand.java
 /home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/commands/RenameCommand.java
 /home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/utils/VoidChunkGenerator.java
@@ -88,6 +82,7 @@
 /home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/commands/GamemodeCheckCommand.java
 /home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/commands/DisposalCommand.java
 /home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/commands/RulesCommand.java
+/home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/commands/RankupCommand.java
 /home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/commands/KickCommand.java
 /home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/commands/AnvilCommand.java
 /home/ronaldduck/IdeaProjects/EonCore/src/main/java/me/squid/eoncore/listeners/CommandSendListener.java

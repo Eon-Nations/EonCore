@@ -7,7 +7,6 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -34,7 +33,7 @@ public class JoinLeaveListener implements Listener {
     public void JoinMessage(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         if (p.hasPlayedBefore()){
-            e.joinMessage(Component.text(Utils.chat(Objects.requireNonNull(plugin.getConfig().getString("Join-Message"))
+            e.joinMessage(Component.text(Utils.chat(plugin.getConfig().getString("Join-Message")
             .replace("<player>", p.getName()))));
             p.sendTitle(Utils.chat("&5&lEon Survival"), Utils.chat("&bWelcome back!"), 30, 30, 30);
             if (p.isOp()) {

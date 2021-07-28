@@ -2,6 +2,9 @@ package me.squid.eoncore.listeners;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import me.squid.eoncore.EonCore;
+import me.squid.eoncore.managers.CooldownManager;
+import me.squid.eoncore.utils.Utils;
+import net.kyori.adventure.audience.MessageType;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.luckperms.api.LuckPerms;
@@ -37,12 +40,20 @@ public class ChatFormatListener implements Listener {
     public void onChatSend(AsyncChatEvent e) {
         Player p = e.getPlayer();
         Server server = Bukkit.getServer();
+        CooldownManager cooldownManager = AdminMenuManager.cooldownManager;
 
+        if (cooldownManager.hasCooldown(p.getUniqueId())) {
+            p.sendMessage(Utils.getPrefix("").append(Component.text("You are muted").color(TextColor.color(255, 0, 0))), MessageType.CHAT);
+            e.setCancelled(true);
+            return;
+        }
         // Reaching into LuckPerms API to get the Prefix for the Player that has chat
         User user = lp.getUserManager().getUser(p.getUniqueId());
         ImmutableContextSet contextSet = lp.getContextManager().getContext(user).orElseGet(lp.getContextManager()::getStaticContext);
         CachedMetaData cachedMetaData = user.getCachedData().getMetaData(QueryOptions.contextual(contextSet));
         String prefix = cachedMetaData.getPrefix();
+
+        if (prefix.equals("default")) prefix = "member";
 
         Component message = Component.text("[").color(TextColor.color(128, 128, 128))
                 .append(Component.text(StringUtils.capitalize(prefix.toLowerCase()))
@@ -56,7 +67,7 @@ public class ChatFormatListener implements Listener {
 
     private void initializeGroupColors() {
         groupColors = new HashMap<>();
-        groupColors.put("default", TextColor.color(224, 224, 224));
+        groupColors.put("member", TextColor.color(224, 224, 224));
         groupColors.put("traveler", TextColor.color(0, 128, 255));
         groupColors.put("explorer", TextColor.color(127, 0, 255));
         groupColors.put("ranger", TextColor.color(0, 204, 0));

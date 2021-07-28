@@ -3,6 +3,8 @@ package me.squid.eoncore.menus;
 import me.squid.eoncore.listeners.AdminMenuManager;
 import me.squid.eoncore.managers.CooldownManager;
 import me.squid.eoncore.utils.Utils;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -131,7 +133,7 @@ public class AdminGUI {
     }
 
     public Inventory getLengthGUI(UUID uuid, String action, String reason) {
-        Inventory inv = Bukkit.createInventory(null, 27, Utils.chat("&aLength"));
+        Inventory inv = Bukkit.createInventory(null, 27, Component.text("Length").color(TextColor.color(0, 204, 0)));
 
         if (action.equals("mute")) {
             Utils.createItem(inv, Material.WOODEN_SWORD, 1, 5, "&bUUID: " + uuid.toString(), "&fReason: " + reason, "&fAction: " + action);

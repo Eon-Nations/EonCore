@@ -1,6 +1,9 @@
 package me.squid.eoncore.utils;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
@@ -145,5 +148,34 @@ public class Utils {
                 inv.setItem(i, item);
             }
         }
+    }
+
+    public static String getFormattedTimeString(long timeInMilliseconds) {
+        String formattedDate = DurationFormatUtils.formatDurationHMS(timeInMilliseconds);
+        String[] splitString = formattedDate.split(":");
+
+        int totalHours = Integer.getInteger(splitString[0]);
+        if (totalHours > 24) {
+            int days = totalHours % 24;
+            return days + " days " + (totalHours - (24 * days)) + " minutes " + splitString[1] + " seconds";
+        } else {
+            return totalHours + " hours " + splitString[1] + " minutes " + splitString[2] + " seconds";
+        }
+    }
+
+    public static Component getPrefix(String name) {
+        return switch (name) {
+            case "admin" -> Component.text("[").color(TextColor.color(128, 128, 128))
+                    .append(Component.text("Eon Admin").color(TextColor.color(102, 178, 255))
+                            .append(Component.text("] ").append(Component.text(" "))));
+            case "nations" -> Component.text("[").color(TextColor.color(128, 128, 128))
+                    .append(Component.text("Eon Nations").color(TextColor.color(102, 178, 255))
+                            .append(Component.text("] ").append(Component.text(" "))));
+            case "moderation" -> Component.text("[").color(TextColor.color(128, 128, 128))
+                    .append(Component.text("Eon Moderation").color(TextColor.color(102, 178, 255))
+                            .append(Component.text("] ").color(TextColor.color(128, 128, 128))
+                                    .append(Component.text(" "))));
+            default -> Component.text("Invalid prefix");
+        };
     }
 }
