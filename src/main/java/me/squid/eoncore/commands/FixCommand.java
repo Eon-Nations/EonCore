@@ -62,10 +62,10 @@ public class FixCommand implements CommandExecutor {
                         if (args[0].equalsIgnoreCase("all")) {
                             if (p.hasPermission("eoncommands.fix.all")) {
                                 for (ItemStack item : p.getInventory().getContents()) {
-                                    if (item.getType() != Material.AIR) {
+                                    if (item != null && !item.getType().equals(Material.AIR)) {
                                         Damageable damageable = (Damageable) item.getItemMeta();
                                         damageable.setDamage(0);
-                                        item.setItemMeta((ItemMeta) damageable);
+                                        item.setItemMeta(damageable);
                                     }
                                 }
                                 p.sendMessage(Utils.chat(EonCore.prefix + "&7All items in inventory repaired"));

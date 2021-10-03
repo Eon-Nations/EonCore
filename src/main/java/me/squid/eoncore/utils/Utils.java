@@ -2,9 +2,11 @@ package me.squid.eoncore.utils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DurationFormatUtils;
-import org.bukkit.*;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.Inventory;
@@ -24,6 +26,7 @@ public class Utils {
         return ChatColor.translateAlternateColorCodes('&', s);
     }
 
+    @Deprecated
     public static void createItem(Inventory inv, Material material, int amount, int invSlot, String displayName, String... loreString) {
         ItemStack item;
         List<String> lore = new ArrayList<>();

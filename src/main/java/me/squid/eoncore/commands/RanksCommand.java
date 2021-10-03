@@ -13,10 +13,11 @@ import java.util.Objects;
 public class RanksCommand implements CommandExecutor {
 
     EonCore plugin;
-    RanksMenu ranksMenu = new RanksMenu();
+    RanksMenu ranksMenu;
 
     public RanksCommand(EonCore plugin) {
         this.plugin = plugin;
+        this.ranksMenu = new RanksMenu(plugin);
         Objects.requireNonNull(plugin.getCommand("ranks")).setExecutor(this);
     }
 
@@ -25,7 +26,7 @@ public class RanksCommand implements CommandExecutor {
 
         if (commandSender instanceof Player) {
             Player p = (Player) commandSender;
-            p.openInventory(ranksMenu.MainGUI());
+            p.openInventory(ranksMenu.getInv());
             p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1, 1);
         }
 

@@ -1,15 +1,40 @@
 package me.squid.eoncore.menus;
 
+import me.squid.eoncore.EonCore;
 import me.squid.eoncore.utils.Utils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
-public class RanksMenu {
+public class RanksMenu implements Listener {
 
-    public Inventory MainGUI() {
+    Inventory inv;
+
+    public RanksMenu(EonCore plugin) {
+        inv = getInventory();
+        Bukkit.getPluginManager().registerEvents(this, plugin);
+    }
+
+    @EventHandler
+    public void onRankMenuClick(InventoryClickEvent e) {
+        Player p = (Player) e.getWhoClicked();
+        if (e.getInventory().equals(inv)) {
+            e.setCancelled(true);
+            p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1, 1);
+        }
+    }
+
+    // Only one for inventory listening purposes
+    public Inventory getInv() { return inv; }
+
+    private Inventory getInventory() {
         TextColor white = TextColor.color(255, 255, 255);
         Inventory inv = Bukkit.createInventory(null, 9, Component.text("Eon Ranks").color(TextColor.color(153, 0, 153)));
 
@@ -29,18 +54,18 @@ public class RanksMenu {
                 Component.text("$10,000").color(white),
                 Component.text("- 2 Galactic Keys").color(white),
                 Component.text("- 6 Pet Slots").color(white),
-                Component.text("- /feed (10 Minute Cooldown)"));
+                Component.text("- /feed (10 Minute Cooldown)").color(white));
 
         Utils.createItem(inv, Material.YELLOW_BANNER, 1, 5, Component.text("Hero").color(TextColor.color(255, 255, 0)),
                 Component.text("$25,000").color(white),
                 Component.text("- 3 Galactic Keys").color(white),
                 Component.text("- 8 Pet Slots").color(white),
                 Component.text("- /feed (5 minute cooldown)").color(white),
-                Component.text("- /ptime (Player Time)"));
+                Component.text("- /ptime (Player Time)").color(white));
 
         Utils.createItem(inv, Material.ORANGE_BANNER, 1, 6, Component.text("Legend").color(TextColor.color(255, 128, 0)),
                 Component.text("$50,000").color(white),
-                Component.text("- 6 Galactic Keys"),
+                Component.text("- 6 Galactic Keys").color(white),
                 Component.text("- 12 Pet Slots").color(white),
                 Component.text("- /pweather (Player Weather)").color(white),
                 Component.text("- /fix (60 Minute Cooldown)").color(white));

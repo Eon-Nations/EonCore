@@ -129,8 +129,6 @@ public class GenericMenusListener implements Listener {
             e.setCancelled(true);
         }
 
-        if (e.getView().getTitle().equalsIgnoreCase(Utils.chat("&5&lEon Ranks"))) e.setCancelled(true);
-
         if (e.getView().getTitle().equalsIgnoreCase(Utils.chat("&a&lHelp Menu"))) {
             switch (e.getCurrentItem().getType()) {
                 case DIAMOND_HOE:

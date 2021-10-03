@@ -2,21 +2,16 @@ package me.squid.eoncore;
 
 import me.squid.eoncore.commands.*;
 import me.squid.eoncore.listeners.*;
+import me.squid.eoncore.sql.MySQL;
 import me.squid.eoncore.sql.VotesManager;
 import me.squid.eoncore.tasks.AutoAnnouncementTask;
-import me.squid.eoncore.tasks.BasicMineTask;
-import me.squid.eoncore.tasks.PortalTeleportTask;
-import me.squid.eoncore.tasks.UtilityDoorTask;
-import me.squid.eoncore.sql.MySQL;
 import me.squid.eoncore.utils.Utils;
 import me.squid.eoncore.utils.VoidChunkGenerator;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import org.bukkit.*;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Calendar;
 
@@ -60,7 +55,6 @@ public class EonCore extends JavaPlugin {
         new BurnCommand(this);
         new DisposalCommand(this);
         new NightVisionCommand(this);
-        new FCommand(this);
         new GamemodeCheckCommand(this);
         new PickupCommand(this);
         new InvseeCommand(this);
@@ -97,7 +91,6 @@ public class EonCore extends JavaPlugin {
         new GrindstoneCommand(this);
         new DirectMessageCommand(this);
         new MutedCommand(this);
-        new ClaimCommand(this);
         new WorldCommand(this);
     }
 
@@ -110,7 +103,6 @@ public class EonCore extends JavaPlugin {
         new WildTpListener(this);
         new WarpsListener(this);
         new PhantomSpawnListener(this);
-        new CustomVoteListener(this);
         new ChatFormatListener(this);
     }
 
@@ -135,10 +127,6 @@ public class EonCore extends JavaPlugin {
         new WorldCreator("spawn").environment(World.Environment.THE_END).createWorld();
         new WorldCreator("resource").environment(World.Environment.NORMAL).createWorld();
         new WorldCreator("spawn_void").generator(new VoidChunkGenerator()).createWorld();
-
-        for (World world : Bukkit.getWorlds()) {
-            System.out.println(world.getName());
-        }
     }
 
     private void setupGameRules() {
