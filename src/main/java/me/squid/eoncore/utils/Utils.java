@@ -3,10 +3,7 @@ package me.squid.eoncore.utils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.apache.commons.lang.time.DurationFormatUtils;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.Inventory;
@@ -180,5 +177,9 @@ public class Utils {
                                     .append(Component.text(" "))));
             default -> Component.text("Invalid prefix");
         };
+    }
+
+    public static Location getSpawnLocation() {
+        return new Location(Bukkit.getWorld("spawn_void"), -12, 87, -16);
     }
 }

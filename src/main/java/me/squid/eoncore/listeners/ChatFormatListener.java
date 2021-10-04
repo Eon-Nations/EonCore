@@ -73,11 +73,10 @@ public class ChatFormatListener implements Listener {
         groupColors.put("ranger", TextColor.color(0, 204, 0));
         groupColors.put("spaceman", TextColor.color(102, 178, 255));
         groupColors.put("astronaut", TextColor.color(255, 128, 0));
-        groupColors.put("alien", TextColor.color(0, 153, 0));
+        groupColors.put("mythic", TextColor.color(0, 153, 0));
         groupColors.put("builder", TextColor.color(0, 204, 0));
         groupColors.put("mod", TextColor.color(102, 0, 204));
         groupColors.put("admin", TextColor.color(204, 0, 0));
         groupColors.put("owner", TextColor.color(0, 128, 255));
-        System.out.println("Group Colors initialized");
     }
 }

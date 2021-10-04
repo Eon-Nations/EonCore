@@ -124,8 +124,6 @@ public class EonCore extends JavaPlugin {
     }
 
     private void loadWorlds() {
-        new WorldCreator("spawn").environment(World.Environment.THE_END).createWorld();
-        new WorldCreator("resource").environment(World.Environment.NORMAL).createWorld();
         new WorldCreator("spawn_void").generator(new VoidChunkGenerator()).createWorld();
     }
 
@@ -136,7 +134,6 @@ public class EonCore extends JavaPlugin {
             world.setGameRule(GameRule.COMMAND_BLOCK_OUTPUT, false);
             world.setGameRule(GameRule.SPECTATORS_GENERATE_CHUNKS, false);
         }
-        Bukkit.getWorld("spawn").setGameRule(GameRule.DO_MOB_SPAWNING, false);
         Bukkit.getWorld("spawn_void").setGameRule(GameRule.DO_FIRE_TICK, false);
         Bukkit.getWorld("spawn_void").setGameRule(GameRule.DO_WEATHER_CYCLE, false);
         Bukkit.getWorld("spawn_void").setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);

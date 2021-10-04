@@ -47,7 +47,6 @@ me/squid/eoncore/utils/Cuboid$1.class
 me/squid/eoncore/commands/FixCommand.class
 me/squid/eoncore/listeners/DeathBackListener.class
 me/squid/eoncore/tasks/UtilityDoorTask.class
-me/squid/eoncore/listeners/WildTpListener$1.class
 me/squid/eoncore/utils/VoidChunkGenerator.class
 me/squid/eoncore/listeners/CommandSendListener.class
 me/squid/eoncore/commands/HelpCommand.class
