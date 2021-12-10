@@ -8,15 +8,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Objects;
-
 public class ClearInventoryCommand implements CommandExecutor {
 
     EonCore plugin;
 
     public ClearInventoryCommand(EonCore plugin) {
         this.plugin = plugin;
-        Objects.requireNonNull(plugin.getCommand("clearinventory")).setExecutor(this);
+        plugin.getCommand("clearinventory").setExecutor(this);
     }
 
     @Override
@@ -37,7 +35,7 @@ public class ClearInventoryCommand implements CommandExecutor {
             if (target != null && sender.hasPermission(getOthersPermNode())){
                 target.getInventory().clear();
                 target.sendMessage(Utils.chat(plugin.getConfig().getString("Target-Clear-Inventory")));
-                sender.sendMessage(Utils.chat(Objects.requireNonNull(plugin.getConfig().getString("Clear-Other-Inventory"))
+                sender.sendMessage(Utils.chat(plugin.getConfig().getString("Clear-Other-Inventory")
                 .replace("<target>", target.getName())));
             }
         }

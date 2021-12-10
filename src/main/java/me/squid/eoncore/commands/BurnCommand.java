@@ -8,15 +8,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Objects;
-
 public class BurnCommand implements CommandExecutor {
 
     EonCore plugin;
 
     public BurnCommand(EonCore plugin) {
         this.plugin = plugin;
-        Objects.requireNonNull(plugin.getCommand("burn")).setExecutor(this);
+        plugin.getCommand("burn").setExecutor(this);
     }
 
     @Override
@@ -31,13 +29,13 @@ public class BurnCommand implements CommandExecutor {
                 } else if (args.length == 2){
                     Player target = Bukkit.getPlayer(args[0]);
                     int seconds = Integer.parseInt(args[1]);
-                    if (target != null){
+                    if (target != null) {
                         target.setFireTicks(seconds * 20);
-                        target.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Target-Burn-Message")));
-                        p.sendMessage(Utils.chat(EonCore.prefix + Objects.requireNonNull(plugin.getConfig().getString("Burn-Message"))
-                        .replace("<target>", target.getDisplayName()).replace("<seconds>", String.valueOf(seconds))));
+                        target.sendMessage(Utils.getPrefix("nations").append(Utils.chat(plugin.getConfig().getString("Target-Burn-Message"))));
+                        p.sendMessage(Utils.getPrefix("nations").append(Utils.chat(plugin.getConfig().getString("Burn-Message")
+                        .replace("<target>", target.getDisplayName()).replace("<seconds>", String.valueOf(seconds)))));
                     } else {
-                        p.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Target-Null")));
+                        p.sendMessage(Utils.getPrefix("nations").append(Utils.chat(plugin.getConfig().getString("Target-Null"))));
                     }
                 }
             } else {

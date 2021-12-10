@@ -19,22 +19,21 @@ import static org.bukkit.Bukkit.getServer;
 
 public class Utils {
 
-    public static @NotNull String chat(String s) {
-        return ChatColor.translateAlternateColorCodes('&', s);
+    public static @NotNull Component chat(String s) {
+        return Component.text(ChatColor.translateAlternateColorCodes('&', s));
     }
 
-    @Deprecated
     public static void createItem(Inventory inv, Material material, int amount, int invSlot, String displayName, String... loreString) {
         ItemStack item;
-        List<String> lore = new ArrayList<>();
+        List<Component> lore = new ArrayList<>();
         item = new ItemStack(material, amount);
         ItemMeta meta = item.getItemMeta();
 
-        Objects.requireNonNull(meta).setDisplayName(Utils.chat(displayName));
+        meta.displayName(Utils.chat(displayName));
         for (String s : loreString) {
             lore.add(Utils.chat(s));
         }
-        meta.setLore(lore);
+        meta.lore(lore);
         item.setItemMeta(meta);
         inv.setItem(invSlot - 1, item);
     }
@@ -55,15 +54,15 @@ public class Utils {
     public static void createItem(Inventory inv, Material material, int amount, int invSlot, String displayName, List<String> loreString) {
         ItemStack item;
         item = new ItemStack(material, amount);
-        List<String> lore = new ArrayList<>();
+        List<Component> lore = new ArrayList<>();
         ItemMeta meta = item.getItemMeta();
 
         for (String s : loreString) {
             lore.add(Utils.chat(s));
         }
 
-        Objects.requireNonNull(meta).setDisplayName(Utils.chat(displayName));
-        meta.setLore(lore);
+        meta.displayName(Utils.chat(displayName));
+        meta.lore(lore);
         item.setItemMeta(meta);
         inv.setItem(invSlot - 1, item);
     }
@@ -80,35 +79,25 @@ public class Utils {
         }
     }
 
-    public static Location generateLocation(World world) {
+    public static Location generateLocation(World world, List<Material> blackList) {
         Random random = new Random();
 
-        int x = random.nextInt(17500) * (random.nextBoolean() ? -1 : 1);
+        int x = random.nextInt(2500) * (random.nextBoolean() ? -1 : 1);
         int y = 150;
-        int z = random.nextInt(17500) * (random.nextBoolean() ? -1 : 1);
+        int z = random.nextInt(2500) * (random.nextBoolean() ? -1 : 1);
         Location randomLoc = new Location(world, x, y, z);
 
         y = randomLoc.getWorld().getHighestBlockYAt(randomLoc.add(0, 1, 0));
         randomLoc.setY(y);
 
-        if (isLocationSafe(randomLoc)) {
+        if (isLocationSafe(randomLoc, blackList)) {
             return randomLoc;
+        } else {
+            return generateLocation(world, blackList);
         }
-
-        while (!isLocationSafe(randomLoc)) {
-            randomLoc = generateLocation(world);
-        }
-
-        return randomLoc;
     }
 
-    public static boolean isLocationSafe(Location location) {
-        ArrayList<Material> blackList = new ArrayList<>();
-        blackList.add(Material.LAVA);
-        blackList.add(Material.CACTUS);
-        blackList.add(Material.FIRE);
-        blackList.add(Material.WATER);
-
+    public static boolean isLocationSafe(Location location, List<Material> blackList) {
         int x = location.getBlockX();
         int y = location.getBlockY();
         int z = location.getBlockZ();
@@ -117,15 +106,15 @@ public class Utils {
         Block below = location.getWorld().getBlockAt(x, y - 1, z);
         Block above = location.getWorld().getBlockAt(x, y + 1, z);
 
-        return !(blackList.contains(below.getType())) || block.getType().isSolid() || above.getType().isSolid();
+        return !(blackList.contains(below.getType()))  || block.getType().isSolid() || above.getType().isSolid();
     }
 
-    public static ItemStack createKitItem(Material material, int amount, String displayName, @Nullable List<String> lore, @Nullable HashMap<Enchantment, Integer> enchantments) {
+    public static ItemStack createKitItem(Material material, int amount, String displayName, @Nullable List<Component> lore, @Nullable HashMap<Enchantment, Integer> enchantments) {
         ItemStack item = new ItemStack(material, amount);
         ItemMeta meta = item.getItemMeta();
 
-        meta.setDisplayName(Utils.chat(displayName));
-        meta.setLore(lore);
+        meta.displayName(Utils.chat(displayName));
+        meta.lore(lore);
         item.setItemMeta(meta);
 
         if (enchantments != null) {
@@ -154,12 +143,14 @@ public class Utils {
         String formattedDate = DurationFormatUtils.formatDurationHMS(timeInMilliseconds);
         String[] splitString = formattedDate.split(":");
 
-        int totalHours = Integer.getInteger(splitString[0]);
+        int totalHours = Integer.parseInt(splitString[0]);
+        int totalMinutes = Integer.parseInt(splitString[1]);
+        int totalSeconds = Integer.parseInt(splitString[2].split("\\.")[0]);
         if (totalHours > 24) {
-            int days = totalHours % 24;
-            return days + " days " + (totalHours - (24 * days)) + " minutes " + splitString[1] + " seconds";
+            int days = totalHours / 24;
+            return days + " days " + (totalHours - (24 * days)) + " hours " + totalMinutes + " minutes " + totalSeconds + " seconds";
         } else {
-            return totalHours + " hours " + splitString[1] + " minutes " + splitString[2] + " seconds";
+            return totalHours + " hours " + totalMinutes + " minutes " + totalSeconds + " seconds";
         }
     }
 
@@ -173,13 +164,21 @@ public class Utils {
                             .append(Component.text("] ").append(Component.text(" "))));
             case "moderation" -> Component.text("[").color(TextColor.color(128, 128, 128))
                     .append(Component.text("Eon Moderation").color(TextColor.color(102, 178, 255))
-                            .append(Component.text("] ").color(TextColor.color(128, 128, 128))
-                                    .append(Component.text(" "))));
+                            .append(Component.text("] ").color(TextColor.color(128, 128, 128))));
             default -> Component.text("Invalid prefix");
         };
     }
 
     public static Location getSpawnLocation() {
         return new Location(Bukkit.getWorld("spawn_void"), -12, 87, -16);
+    }
+
+    public static String getMessage(String[] args) {
+        StringBuilder sb = new StringBuilder();
+        for (String arg : args) {
+            sb.append(arg).append(" ");
+        }
+        String allArgs = sb.toString().trim();
+        return ChatColor.translateAlternateColorCodes('&', allArgs);
     }
 }

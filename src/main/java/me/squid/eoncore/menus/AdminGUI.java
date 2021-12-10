@@ -1,27 +1,28 @@
 package me.squid.eoncore.menus;
 
-import me.squid.eoncore.listeners.AdminMenuManager;
-import me.squid.eoncore.managers.CooldownManager;
+import me.squid.eoncore.sql.AdminSQLManager;
 import me.squid.eoncore.utils.Utils;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.logging.LogRecord;
 
 public class AdminGUI {
+
+    AdminSQLManager adminSQLManager;
+
+    public AdminGUI(AdminSQLManager adminSQLManager) {
+        this.adminSQLManager = adminSQLManager;
+    }
 
     public Inventory GUI () {
         Inventory inv = Bukkit.createInventory(null, 27, Utils.chat("&5&lEon Admin GUI"));
@@ -61,14 +62,14 @@ public class AdminGUI {
             ItemStack item = new ItemStack(Material.PLAYER_HEAD, 1);
             SkullMeta skull = (SkullMeta) item.getItemMeta();
             skull.setOwningPlayer(p);
-            skull.setDisplayName(p.getName());
+            skull.displayName(Component.text(p.getName()));
 
-            List<String> lore = new ArrayList<>();
+            List<Component> lore = new ArrayList<>();
             lore.add(Utils.chat("&bHealth: " + p.getHealth()));
             lore.add(Utils.chat("&bFood Level: " + p.getFoodLevel()));
             lore.add(Utils.chat("&bWorld: " + StringUtils.capitalize(p.getWorld().getName())));
-            lore.add(Utils.chat("&bUUID: " + p.getUniqueId().toString()));
-            skull.setLore(lore);
+            lore.add(Utils.chat("&bUUID: " + p.getUniqueId()));
+            skull.lore(lore);
 
             item.setItemMeta(skull);
             inv.addItem(item);
@@ -95,7 +96,7 @@ public class AdminGUI {
 
         Utils.createItem(inv, Material.WOODEN_AXE, 1, 5, "&bSelect a reason to ban", "&fUUID: " + uuid.toString());
         Utils.createItem(inv, Material.MAGENTA_WOOL, 1, 10, "&6Advertising other servers/products are not allowed", "&f(30d ban -> IP Ban)");
-        Utils.createItem(inv, Material.GREEN_WOOL, 1, 11, "&6DoX and DDoS threats are now allowed", Utils.chat("&f(Perm Ban)"));
+        Utils.createItem(inv, Material.GREEN_WOOL, 1, 11, Utils.chat("&6DoX and DDoS threats are now allowed"), Utils.chat("&f(Perm Ban)"));
         Utils.createItem(inv, Material.YELLOW_WOOL, 1, 12, "&6Exploiting bugs including duping is not allowed", "&f(14d ban -> IP Ban)");
         Utils.createItem(inv, Material.YELLOW_WOOL, 1, 13, "&6Ban Evasion is not allowed", "&f(Perm IP Ban)");
         Utils.createItem(inv, Material.YELLOW_WOOL, 1, 14, "&6Mute Evasion is not allowed", "&f(7d ban -> Perm Ban)");
@@ -118,14 +119,14 @@ public class AdminGUI {
         Inventory inv = Bukkit.createInventory(null, 27, Utils.chat("&bMute Reasons"));
 
         Utils.createItem(inv, Material.WOODEN_SHOVEL, 1, 5, "&bSelect a reason to mute", "&fUUID: " + uuid.toString());
-        Utils.createItem(inv, Material.BLUE_WOOL, 1, 10, "&6No personal information in public chat", Utils.chat("&f(24h mute -> Perm Mute"));
-        Utils.createItem(inv, Material.PURPLE_WOOL, 1, 11, "&6Offensive language is not allowed", Utils.chat("&f(2 Verbal Warnings -> 24h mute)"));
-        Utils.createItem(inv, Material.LIGHT_BLUE_WOOL, 1, 12, "&6Bigotry/hate speech is not allowed", Utils.chat("&f(2 Verbal Warnings -> 24h mute)"));
-        Utils.createItem(inv, Material.MAGENTA_WOOL, 1, 13, "&6Misleading players is not allowed", Utils.chat("&f(Verbal Warning -> 1h mute)"));
-        Utils.createItem(inv, Material.ORANGE_WOOL, 1, 14, "&6Harassing players/staff members is not allowed", Utils.chat("&f(2 Verbal Warnings -> 1h mute)"));
-        Utils.createItem(inv, Material.GREEN_WOOL, 1, 15, "&6Excessive swearing is not allowed", Utils.chat("&f(Verbal Warning -> 5h mute)"));
-        Utils.createItem(inv, Material.GRAY_WOOL, 1, 16, "&6No political discussions/statements allowed", Utils.chat("&f(2 Verbal Warnings -> 3h mute)"));
-        Utils.createItem(inv, Material.RED_WOOL, 1, 17, "&6No sexual statements/discussions in chat", Utils.chat("&f(2 Verbal Warnings -> 3h mute)"));
+        Utils.createItem(inv, Material.BLUE_WOOL, 1, 10, Utils.chat("&6No personal information in public chat"), Utils.chat("&f(24h mute -> Perm Mute"));
+        Utils.createItem(inv, Material.PURPLE_WOOL, 1, 11, Utils.chat("&6Offensive language is not allowed"), Utils.chat("&f(2 Verbal Warnings -> 24h mute)"));
+        Utils.createItem(inv, Material.LIGHT_BLUE_WOOL, 1, 12, Utils.chat("&6Bigotry/hate speech is not allowed"), Utils.chat("&f(2 Verbal Warnings -> 24h mute)"));
+        Utils.createItem(inv, Material.MAGENTA_WOOL, 1, 13, Utils.chat("&6Misleading players is not allowed"), Utils.chat("&f(Verbal Warning -> 1h mute)"));
+        Utils.createItem(inv, Material.ORANGE_WOOL, 1, 14, Utils.chat("&6Harassing players/staff members is not allowed"), Utils.chat("&f(2 Verbal Warnings -> 1h mute)"));
+        Utils.createItem(inv, Material.GREEN_WOOL, 1, 15, Utils.chat("&6Excessive swearing is not allowed"), Utils.chat("&f(Verbal Warning -> 5h mute)"));
+        Utils.createItem(inv, Material.GRAY_WOOL, 1, 16, Utils.chat("&6No political discussions/statements allowed"), Utils.chat("&f(2 Verbal Warnings -> 3h mute)"));
+        Utils.createItem(inv, Material.RED_WOOL, 1, 17, Utils.chat("&6No sexual statements/discussions in chat"), Utils.chat("&f(2 Verbal Warnings -> 3h mute)"));
         Utils.createItem(inv, Material.BLUE_WOOL, 1, 1, "&6Indirect advertising is not allowed", "&f(2 Verbal Warnings -> 3h mute)");
         Utils.makeDummySlots(inv);
 
@@ -133,7 +134,7 @@ public class AdminGUI {
     }
 
     public Inventory getLengthGUI(UUID uuid, String action, String reason) {
-        Inventory inv = Bukkit.createInventory(null, 27, Component.text("Length").color(TextColor.color(0, 204, 0)));
+        Inventory inv = Bukkit.createInventory(null, 27, Utils.chat("&a&lLength"));
 
         if (action.equals("mute")) {
             Utils.createItem(inv, Material.WOODEN_SWORD, 1, 5, "&bUUID: " + uuid.toString(), "&fReason: " + reason, "&fAction: " + action);
@@ -159,8 +160,7 @@ public class AdminGUI {
     }
 
     public Inventory getMutedInventory() {
-        CooldownManager cooldownManager = AdminMenuManager.cooldownManager;
-        List<UUID> uuids = cooldownManager.getUUIDsFromCooldownMap();
+        List<UUID> uuids = adminSQLManager.getAllUUIDs();
         Inventory inv = Bukkit.createInventory(null, 54, Utils.chat("&b&lMuted Chat"));
 
         for (int i = 0; i < uuids.size(); i++) {
@@ -172,11 +172,11 @@ public class AdminGUI {
                 skullMeta.setPlayerProfile(p.getPlayer().getPlayerProfile());
             }
 
-            List<String> lore = new ArrayList<>();
-            skullMeta.setDisplayName(Utils.chat("&b" + p.getName()));
-            lore.add(Utils.chat("&b" + cooldownManager.getCooldown(p.getUniqueId()).getTimeRemaining() / 60000));
-            lore.add(Utils.chat("&bUUID: " + p.getUniqueId().toString()));
-            skullMeta.setLore(lore);
+            List<Component> lore = new ArrayList<>();
+            skullMeta.displayName(Utils.chat("&b" + p.getName()));
+            lore.add(Utils.chat("&b" + adminSQLManager.getCooldown(p.getUniqueId()).getTimeRemaining() / 60000));
+            lore.add(Utils.chat("&bUUID: " + p.getUniqueId()));
+            skullMeta.lore(lore);
             head.setItemMeta(skullMeta);
             inv.setItem(i, head);
         }

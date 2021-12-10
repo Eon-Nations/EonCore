@@ -20,30 +20,19 @@ public class SudoCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
-
         if (commandSender instanceof Player) {
             if (args.length > 2) {
                 Player target = Bukkit.getPlayer(args[0]);
-                if (args[1].contains("/") && target != null) {
-                    if (target.isOp()) return true;
+                if (args[1].contains("/") && target != null && !target.isOp()) {
                     args[1] = args[1].replace("/", "");
-                    Bukkit.dispatchCommand(target, getMessage(args));
+                    Bukkit.dispatchCommand(target, Utils.getMessage(args));
                 } else if (target != null) {
                     args[0] = "";
-                    target.chat(getMessage(args));
+                    target.chat(Utils.getMessage(args));
                 }
             }
         }
 
         return true;
-    }
-
-    private String getMessage(String[] args) {
-        StringBuilder sb = new StringBuilder();
-        for (String arg : args) {
-            sb.append(arg).append(" ");
-        }
-        String allArgs = sb.toString().trim();
-        return Utils.chat(allArgs);
     }
 }

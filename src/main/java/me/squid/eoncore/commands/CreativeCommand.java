@@ -17,7 +17,7 @@ public class CreativeCommand implements CommandExecutor {
 
     public CreativeCommand(EonCore plugin) {
         this.plugin = plugin;
-        Objects.requireNonNull(plugin.getCommand("gmc")).setExecutor(this);
+        plugin.getCommand("gmc").setExecutor(this);
     }
 
     @Override
@@ -25,7 +25,7 @@ public class CreativeCommand implements CommandExecutor {
 
         if (sender instanceof Player){
             Player p = (Player) sender;
-            if (p.hasPermission(getPermissionNode())){
+            if (p.hasPermission(getPermissionNode())) {
                 if (args.length == 0){
                     p.setGameMode(GameMode.CREATIVE);
                     p.sendMessage(Utils.chat(plugin.getConfig().getString("Creative-Message")));

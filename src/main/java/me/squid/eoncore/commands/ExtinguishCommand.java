@@ -8,15 +8,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Objects;
-
 public class ExtinguishCommand implements CommandExecutor {
 
     EonCore plugin;
 
     public ExtinguishCommand(EonCore plugin) {
         this.plugin = plugin;
-        Objects.requireNonNull(plugin.getCommand("extinguish")).setExecutor(this);
+        plugin.getCommand("extinguish").setExecutor(this);
     }
 
     @Override
@@ -37,7 +35,7 @@ public class ExtinguishCommand implements CommandExecutor {
             if (target != null && sender.hasPermission(getOthersPermNode())) {
                 target.setFireTicks(0);
                 target.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Target-Extinguish-Message")));
-                sender.sendMessage(Utils.chat(EonCore.prefix + Objects.requireNonNull(plugin.getConfig().getString("Extinguish-Other-Message"))
+                sender.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Extinguish-Other-Message")
                 .replace("<target>", target.getDisplayName())));
             }
         }

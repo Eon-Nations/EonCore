@@ -40,32 +40,32 @@ public class RanksMenu implements Listener {
 
         Utils.createItem(inv, Material.LIGHT_BLUE_BANNER, 1, 2, Component.text("Traveler").color(TextColor.color(0, 255, 255)),
                 Component.text("$2,500").color(white),
-                Component.text("- +5 Chunks to Claim").color(white),
+                Component.text("- +10 Chunks to Claim").color(white),
                 Component.text("- Access to /hat").color(white),
                 Component.text("- +1 Home").color(white));
 
         Utils.createItem(inv, Material.BLUE_BANNER, 1, 3, Component.text("Explorer").color(TextColor.color(0, 102, 204)),
                 Component.text("$5,000").color(white),
                 Component.text("- 1 Galactic Key").color(white),
-                Component.text("- +5 Chunks to Claim").color(white),
+                Component.text("- +10 Chunks to Claim").color(white),
                 Component.text("- +1 Home").color(white));
 
         Utils.createItem(inv, Material.PURPLE_BANNER, 1, 4, Component.text("Ranger").color(TextColor.color(102, 0, 204)),
                 Component.text("$10,000").color(white),
                 Component.text("- 2 Galactic Keys").color(white),
-                Component.text("- +10 Chunks to Claim").color(white),
+                Component.text("- +15 Chunks to Claim").color(white),
                 Component.text("- /feed (10 Minute Cooldown)").color(white),
                 Component.text("- +1 Home").color(white));
 
-        Utils.createItem(inv, Material.YELLOW_BANNER, 1, 5, Component.text("Hero").color(TextColor.color(255, 255, 0)),
+        Utils.createItem(inv, Material.YELLOW_BANNER, 1, 5, Component.text("Spaceman").color(TextColor.color(255, 255, 0)),
                 Component.text("$25,000").color(white),
                 Component.text("- 3 Galactic Keys").color(white),
-                Component.text("- +20 Chunks to Claim").color(white),
+                Component.text("- +25 Chunks to Claim").color(white),
                 Component.text("- /feed (5 minute cooldown)").color(white),
                 Component.text("- /ptime (Player Time)").color(white),
                 Component.text("- +2 Homes").color(white));
 
-        Utils.createItem(inv, Material.ORANGE_BANNER, 1, 6, Component.text("Legend").color(TextColor.color(255, 128, 0)),
+        Utils.createItem(inv, Material.ORANGE_BANNER, 1, 6, Component.text("Astronaut").color(TextColor.color(255, 128, 0)),
                 Component.text("$50,000").color(white),
                 Component.text("- 6 Galactic Keys").color(white),
                 Component.text("- +50 Chunks to Claim").color(white),
@@ -80,7 +80,7 @@ public class RanksMenu implements Listener {
                 Component.text("- /heal (60 minute cooldown)").color(white),
                 Component.text("- Basic Mine").color(white));
 
-        Utils.createItem(inv, Material.DIAMOND_SWORD, 1, 8, Component.text(Utils.chat("&1&lGa&2&lm&3&ler")),
+        Utils.createItem(inv, Material.DIAMOND_SWORD, 1, 8, Utils.chat("&1&lGa&2&lm&3&ler"),
                 Component.text("$500,000").color(white),
                 Component.text("- Coming soon!").color(white));
 

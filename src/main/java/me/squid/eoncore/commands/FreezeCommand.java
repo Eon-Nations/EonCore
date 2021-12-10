@@ -2,6 +2,7 @@ package me.squid.eoncore.commands;
 
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.utils.Utils;
+import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -27,7 +28,8 @@ public class FreezeCommand implements CommandExecutor {
             Player p = (Player) sender;
             if (p.hasPermission(getPermissionNode())){
                 if (args.length == 0){
-                    p.sendTitle(Utils.chat("&b&lFreeze People!"), Utils.chat("Usage: /freeze <player>"), 40, 40,20);
+                    Title title = Title.title(Utils.chat("&b&lFreeze People!"), Utils.chat("Usage: /freeze <player>"));
+                    p.showTitle(title);
                 } else if (args.length == 1){
                     Player target = Bukkit.getPlayer(args[0]);
                     if (target != null){

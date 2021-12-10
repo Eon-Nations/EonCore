@@ -4,12 +4,13 @@ import me.squid.eoncore.EonCore;
 import me.squid.eoncore.menus.MobArenaGUI;
 import me.squid.eoncore.tasks.WarpTeleportTask;
 import me.squid.eoncore.utils.Utils;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
@@ -30,7 +31,7 @@ public class WarpsListener implements Listener {
     public void onWarp(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
 
-        if (e.getView().getTitle().equals(Utils.chat("&5&lEon Warps"))) {
+        if (e.getView().title().equals(Utils.chat("&5&lEon Warps"))) {
             String name = e.getCurrentItem().getItemMeta().getDisplayName();
             switch (e.getCurrentItem().getType()) {
                 case ANVIL:
@@ -41,13 +42,12 @@ public class WarpsListener implements Listener {
                     p.closeInventory();
                     teleportPlayerToWarp(p, crates, name);
                     break;
-                case EMERALD:
-                    p.closeInventory();
-                    teleportPlayerToWarp(p, market, name);
-                    break;
                 case END_PORTAL_FRAME:
                     p.closeInventory();
-                    teleportPlayerToWarp(p, endPortal, name);
+                    //teleportPlayerToWarp(p, endPortal, name);
+                    p.sendMessage(Utils.getPrefix("nations")
+                            .append(Component.text("End Portal will unlock once the end portal in the overworld is discovered.")
+                                    .color(TextColor.color(160, 160, 160))));
                     break;
                 case ZOMBIE_HEAD:
                     p.closeInventory();
@@ -55,13 +55,7 @@ public class WarpsListener implements Listener {
                     break;
                 case BREAD:
                     p.closeInventory();
-                    //teleportPlayerToWarp(p, chilis, name);
-                    p.sendMessage(Utils.chat(EonCore.prefix + "&7Chilis has disappeared. It will be back soon"));
-                    break;
-                case DIAMOND_ORE:
-                    p.closeInventory();
-                    if (p.hasPermission("eonwarps.basicmine")) teleportPlayerToWarp(p, mine, name);
-                    else p.sendMessage(Utils.chat(EonCore.prefix + "&7You do not have access to this warp. Rankup to Ranger (/ranks)."));
+                    teleportPlayerToWarp(p, chilis, name);
                     break;
             }
             p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1, 1);
@@ -73,17 +67,15 @@ public class WarpsListener implements Listener {
         if (player.hasPermission("eoncommands.warp.cooldown.bypass")) {
             new WarpTeleportTask(plugin, location, player, warpName).runTaskAsynchronously(plugin);
         } else {
-            player.sendMessage(Utils.chat(EonCore.prefix + "&7Teleporting in 3 seconds..."));
+            player.sendMessage(Utils.getPrefix("nations").append(Utils.chat("&7Teleporting in 3 seconds...")));
             new WarpTeleportTask(plugin, location, player, warpName).runTaskLaterAsynchronously(plugin, plugin.getConfig().getLong("Warp-Delay") * 20);
         }
     }
 
     public void initializeWarps() {
-        utilities = new Location(Bukkit.getWorld("spawn"), -595.5, 81, -225.5);
-        crates = new Location(Bukkit.getWorld("spawn"), -687.5 ,174, -714.5);
-        market = new Location(Bukkit.getWorld("spawn"), -323, 90, -590, 180, 0);
+        utilities = new Location(Bukkit.getWorld("spawn_void"), 64.5, 99, 25.5, 180, 0);
+        crates = new Location(Bukkit.getWorld("spawn_void"), -22.5 ,87, -14.5, -130, 0);
         endPortal = new Location(Bukkit.getWorld("world"), 21830, 23, 10306, 90, 0);
-        chilis = new Location(Bukkit.getWorld("spawn"), -323, 90, -590, 180, 0);
-        mine = new Location(Bukkit.getWorld("spawn"), -430, 95, -294, 90, 0);
+        chilis = new Location(Bukkit.getWorld("spawn_void"), -54.5, 86, -3.5, 90, 0);
     }
 }

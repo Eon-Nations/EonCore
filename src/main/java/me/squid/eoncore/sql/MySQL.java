@@ -9,13 +9,12 @@ import java.sql.SQLException;
 public class MySQL {
 
     EonCore plugin;
-    String host, port, database, user, password;
+    String IP, database, user, password;
     Connection connection;
 
     public MySQL(EonCore plugin){
         this.plugin = plugin;
-        host = plugin.getConfig().getString("SQLHost");
-        port = plugin.getConfig().getString("SQLPort");
+        IP = plugin.getConfig().getString("SQLIP");
         database = plugin.getConfig().getString("SQLDatabase");
         user = plugin.getConfig().getString("SQLUser");
         password = plugin.getConfig().getString("SQLPassword");
@@ -27,7 +26,7 @@ public class MySQL {
 
     public void connectToDatabase() throws SQLException {
         if (!isConnected()) {
-            connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?useSSL=false", user, password);
+            connection = DriverManager.getConnection("jdbc:mysql://" + IP + "/" + database + "?useSSL=false", user, password);
             if (isConnected()) plugin.getLogger().info("Database has succesfully connected");
         }
     }

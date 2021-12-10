@@ -24,20 +24,18 @@ public class ClearChatCommand implements CommandExecutor {
 
         for (Player online : Bukkit.getOnlinePlayers()) {
             if (!online.hasPermission("eoncommands.clearchat")) {
-                for (int i = 0; i < 100; i++) {
-                    online.sendMessage("");
-                }
-                online.sendMessage(Utils.chat("[--------------------------]"));
-                online.sendMessage(Utils.chat("Chat has been cleared by " + sender.getName()));
-                online.sendMessage(Utils.chat("[--------------------------]"));
+                for (int i = 0; i < 100; i++) { online.sendMessage(""); }
             } else {
                 sender.sendMessage(Utils.chat(EonCore.prefix + "&bYou are immune to chat clear"));
-                online.sendMessage(Utils.chat("&7[--------------------------]"));
-                online.sendMessage(Utils.chat("&bChat has been cleared by " + sender.getName()));
-                online.sendMessage(Utils.chat("&7[--------------------------]"));
             }
+            sendClearMessage(online, sender.getName());
         }
-
         return true;
+    }
+
+    private void sendClearMessage(Player p, String senderName) {
+        p.sendMessage(Utils.chat("[--------------------------]"));
+        p.sendMessage(Utils.chat("Chat has been cleared by " + senderName));
+        p.sendMessage(Utils.chat("[--------------------------]"));
     }
 }

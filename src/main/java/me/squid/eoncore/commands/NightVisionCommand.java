@@ -35,8 +35,6 @@ public class NightVisionCommand implements CommandExecutor {
                     p.removePotionEffect(PotionEffectType.NIGHT_VISION);
                     p.sendMessage(Utils.chat(plugin.getConfig().getString("NV-Off")));
                 }
-            } else {
-                sender.sendMessage("Please provide arguments");
             }
         } else if (args.length == 1){
             if (sender.hasPermission(getOthersPermNode())) {

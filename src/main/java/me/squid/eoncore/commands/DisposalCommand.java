@@ -9,15 +9,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
-import java.util.Objects;
-
 public class DisposalCommand implements CommandExecutor {
 
     EonCore plugin;
 
     public DisposalCommand(EonCore plugin) {
         this.plugin = plugin;
-        Objects.requireNonNull(plugin.getCommand("disposal")).setExecutor(this);
+        plugin.getCommand("disposal").setExecutor(this);
     }
 
     @Override

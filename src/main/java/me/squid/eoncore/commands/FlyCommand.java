@@ -19,7 +19,7 @@ public class FlyCommand implements CommandExecutor {
 
     public FlyCommand(EonCore plugin) {
         this.plugin = plugin;
-        Objects.requireNonNull(plugin.getCommand("fly")).setExecutor(this);
+        plugin.getCommand("fly").setExecutor(this);
     }
 
     @Override
@@ -28,8 +28,9 @@ public class FlyCommand implements CommandExecutor {
         if (sender instanceof Player){
             Player p = (Player) sender;
             if (args.length == 0){
-                if (p.hasPermission(getPermissionNode())){
+                if (p.hasPermission(getPermissionNode())) {
                     if (!list.contains(p)){
+                        if (p.getWorld().getName().equals("spawn_void")) return true;
                         p.setAllowFlight(true);
                         p.sendMessage(Utils.chat(plugin.getConfig().getString("Fly-On")));
                         list.add(p);

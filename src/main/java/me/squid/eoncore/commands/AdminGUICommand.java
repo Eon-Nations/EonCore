@@ -8,16 +8,15 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Objects;
-
 public class AdminGUICommand implements CommandExecutor {
 
     EonCore plugin;
-    AdminGUI adminGUI = new AdminGUI();
+    AdminGUI adminGUI;
 
-    public AdminGUICommand(EonCore plugin) {
+    public AdminGUICommand(EonCore plugin, AdminGUI adminGUI) {
         this.plugin = plugin;
-        Objects.requireNonNull(plugin.getCommand("admin")).setExecutor(this);
+        this.adminGUI = adminGUI;
+        plugin.getCommand("admin").setExecutor(this);
     }
 
     @Override

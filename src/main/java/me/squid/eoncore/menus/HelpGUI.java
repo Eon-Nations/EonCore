@@ -2,9 +2,9 @@ package me.squid.eoncore.menus;
 
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.utils.Utils;
+import net.kyori.adventure.text.Component;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -37,11 +37,11 @@ public class HelpGUI {
         skull.setOwningPlayer(p);
         skull.setDisplayName(p.getName());
 
-        List<String> lore = new ArrayList<>();
+        List<Component> lore = new ArrayList<>();
         lore.add(Utils.chat("&bHealth: " + p.getHealth()));
         lore.add(Utils.chat("&bFood Level: " + p.getFoodLevel()));
         lore.add(Utils.chat("&bRank: " + StringUtils.capitalize(EonCore.getPerms().getUserManager().getUser(p.getUniqueId()).getPrimaryGroup())));
-        skull.setLore(lore);
+        skull.lore(lore);
 
         item.setItemMeta(skull);
         return item;

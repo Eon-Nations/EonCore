@@ -11,17 +11,17 @@ import org.bukkit.entity.Player;
 public class MutedCommand implements CommandExecutor {
 
     EonCore plugin;
-    AdminGUI adminGUI = new AdminGUI();
+    AdminGUI adminGUI;
 
-    public MutedCommand(EonCore plugin) {
+    public MutedCommand(EonCore plugin, AdminGUI adminGUI) {
         this.plugin = plugin;
+        this.adminGUI = adminGUI;
         plugin.getCommand("muted").setExecutor(this);
     }
 
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-
         Player p = (Player) commandSender;
 
         if (p.hasPermission("eoncommands.muted")) {

@@ -11,7 +11,6 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +45,7 @@ public class FixCommand implements CommandExecutor {
                                 Damageable damageable = (Damageable) item.getItemMeta();
                                 try {
                                     damageable.setDamage(0);
-                                    item.setItemMeta((ItemMeta) damageable);
+                                    item.setItemMeta(damageable);
                                     p.sendMessage(Utils.chat(EonCore.prefix + "&7Item Repaired"));
                                     if (!p.hasPermission("eoncommands.fix.cooldown.immune")) {
                                         list.add(p);

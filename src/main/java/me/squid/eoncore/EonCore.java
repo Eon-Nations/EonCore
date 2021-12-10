@@ -2,6 +2,8 @@ package me.squid.eoncore;
 
 import me.squid.eoncore.commands.*;
 import me.squid.eoncore.listeners.*;
+import me.squid.eoncore.menus.AdminGUI;
+import me.squid.eoncore.sql.AdminSQLManager;
 import me.squid.eoncore.sql.MySQL;
 import me.squid.eoncore.sql.VotesManager;
 import me.squid.eoncore.tasks.AutoAnnouncementTask;
@@ -17,7 +19,7 @@ import java.util.Calendar;
 
 public class EonCore extends JavaPlugin {
 
-    public static final String prefix = "&7[&5&lEon Survival&7] &r";
+    public static final String prefix = "&7[&5&lEon Nations&7] &r";
     public MySQL sql;
     private static LuckPerms api;
 
@@ -31,6 +33,7 @@ public class EonCore extends JavaPlugin {
         runTasks();
         setupGameRules();
         connectToSQL();
+        registerModeration();
     }
 
     @Override
@@ -41,7 +44,6 @@ public class EonCore extends JavaPlugin {
     }
 
     public void registerCommands(){
-        new AdminGUICommand(this);
         new SurvivalCommand(this);
         new CreativeCommand(this);
         new SpectatorCommand(this);
@@ -90,20 +92,29 @@ public class EonCore extends JavaPlugin {
         new SudoCommand(this);
         new GrindstoneCommand(this);
         new DirectMessageCommand(this);
-        new MutedCommand(this);
         new WorldCommand(this);
+        new ClockCommand(this);
     }
 
     public void registerListeners() {
         new JoinLeaveListener(this);
-        new AdminMenuManager(this);
         new CommandSendListener(this);
         new GenericMenusListener(this);
         new DeathBackListener(this);
         new WildTpListener(this);
         new WarpsListener(this);
         new PhantomSpawnListener(this);
-        new ChatFormatListener(this);
+        new PortalListener(this);
+    }
+
+    public void registerModeration() {
+        AdminSQLManager adminSQLManager = new AdminSQLManager(this);
+        AdminGUI adminGUI = new AdminGUI(adminSQLManager);
+        new AdminMenuManager(this, adminSQLManager, adminGUI);
+        new ChatFormatListener(this, adminSQLManager);
+        new MutedCommand(this, adminGUI);
+        new AdminGUICommand(this, adminGUI);
+        new BanMuteCommand(this, adminSQLManager);
     }
 
     public void runTasks() {

@@ -32,7 +32,7 @@ public class TpaCommand implements CommandExecutor {
             if (args.length == 1) {
                 Player target = Bukkit.getPlayer(args[0]);
                 if (target != null) {
-                    if (!(requests.get(target.getUniqueId()) == p.getUniqueId())) {
+                    if (requests.get(target.getUniqueId()) != p.getUniqueId()) {
                         requests.put(target.getUniqueId(), p.getUniqueId());
                         p.sendMessage(Utils.chat(prefix + plugin.getConfig().getString("Tpa-Player-Message")));
                         target.sendMessage(Utils.chat(prefix + Objects.requireNonNull(plugin.getConfig().getString("Tpa-Target-Message"))

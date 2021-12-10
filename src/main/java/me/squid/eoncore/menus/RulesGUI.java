@@ -23,15 +23,15 @@ public class RulesGUI {
 
         Utils.createItem(inv, Material.BLUE_WOOL, 1, 1, "&6Indirect advertising is not allowed", "&f(2 Verbal Warnings -> 3h mute)");
         Utils.createItem(inv, Material.MAGENTA_WOOL, 1, 9, "&6Advertising other servers/products are not allowed", "&f(30d ban -> IP Ban)");
-        Utils.createItem(inv, Material.BLUE_WOOL, 1, 10, "&6No personal information in public chat", Utils.chat("&f(24h mute -> Perm Mute"));
-        Utils.createItem(inv, Material.PURPLE_WOOL, 1, 11, "&6Offensive language is not allowed", Utils.chat("&f(2 Verbal Warnings -> 24h mute)"));
-        Utils.createItem(inv, Material.LIGHT_BLUE_WOOL, 1, 12, "&6Bigotry/hate speech is not allowed", Utils.chat("&f(2 Verbal Warnings -> 24h mute)"));
-        Utils.createItem(inv, Material.MAGENTA_WOOL, 1, 13, "&6Misleading players is not allowed", Utils.chat("&f(Verbal Warning -> 1h mute)"));
-        Utils.createItem(inv, Material.ORANGE_WOOL, 1, 14, "&6Harassing players/staff members is not allowed", Utils.chat("&f(2 Verbal Warnings -> 1h mute)"));
-        Utils.createItem(inv, Material.GREEN_WOOL, 1, 15, "&6Excessive swearing is not allowed", Utils.chat("&f(Verbal Warning -> 5h mute)"));
-        Utils.createItem(inv, Material.GRAY_WOOL, 1, 16, "&6No political discussions/statements allowed", Utils.chat("&f(2 Verbal Warnings -> 3h mute)"));
-        Utils.createItem(inv, Material.RED_WOOL, 1, 17, "&6No sexual statements/discussions in chat", Utils.chat("&f(2 Verbal Warnings -> 3h mute)"));
-        Utils.createItem(inv, Material.GREEN_WOOL, 1, 18, "&6DoX and DDoS threats are now allowed", Utils.chat("&f(Perm Ban)"));
+        Utils.createItem(inv, Material.BLUE_WOOL, 1, 10, "&6No personal information in public chat", "&f(24h mute -> Perm Mute");
+        Utils.createItem(inv, Material.PURPLE_WOOL, 1, 11, "&6Offensive language is not allowed", "&f(2 Verbal Warnings -> 24h mute)");
+        Utils.createItem(inv, Material.LIGHT_BLUE_WOOL, 1, 12, "&6Bigotry/hate speech is not allowed", "&f(2 Verbal Warnings -> 24h mute)");
+        Utils.createItem(inv, Material.MAGENTA_WOOL, 1, 13, "&6Misleading players is not allowed", "&f(Verbal Warning -> 1h mute)");
+        Utils.createItem(inv, Material.ORANGE_WOOL, 1, 14, "&6Harassing players/staff members is not allowed", "&f(2 Verbal Warnings -> 1h mute)");
+        Utils.createItem(inv, Material.GREEN_WOOL, 1, 15, "&6Excessive swearing is not allowed", "&f(Verbal Warning -> 5h mute)");
+        Utils.createItem(inv, Material.GRAY_WOOL, 1, 16, "&6No political discussions/statements allowed", "&f(2 Verbal Warnings -> 3h mute)");
+        Utils.createItem(inv, Material.RED_WOOL, 1, 17, "&6No sexual statements/discussions in chat", "&f(2 Verbal Warnings -> 3h mute)");
+        Utils.createItem(inv, Material.GREEN_WOOL, 1, 18, "&6DoX and DDoS threats are now allowed", "&f(Perm Ban)");
 
         Utils.createItem(inv, Material.BARRIER, 1, 23, "&4Go Back");
         Utils.makeDummySlots(inv);

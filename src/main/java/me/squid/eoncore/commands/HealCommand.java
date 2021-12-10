@@ -8,15 +8,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Objects;
-
 public class HealCommand implements CommandExecutor {
 
     EonCore plugin;
 
     public HealCommand(EonCore plugin) {
         this.plugin = plugin;
-        Objects.requireNonNull(plugin.getCommand("heal")).setExecutor(this);
+        plugin.getCommand("heal").setExecutor(this);
     }
 
     @Override
@@ -35,7 +33,7 @@ public class HealCommand implements CommandExecutor {
                         target.setFoodLevel(20);
                         target.setHealth(20);
                         target.sendMessage(Utils.chat(plugin.getConfig().getString("Heal-Message")));
-                        p.sendMessage(Utils.chat(Objects.requireNonNull(plugin.getConfig().getString("Heal-Other")).replace("<player>", target.getName())));
+                        p.sendMessage(Utils.chat(plugin.getConfig().getString("Heal-Other").replace("<player>", target.getName())));
                     } else {
                         p.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Target-Null")));
                     }

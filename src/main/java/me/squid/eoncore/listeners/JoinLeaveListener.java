@@ -3,9 +3,8 @@ package me.squid.eoncore.listeners;
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.sql.VotesManager;
 import me.squid.eoncore.utils.Utils;
-import net.kyori.adventure.text.Component;
+import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,7 +15,6 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class JoinLeaveListener implements Listener {
 
@@ -33,19 +31,21 @@ public class JoinLeaveListener implements Listener {
     public void JoinMessage(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         if (p.hasPlayedBefore()){
-            e.joinMessage(Component.text(Utils.chat(plugin.getConfig().getString("Join-Message")
-            .replace("<player>", p.getName()))));
-            p.sendTitle(Utils.chat("&5&lEon Survival"), Utils.chat("&bWelcome back!"), 30, 30, 30);
+            Title title = Title.title(Utils.chat("&5&lEon Nations"), Utils.chat("&bWelcome back!"));
+            e.joinMessage(Utils.chat(plugin.getConfig().getString("Join-Message")
+            .replace("<player>", p.getName())));
+            p.showTitle(title);
             if (p.isOp()) {
                 p.setSleepingIgnored(true);
                 p.setAffectsSpawning(false);
             }
         } else {
-            e.joinMessage(Component.text(Utils.chat(Objects.requireNonNull(plugin.getConfig().getString("Welcome-Message"))
-            .replace("<player>", p.getName()))));
-            p.teleportAsync(getSpawnLoc());
+            Title title = Title.title(Utils.chat("&5&lEon Nations"), Utils.chat("&bWelcome " + p.getName()));
+            e.joinMessage(Utils.chat(plugin.getConfig().getString("Welcome-Message")
+                    .replace("<player>", p.getName())));
+            p.teleportAsync(Utils.getSpawnLocation());
             givePlayerStarterKit(p);
-            p.sendTitle(Utils.chat("&5&lEon Survival"), Utils.chat("&bWelcome " + p.getName()) + "!", 30, 30, 30);
+            p.showTitle(title);
         }
         createSQLPlayers(p);
     }
@@ -53,15 +53,8 @@ public class JoinLeaveListener implements Listener {
     @EventHandler
     public void LeaveMessage(PlayerQuitEvent e) {
         Player p = e.getPlayer();
-        e.setQuitMessage(Utils.chat(plugin.getConfig().getString("Leave-Message")
+        e.quitMessage(Utils.chat(plugin.getConfig().getString("Leave-Message")
         .replace("<player>", p.getName())));
-    }
-
-    private Location getSpawnLoc() {
-        double x = 0;
-        double y = 64;
-        double z = 0;
-        return new Location(Bukkit.getWorld("spawn"), x, y, z);
     }
 
     private void givePlayerStarterKit(Player p) {

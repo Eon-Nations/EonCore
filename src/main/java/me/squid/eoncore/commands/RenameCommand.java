@@ -2,6 +2,7 @@ package me.squid.eoncore.commands;
 
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.utils.Utils;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -53,6 +54,6 @@ public class RenameCommand implements CommandExecutor {
             sb.append(arg).append(" ");
         }
         String allArgs = sb.toString().trim();
-        return Utils.chat(allArgs);
+        return ChatColor.translateAlternateColorCodes('&', allArgs);
     }
 }

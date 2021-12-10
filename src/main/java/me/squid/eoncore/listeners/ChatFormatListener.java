@@ -2,7 +2,8 @@ package me.squid.eoncore.listeners;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import me.squid.eoncore.EonCore;
-import me.squid.eoncore.managers.CooldownManager;
+import me.squid.eoncore.managers.Cooldown;
+import me.squid.eoncore.sql.AdminSQLManager;
 import me.squid.eoncore.utils.Utils;
 import net.kyori.adventure.audience.MessageType;
 import net.kyori.adventure.text.Component;
@@ -17,7 +18,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 import java.util.HashMap;
@@ -25,28 +25,49 @@ import java.util.HashMap;
 public class ChatFormatListener implements Listener {
 
     EonCore plugin;
+    AdminSQLManager adminSQLManager;
     LuckPerms lp = EonCore.getPerms();
     HashMap<String, TextColor> groupColors;
+    private static boolean isChatLocked = false;
 
 
-    public ChatFormatListener(EonCore plugin) {
+    public ChatFormatListener(EonCore plugin, AdminSQLManager adminSQLManager) {
         this.plugin = plugin;
+        this.adminSQLManager = adminSQLManager;
         Bukkit.getPluginManager().registerEvents(this, plugin);
         initializeGroupColors();
     }
 
-    @SuppressWarnings("ConstantConditions")
-    @EventHandler (priority = EventPriority.HIGH)
+    @EventHandler
     public void onChatSend(AsyncChatEvent e) {
         Player p = e.getPlayer();
         Server server = Bukkit.getServer();
-        CooldownManager cooldownManager = AdminMenuManager.cooldownManager;
 
-        if (cooldownManager.hasCooldown(p.getUniqueId())) {
-            p.sendMessage(Utils.getPrefix("").append(Component.text("You are muted").color(TextColor.color(255, 0, 0))), MessageType.CHAT);
+        if (adminSQLManager.hasCooldown(p.getUniqueId())) {
+            Cooldown cooldown = adminSQLManager.getCooldown(p.getUniqueId());
+            if (!cooldown.isExpired()) {
+                long timeRemaining = cooldown.getTimeRemaining();
+                p.sendMessage(Utils.getPrefix("moderation").append(Component.text("You are muted for ").color(TextColor.color(255, 0, 0)))
+                        .append(Component.text(Utils.getFormattedTimeString(timeRemaining))), MessageType.CHAT);
+                for (Player staff : Bukkit.getOnlinePlayers()) {
+                    if (staff.hasPermission("eoncommands.staffchat"))
+                        staff.sendMessage(Utils.getPrefix("moderation")
+                                .append(Component.text(e.getPlayer().getName() + " said while muted: "))
+                                .append(e.originalMessage().color(TextColor.color(192, 192, 192))));
+                }
+                e.setCancelled(true);
+                return;
+            }
+        }
+
+        if (!p.hasPermission("eoncommands.staffchat") && isChatLocked) {
+            p.sendMessage(Utils.getPrefix("moderation")
+                    .append(Component.text("Chat is locked. Please wait while we resolve the conflict. Thank you for your patience")
+                            .color(TextColor.color(255, 0, 0))));
             e.setCancelled(true);
             return;
         }
+
         // Reaching into LuckPerms API to get the Prefix for the Player that has chat
         User user = lp.getUserManager().getUser(p.getUniqueId());
         ImmutableContextSet contextSet = lp.getContextManager().getContext(user).orElseGet(lp.getContextManager()::getStaticContext);
@@ -55,6 +76,13 @@ public class ChatFormatListener implements Listener {
 
         if (prefix.equals("default")) prefix = "member";
 
+        /*
+        e.renderer().render(p, Component.text("[").color(TextColor.color(128, 128, 128))
+                        .append(Component.text(StringUtils.capitalize(prefix.toLowerCase()))
+                                .color(groupColors.get(prefix.toLowerCase())))
+                        .append(Component.text("] ").append(p.displayName())).append(Component.text(": ")),
+                e.originalMessage().color(TextColor.color(192, 192, 192)), server);
+    */
         Component message = Component.text("[").color(TextColor.color(128, 128, 128))
                 .append(Component.text(StringUtils.capitalize(prefix.toLowerCase()))
                         .color(groupColors.get(prefix.toLowerCase())))
@@ -68,15 +96,23 @@ public class ChatFormatListener implements Listener {
     private void initializeGroupColors() {
         groupColors = new HashMap<>();
         groupColors.put("member", TextColor.color(224, 224, 224));
-        groupColors.put("traveler", TextColor.color(0, 128, 255));
-        groupColors.put("explorer", TextColor.color(127, 0, 255));
-        groupColors.put("ranger", TextColor.color(0, 204, 0));
-        groupColors.put("spaceman", TextColor.color(102, 178, 255));
+        groupColors.put("traveler", TextColor.color(0, 255, 255));
+        groupColors.put("explorer", TextColor.color(0, 102, 204));
+        groupColors.put("ranger", TextColor.color(102, 0, 204));
+        groupColors.put("spaceman", TextColor.color(255, 255, 0));
         groupColors.put("astronaut", TextColor.color(255, 128, 0));
-        groupColors.put("mythic", TextColor.color(0, 153, 0));
+        groupColors.put("mythic", TextColor.color(255, 0, 0));
         groupColors.put("builder", TextColor.color(0, 204, 0));
         groupColors.put("mod", TextColor.color(102, 0, 204));
         groupColors.put("admin", TextColor.color(204, 0, 0));
         groupColors.put("owner", TextColor.color(0, 128, 255));
+    }
+
+    public static void setChatLocked(boolean state) {
+        isChatLocked = state;
+    }
+
+    public static boolean isChatLocked() {
+        return isChatLocked;
     }
 }

@@ -172,3 +172,12 @@ commands:
   worldlist:
     description: Teleport to worlds
     permission: eoncommands.world
+  clock:
+    description: Chat lock
+    permission: eoncommands.clock
+  ban:
+    description: Ban player
+    permission: eoncommands.ban
+  mute:
+    description: Mute player
+    permission: eoncommands.mute

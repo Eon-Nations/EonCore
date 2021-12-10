@@ -2,6 +2,7 @@ package me.squid.eoncore.commands;
 
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.utils.Utils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -11,7 +12,6 @@ import org.bukkit.entity.Player;
 public class KickCommand implements CommandExecutor {
 
     EonCore plugin;
-    String message;
 
     @SuppressWarnings("ConstantConditions")
     public KickCommand(EonCore plugin) {
@@ -25,9 +25,9 @@ public class KickCommand implements CommandExecutor {
         if (args.length > 2) {
             Player target = Bukkit.getPlayer(args[0]);
             args[0] = "";
-            message = getMessage(args);
+            Component message = getMessage(args);
             if (target != null) {
-                target.kickPlayer(Utils.chat(message));
+                target.kick(message);
             } else {
                 sender.sendMessage(Utils.chat(plugin.getConfig().getString("Target-Null")));
             }
@@ -37,7 +37,7 @@ public class KickCommand implements CommandExecutor {
         return true;
     }
 
-    private String getMessage(String[] args) {
+    private Component getMessage(String[] args) {
         StringBuilder sb = new StringBuilder();
         for (String arg : args) {
             sb.append(arg).append(" ");

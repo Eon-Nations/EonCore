@@ -9,15 +9,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
-import java.util.Objects;
-
 public class InvseeCommand implements CommandExecutor {
 
     EonCore plugin;
 
     public InvseeCommand(EonCore plugin) {
         this.plugin = plugin;
-        Objects.requireNonNull(plugin.getCommand("invsee")).setExecutor(this);
+        plugin.getCommand("invsee").setExecutor(this);
     }
 
     @Override

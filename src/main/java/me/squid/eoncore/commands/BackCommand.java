@@ -8,15 +8,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Objects;
-
 public class BackCommand implements CommandExecutor {
 
     EonCore plugin;
 
     public BackCommand(EonCore plugin) {
         this.plugin = plugin;
-        Objects.requireNonNull(plugin.getCommand("back")).setExecutor(this);
+        plugin.getCommand("back").setExecutor(this);
     }
 
     @Override
@@ -24,8 +22,7 @@ public class BackCommand implements CommandExecutor {
 
         if (sender instanceof Player) {
             Player p = (Player) sender;
-            boolean hasCooldown;
-            hasCooldown = !p.hasPermission("eoncommands.back.cooldown.bypass");
+            boolean hasCooldown = !p.hasPermission("eoncommands.back.cooldown.bypass");
             Bukkit.getPluginManager().callEvent(new BackToDeathLocationEvent(p, hasCooldown));
         }
         return true;
