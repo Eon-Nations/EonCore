@@ -105,6 +105,7 @@ public class EonCore extends JavaPlugin {
         new DirectMessageCommand(this);
         new WorldCommand(this);
         new ClockCommand(this);
+        new UptimeCommand(this);
     }
 
     public void registerListeners() {

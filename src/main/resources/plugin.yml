@@ -181,3 +181,6 @@ commands:
   mute:
     description: Mute player
     permission: eoncommands.mute
+  uptime:
+    description: Gets the server uptime in a friendly manner
+    permission: eoncommands.uptime
