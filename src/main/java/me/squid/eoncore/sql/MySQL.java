@@ -27,7 +27,7 @@ public class MySQL {
     public void connectToDatabase() throws SQLException {
         if (!isConnected()) {
             connection = DriverManager.getConnection("jdbc:mysql://" + IP + "/" + database + "?useSSL=false", user, password);
-            if (isConnected()) plugin.getLogger().info("Database has succesfully connected");
+            if (isConnected()) plugin.getLogger().info("Database has successfully connected");
         }
     }
 

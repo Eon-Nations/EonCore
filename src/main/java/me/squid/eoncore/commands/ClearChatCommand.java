@@ -8,20 +8,17 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Objects;
-
 public class ClearChatCommand implements CommandExecutor {
 
     EonCore plugin;
 
     public ClearChatCommand(EonCore plugin) {
         this.plugin = plugin;
-        Objects.requireNonNull(plugin.getCommand("clearchat")).setExecutor(this);
+        plugin.getCommand("clearchat").setExecutor(this);
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
         for (Player online : Bukkit.getOnlinePlayers()) {
             if (!online.hasPermission("eoncommands.clearchat")) {
                 for (int i = 0; i < 100; i++) { online.sendMessage(""); }

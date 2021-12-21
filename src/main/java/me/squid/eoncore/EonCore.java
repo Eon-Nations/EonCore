@@ -9,13 +9,24 @@ import me.squid.eoncore.sql.VotesManager;
 import me.squid.eoncore.tasks.AutoAnnouncementTask;
 import me.squid.eoncore.utils.Utils;
 import me.squid.eoncore.utils.VoidChunkGenerator;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import org.bukkit.*;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.Async;
 
 import java.sql.SQLException;
+import java.time.Duration;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class EonCore extends JavaPlugin {
 
@@ -126,12 +137,44 @@ public class EonCore extends JavaPlugin {
                new Location(Bukkit.getWorld("spawn"), -455, 73, -300),
                new Location(Bukkit.getWorld("spawn"), -430, 94, -294)).runTaskTimerAsynchronously(this, 3000L, 24000L);
          */
+        runRestartTask();
+    }
+
+    public void runRestartTask() {
+        Runnable restartTask = () -> {
+            Bukkit.getServer().sendMessage(Utils.getPrefix("nations").append(Utils.chat("Restarting server!")));
+            Bukkit.getScheduler().runTaskLater(this, Bukkit::shutdown, 40L);
+        };
+        Runnable messageTask = () -> {
+            Bukkit.getServer().sendMessage(Utils.getPrefix("nations").append(Utils.chat("Restarting Server in 5 minutes!")));
+        };
+
+        runScheduledTask(messageTask, true);
+        runScheduledTask(restartTask, false);
+    }
+
+    private void runScheduledTask(Runnable runnable, boolean messageTask) {
+        ZonedDateTime now = ZonedDateTime.now(ZoneId.of("UTC"));
+        ZonedDateTime restartTime = now.withHour(4).withMinute(0).withSecond(0);
+
+        if (now.compareTo(restartTime) > 0)
+            restartTime = restartTime.plusDays(1);
+
+        if (messageTask)
+            restartTime = restartTime.minusMinutes(5);
+
+        Duration duration = Duration.between(now, restartTime);
+        long delay = duration.getSeconds();
+
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        scheduler.schedule(runnable, delay, TimeUnit.SECONDS);
     }
 
     public void disableRecipes() {
-        Utils.removeRecipe(Material.HOPPER);
-        Utils.removeRecipe(Material.ITEM_FRAME);
-        Utils.removeRecipe(Material.TNT);
+        List<Material> bannedMats = new ArrayList<>(3){{add(Material.HOPPER); add(Material.ITEM_FRAME); add(Material.TNT);}};
+        for (Material material : bannedMats) {
+            Utils.removeRecipe(material);
+        }
     }
 
     private void loadWorlds() {

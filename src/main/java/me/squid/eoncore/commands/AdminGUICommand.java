@@ -24,11 +24,7 @@ public class AdminGUICommand implements CommandExecutor {
 
         if (sender instanceof Player){
             Player p = (Player) sender;
-            if (p.hasPermission(getPermissionNode())){
-                p.openInventory(adminGUI.GUI());
-            } else {
-                p.sendMessage(Utils.chat(plugin.getConfig().getString("No-Perms")));
-            }
+            p.openInventory(adminGUI.GUI());
         }
 
         return true;

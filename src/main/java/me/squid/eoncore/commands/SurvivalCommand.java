@@ -25,21 +25,18 @@ public class SurvivalCommand implements CommandExecutor{
 
         if (sender instanceof Player){
             Player p = (Player) sender;
-            if (p.hasPermission(getPermissionNode())){
-                if (args.length == 0) {
-                    p.setGameMode(GameMode.SURVIVAL);
-                    p.sendMessage(Utils.chat(plugin.getConfig().getString("Survival-Message")));
-                } else if (args.length == 1){
-                    Player target = Bukkit.getPlayer(args[0]);
-                    if (target != null && target.getGameMode() != GameMode.SURVIVAL && p.hasPermission(getOthersPermNode())) {
-                        target.setGameMode(GameMode.SURVIVAL);
-                        target.sendMessage(Utils.chat(plugin.getConfig().getString("Survival-Message")));
-                        p.sendMessage(Utils.chat(Objects.requireNonNull(plugin.getConfig().getString("Survival-Other"))
-                        .replace("<target>", target.getName())));
-                    }
+            if (args.length == 0) {
+                p.setGameMode(GameMode.SURVIVAL);
+                p.sendMessage(Utils.getPrefix("nations").append(Utils.chat(plugin.getConfig().getString("Survival-Message"))));
+            } else if (args.length == 1 && p.hasPermission(getOthersPermNode())) {
+                Player target = Bukkit.getPlayer(args[0]);
+                if (target != null) {
+                    target.setGameMode(GameMode.SURVIVAL);
+                    target.sendMessage(Utils.getPrefix("nations")
+                            .append(Utils.chat(plugin.getConfig().getString("Survival-Message"))));
+                    p.sendMessage(Utils.getPrefix("nations").append(Utils.chat(plugin.getConfig().getString("Survival-Other")
+                            .replace("<target>", target.getName()))));
                 }
-            } else {
-                p.sendMessage(Utils.chat(plugin.getConfig().getString("No-Perms")));
             }
         }
 

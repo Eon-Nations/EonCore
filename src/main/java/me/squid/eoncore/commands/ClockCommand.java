@@ -33,7 +33,6 @@ public class ClockCommand implements CommandExecutor {
                 commandSender.sendMessage("Chat lock successful");
             }
         } else ChatFormatListener.setChatLocked(false);
-
         return true;
     }
 }
