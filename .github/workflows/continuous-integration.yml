@@ -1,11 +1,11 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI/CD
+name: Continuous Integration
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  push:
+  # Triggers the workflow on pull request events but only for the main branch
+  pull_request:
     branches: [ main ]
 
   # Allows you to run this workflow manually from the Actions tab
@@ -14,22 +14,25 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build_google:
+  build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Maven Builder for Spigot Plugin
-        uses: JIN-InI/Maven-Builder-for-Spigot-Plugin@1.0.0
-      - name: Authenticate to Google Cloud
-        uses: mathieu-bour/setup-gcloud@1.3.1
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+        
+      - name: Setup Java
+        uses: actions/setup-java@v2
         with:
-          service-account-key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
-          project: pure-courier-329320
-          configure-docker: true
-      - name: Upload To Server
-        run: ls ~
+          java-version: 17
+          cache: 'maven'
+          distribution: 'zulu'
+
+      - name: Build Project
+        run: mvn -B package -f pom.xml
+          
 
       
