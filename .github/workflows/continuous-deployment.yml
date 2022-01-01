@@ -32,18 +32,9 @@ jobs:
 
       - name: Build Project
         run: mvn -B package -f pom.xml
-      
-      - id: auth
-        name: GCloud Authentication
-        uses: google-github-actions/auth@v0
-        with:
-          credentials_json: ${{ secrets.GCLOUD_AUTH }}
-      
-      - name: 'Set up Cloud SDK'
-        uses: 'google-github-actions/setup-gcloud@v0'
-      
-      - name: Debug - See who is logged in
-        run: gcloud config get-value account
+        
+      - name: Private Key to File
+        run: cat ${{ secrets.MAIN_SERVER_PRIV_KEY }} >>action-key
       
       - name: Upload JAR to Server
-        run: gcloud compute scp target/EonCore-1.0.jar ubuntu@main-server:/home/mceonsurvival/papermc/plugins --zone us-central1-a
+        run: scp -i action-key target/EonCore-1.0.jar mceonsurvival@main-server:~/papermc/plugins
