@@ -33,8 +33,10 @@ jobs:
       - name: Build Project
         run: mvn -B package -f pom.xml
         
-      - name: Private Key to File
-        run: echo ${{ secrets.MAIN_SERVER_PRIV_KEY }} >action-key
+      - name: Decrypt Private SSH Key
+        run: ./.github/decrypt.sh
+        env:
+          DECRYPTION_PASSWORD: ${{ secrets.DECRYPTION_PASSWORD }}
       
       - name: Upload JAR to Server
-        run: scp -i action-key target/EonCore-1.0.jar mceonsurvival@main-server:~/papermc/plugins
+        run: scp -i private-key/action-key target/EonCore-1.0.jar mceonsurvival@main-server:~/papermc/plugins
