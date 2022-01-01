@@ -42,5 +42,8 @@ jobs:
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v0'
       
+      - name: Debug - See who is logged in
+        run: gcloud config get-value account
+      
       - name: Upload JAR to Server
         run: gcloud compute scp target/EonCore-1.0.jar mceonsurvival@main-server:~/papermc/plugins --zone us-central1-a
