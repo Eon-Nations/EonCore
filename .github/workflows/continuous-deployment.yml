@@ -34,12 +34,9 @@ jobs:
         run: mvn -B package -f pom.xml
         
       - name: Decrypt Private SSH Key
-        run: gpg --quiet --batch --yes --decrypt --passphrase="$DECRYPTION_PASSWORD" src/main/resources/action-key.gpg
+        run: gpg --quiet --batch --yes --decrypt --passphrase="$DECRYPTION_PASSWORD" --output action-key src/main/resources/action-key.gpg
         env:
           DECRYPTION_PASSWORD: ${{ secrets.DECRYPTION_PASSWORD }}
-
-      - name: ls command
-        run: ls
       
       - name: Upload JAR to Server
-        run: scp -i action-key target/EonCore-1.0.jar mceonsurvival@main-server:~/papermc/plugins
+        run: scp -i action-key target/EonCore-1.0.jar mceonsurvival@34.132.82.48:~/papermc/plugins
