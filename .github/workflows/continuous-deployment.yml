@@ -33,8 +33,11 @@ jobs:
       - name: Build Project
         run: mvn -B package -f pom.xml
         
+      - name: Make Decryption Script Executable
+        run: chmod +x $HOME/.github/decrypt.sh
+        
       - name: Decrypt Private SSH Key
-        run: ./.github/decrypt.sh
+        run: ./$HOME/.github/decrypt.sh
         env:
           DECRYPTION_PASSWORD: ${{ secrets.DECRYPTION_PASSWORD }}
       
