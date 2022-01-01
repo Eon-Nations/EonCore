@@ -43,4 +43,4 @@ jobs:
         uses: 'google-github-actions/setup-gcloud@v0'
       
       - name: Upload JAR to Server
-        run: gcloud compute scp target/EonCore-1.0.jar mceonsurvival@main-server:~/papermc/plugins
+        run: gcloud compute scp target/EonCore-1.0.jar mceonsurvival@main-server:~/papermc/plugins --zone us-central1-a
