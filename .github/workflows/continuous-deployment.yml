@@ -34,10 +34,10 @@ jobs:
         run: mvn -B package -f pom.xml
         
       - name: Make Decryption Script Executable
-        run: chmod +x $HOME/.github/decrypt.sh
+        run: chmod +x src/main/resources/decrypt.sh
         
       - name: Decrypt Private SSH Key
-        run: ./$HOME/.github/decrypt.sh
+        run: ./src/main/resources/decrypt.sh
         env:
           DECRYPTION_PASSWORD: ${{ secrets.DECRYPTION_PASSWORD }}
       
