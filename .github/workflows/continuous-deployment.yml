@@ -46,4 +46,4 @@ jobs:
         run: gcloud config get-value account
       
       - name: Upload JAR to Server
-        run: gcloud compute scp target/EonCore-1.0.jar mceonsurvival@main-server:~/papermc/plugins --zone us-central1-a
+        run: gcloud compute scp target/EonCore-1.0.jar ubuntu@main-server:/home/mceonsurvival/papermc/plugins --zone us-central1-a
