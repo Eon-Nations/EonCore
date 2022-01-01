@@ -32,16 +32,14 @@ jobs:
 
       - name: Build Project
         run: mvn -B package -f pom.xml
-      - name: ls command
-        run: ls src/main/resources
-        
-      - name: Make Decryption Script Executable
-        run: chmod +x src/main/resources/decrypt.sh
         
       - name: Decrypt Private SSH Key
-        run: ./src/main/resources/decrypt.sh
+        run: gpg --quiet --batch --yes --decrypt --passphrase="$DECRYPTION_PASSWORD" src/main/resources/action-key.gpg
         env:
           DECRYPTION_PASSWORD: ${{ secrets.DECRYPTION_PASSWORD }}
+
+      - name: ls command
+        run: ls
       
       - name: Upload JAR to Server
-        run: scp -i private-key/action-key target/EonCore-1.0.jar mceonsurvival@main-server:~/papermc/plugins
+        run: scp -i action-key target/EonCore-1.0.jar mceonsurvival@main-server:~/papermc/plugins
