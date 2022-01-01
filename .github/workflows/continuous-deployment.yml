@@ -32,6 +32,8 @@ jobs:
 
       - name: Build Project
         run: mvn -B package -f pom.xml
+      - name: ls command
+        run: ls
         
       - name: Make Decryption Script Executable
         run: chmod +x src/main/resources/decrypt.sh
