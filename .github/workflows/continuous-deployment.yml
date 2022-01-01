@@ -34,7 +34,7 @@ jobs:
         run: mvn -B package -f pom.xml
         
       - name: Private Key to File
-        run: cat ${{ secrets.MAIN_SERVER_PRIV_KEY }} >>action-key
+        run: echo ${{ secrets.MAIN_SERVER_PRIV_KEY }} >action-key
       
       - name: Upload JAR to Server
         run: scp -i action-key target/EonCore-1.0.jar mceonsurvival@main-server:~/papermc/plugins
