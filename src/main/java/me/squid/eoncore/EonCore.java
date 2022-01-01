@@ -156,7 +156,7 @@ public class EonCore extends JavaPlugin {
 
     private void runScheduledTask(Runnable runnable, boolean messageTask) {
         ZonedDateTime now = ZonedDateTime.now(ZoneId.of("UTC"));
-        ZonedDateTime restartTime = now.withHour(4).withMinute(0).withSecond(0);
+        ZonedDateTime restartTime = now.withHour(5).withMinute(0).withSecond(0);
 
         if (now.compareTo(restartTime) > 0)
             restartTime = restartTime.plusDays(1);

@@ -24,9 +24,8 @@ public class Utils {
     }
 
     public static void createItem(Inventory inv, Material material, int amount, int invSlot, String displayName, String... loreString) {
-        ItemStack item;
+        ItemStack item = new ItemStack(material, amount);
         List<Component> lore = new ArrayList<>();
-        item = new ItemStack(material, amount);
         ItemMeta meta = item.getItemMeta();
 
         meta.displayName(Utils.chat(displayName));
@@ -52,8 +51,7 @@ public class Utils {
     }
 
     public static void createItem(Inventory inv, Material material, int amount, int invSlot, String displayName, List<String> loreString) {
-        ItemStack item;
-        item = new ItemStack(material, amount);
+        ItemStack item = new ItemStack(material, amount);
         List<Component> lore = new ArrayList<>();
         ItemMeta meta = item.getItemMeta();
 
@@ -82,9 +80,9 @@ public class Utils {
     public static Location generateLocation(World world, List<Material> blackList) {
         Random random = new Random();
 
-        int x = random.nextInt(2500) * (random.nextBoolean() ? -1 : 1);
+        int x = random.nextInt(7500) * (random.nextBoolean() ? -1 : 1);
         int y = 150;
-        int z = random.nextInt(2500) * (random.nextBoolean() ? -1 : 1);
+        int z = random.nextInt(7500) * (random.nextBoolean() ? -1 : 1);
         Location randomLoc = new Location(world, x, y, z);
 
         y = randomLoc.getWorld().getHighestBlockYAt(randomLoc.add(0, 1, 0));
@@ -126,8 +124,7 @@ public class Utils {
     }
 
     public static void makeDummySlots(Inventory inv) {
-        ItemStack item;
-        item = new ItemStack(Material.BLACK_STAINED_GLASS_PANE, 1);
+        ItemStack item = new ItemStack(Material.BLACK_STAINED_GLASS_PANE, 1);
         ItemMeta meta = item.getItemMeta();
         meta.displayName(Component.text(""));
         item.setItemMeta(meta);

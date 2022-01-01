@@ -184,3 +184,6 @@ commands:
   uptime:
     description: Gets the server uptime in a friendly manner
     permission: eoncommands.uptime
+  findblock:
+    description: Found the block
+    permission: eoncommands.findblock
