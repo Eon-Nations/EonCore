@@ -94,7 +94,6 @@ public class EonCore extends JavaPlugin {
         new RenameCommand(this);
         new VoteRanksCommand(this);
         new HatCommand(this);
-        new RanksCommand(this);
         new PWeatherCommand(this);
         new PTimeCommand(this);
         new HelpCommand(this);
@@ -146,9 +145,7 @@ public class EonCore extends JavaPlugin {
             Bukkit.getServer().sendMessage(Utils.getPrefix("nations").append(Utils.chat("Restarting server!")));
             Bukkit.getScheduler().runTaskLater(this, Bukkit::shutdown, 40L);
         };
-        Runnable messageTask = () -> {
-            Bukkit.getServer().sendMessage(Utils.getPrefix("nations").append(Utils.chat("Restarting Server in 5 minutes!")));
-        };
+        Runnable messageTask = () -> Bukkit.getServer().sendMessage(Utils.getPrefix("nations").append(Utils.chat("Restarting Server in 5 minutes!")));
 
         runScheduledTask(messageTask, true);
         runScheduledTask(restartTask, false);
@@ -182,6 +179,7 @@ public class EonCore extends JavaPlugin {
         new WorldCreator("spawn_void").generator(new VoidChunkGenerator()).createWorld();
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void setupGameRules() {
         for (World world : Bukkit.getWorlds()) {
             world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
