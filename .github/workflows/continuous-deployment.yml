@@ -23,6 +23,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout Repo
         uses: actions/checkout@v2
+
       - name: Setup Java
         uses: actions/setup-java@v2
         with:
@@ -32,11 +33,16 @@ jobs:
 
       - name: Build Project
         run: mvn -B package -f pom.xml
-        
-      - name: Decrypt Private SSH Key
-        run: gpg --quiet --batch --yes --decrypt --passphrase="$DECRYPTION_PASSWORD" --output action-key src/main/resources/action-key.gpg
+
+      - name: Retrieve SSH key
+        run: |
+          mkdir ~/.ssh/
+          echo "$MAIN_SERVER_PRIV_KEY" >action-key
+          sudo chmod 600 action-key
+          echo "$MAIN_SERVER_KNOWN_HOSTS" > ~/.ssh/known_hosts
         env:
-          DECRYPTION_PASSWORD: ${{ secrets.DECRYPTION_PASSWORD }}
+            MAIN_SERVER_PRIV_KEY: ${{ secrets.MAIN_SERVER_PRIV_KEY }}
+            MAIN_SERVER_KNOWN_HOSTS: ${{ secrets.MAIN_SERVER_KNOWN_HOSTS }}    
       
       - name: Upload JAR to Server
         run: scp -i action-key target/EonCore-1.0.jar mceonsurvival@34.132.82.48:~/papermc/plugins
