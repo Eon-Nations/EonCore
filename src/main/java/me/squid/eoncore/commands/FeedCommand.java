@@ -13,29 +13,29 @@ import org.bukkit.entity.Player;
 public class FeedCommand implements CommandExecutor {
 
     EonCore plugin;
-    CooldownManager cooldownManager = new CooldownManager();
+    CooldownManager cooldownManager;
 
     public FeedCommand(EonCore plugin) {
         this.plugin = plugin;
+        cooldownManager = new CooldownManager();
         plugin.getCommand("feed").setExecutor(this);
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if (sender instanceof Player) {
-            Player p = (Player) sender;
+        if (sender instanceof Player p) {
             if (args.length == 0) {
                 if (!p.hasPermission(getImmuneCooldownNode())) {
                     int minutes = p.hasPermission("eoncommands.feed.5") ? 5 : 10;
+                    plugin.getLogger().info("Feed Minutes: " + minutes);
                     Cooldown cooldown = new Cooldown(p.getUniqueId(), minutes * 60L * 1000L, System.currentTimeMillis());
                     if (!cooldownManager.hasCooldown(p.getUniqueId())) {
                         cooldownManager.add(cooldown);
                         p.sendMessage(Utils.chat(plugin.getConfig().getString("Feed-Message")));
                         p.setFoodLevel(20);
                         p.setSaturation(10);
-                    } else
-                        p.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Feed-Cooldown-Message")));
+                    } else p.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Feed-Cooldown-Message")));
                 } else {
                     p.sendMessage(Utils.chat(plugin.getConfig().getString("Feed-Message")));
                     p.setFoodLevel(20);
@@ -57,10 +57,6 @@ public class FeedCommand implements CommandExecutor {
             }
         }
         return true;
-    }
-
-    public String getPermissionNode() {
-        return "eoncommands.feed";
     }
 
     public String getOthersPermNode(){

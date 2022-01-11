@@ -14,6 +14,8 @@ import net.kyori.adventure.text.format.TextColor;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import org.bukkit.*;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Async;
 
@@ -23,6 +25,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -31,7 +34,6 @@ import java.util.concurrent.TimeUnit;
 public class EonCore extends JavaPlugin {
 
     public static final String prefix = "&7[&5&lEon Nations&7] &r";
-    public MySQL sql;
     private static LuckPerms api;
 
     @Override
@@ -43,7 +45,6 @@ public class EonCore extends JavaPlugin {
         disableRecipes();
         runTasks();
         setupGameRules();
-        connectToSQL();
         registerModeration();
     }
 
@@ -51,7 +52,6 @@ public class EonCore extends JavaPlugin {
     public void onDisable() {
         saveConfig();
         Bukkit.getScheduler().cancelTasks(this);
-        sql.disconnect();
     }
 
     public void registerCommands(){
@@ -142,7 +142,8 @@ public class EonCore extends JavaPlugin {
 
     public void runRestartTask() {
         Runnable restartTask = () -> {
-            Bukkit.getServer().sendMessage(Utils.getPrefix("nations").append(Utils.chat("Restarting server!")));
+            Bukkit.getOnlinePlayers().forEach(
+                    player -> player.kick(Utils.getPrefix("nations").append(Utils.chat("Restarting server!")), PlayerKickEvent.Cause.PLUGIN));
             Bukkit.getScheduler().runTaskLater(this, Bukkit::shutdown, 40L);
         };
         Runnable messageTask = () -> Bukkit.getServer().sendMessage(Utils.getPrefix("nations").append(Utils.chat("Restarting Server in 5 minutes!")));
@@ -195,22 +196,5 @@ public class EonCore extends JavaPlugin {
 
     public static LuckPerms getPerms() {
         return LuckPermsProvider.get();
-    }
-
-    private void connectToSQL() {
-        sql = new MySQL(this);
-        try {
-            sql.connectToDatabase();
-        } catch (SQLException throwables) {
-            getLogger().warning("SQL Database connection has failed.");
-        }
-        if (sql.isConnected()) {
-            VotesManager votesManager = new VotesManager(this);
-            votesManager.createTable();
-            if (Calendar.DAY_OF_MONTH == 1) {
-                votesManager.resetMonthlyVotes();
-                votesManager.dumpToFile();
-            }
-        }
     }
 }
