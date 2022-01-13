@@ -1,6 +1,6 @@
 package me.squid.eoncore.menus;
 
-import me.squid.eoncore.sql.AdminSQLManager;
+import me.squid.eoncore.sql.MutedManager;
 import me.squid.eoncore.utils.Utils;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang.StringUtils;
@@ -18,10 +18,10 @@ import java.util.UUID;
 
 public class AdminGUI {
 
-    AdminSQLManager adminSQLManager;
+    MutedManager mutedManager;
 
-    public AdminGUI(AdminSQLManager adminSQLManager) {
-        this.adminSQLManager = adminSQLManager;
+    public AdminGUI(MutedManager mutedManager) {
+        this.mutedManager = mutedManager;
     }
 
     public Inventory GUI () {
@@ -160,7 +160,7 @@ public class AdminGUI {
     }
 
     public Inventory getMutedInventory() {
-        List<UUID> uuids = adminSQLManager.getAllUUIDs();
+        List<UUID> uuids = mutedManager.getAllUUIDs();
         Inventory inv = Bukkit.createInventory(null, 54, Utils.chat("&b&lMuted Chat"));
 
         for (int i = 0; i < uuids.size(); i++) {
@@ -174,7 +174,7 @@ public class AdminGUI {
 
             List<Component> lore = new ArrayList<>();
             skullMeta.displayName(Utils.chat("&b" + p.getName()));
-            lore.add(Utils.chat("&b" + adminSQLManager.getCooldown(p.getUniqueId()).getTimeRemaining() / 60000));
+            lore.add(Utils.chat("&b" + mutedManager.getCooldown(p.getUniqueId()).getTimeRemaining() / 60000));
             lore.add(Utils.chat("&bUUID: " + p.getUniqueId()));
             skullMeta.lore(lore);
             head.setItemMeta(skullMeta);

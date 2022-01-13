@@ -2,7 +2,7 @@ package me.squid.eoncore.commands;
 
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.managers.Cooldown;
-import me.squid.eoncore.sql.AdminSQLManager;
+import me.squid.eoncore.sql.MutedManager;
 import me.squid.eoncore.utils.Utils;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang.StringUtils;
@@ -19,11 +19,11 @@ import java.util.Date;
 public class BanMuteCommand implements CommandExecutor {
 
     EonCore plugin;
-    AdminSQLManager adminSQLManager;
+    MutedManager mutedManager;
 
-    public BanMuteCommand(EonCore plugin, AdminSQLManager adminSQLManager) {
+    public BanMuteCommand(EonCore plugin, MutedManager mutedManager) {
         this.plugin = plugin;
-        this.adminSQLManager = adminSQLManager;
+        this.mutedManager = mutedManager;
         plugin.getCommand("ban").setExecutor(this);
         plugin.getCommand("mute").setExecutor(this);
     }
@@ -60,7 +60,7 @@ public class BanMuteCommand implements CommandExecutor {
 
                     plugin.getLogger().info("Amount After Multiplication: " + amount);
                     boolean isMute = command.getName().equals("mute");
-                    if (isMute) adminSQLManager.addCooldown(new Cooldown(playerToBan.getUniqueId(), amount, System.currentTimeMillis()));
+                    if (isMute) mutedManager.addCooldown(new Cooldown(playerToBan.getUniqueId(), amount, System.currentTimeMillis()));
                     else playerToBan.banPlayer(reason, new Date(amount + System.currentTimeMillis()), p.getName(), true);
 
                     if (isMute && playerToBan.getPlayer() != null)

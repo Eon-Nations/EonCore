@@ -14,19 +14,18 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-public class AdminSQLManager implements Listener {
+public class MutedManager implements Listener {
 
     EonCore plugin;
     LuckPerms luckPerms;
     CooldownManager cooldownManager = new CooldownManager();
 
-    public AdminSQLManager(EonCore plugin) {
+    public MutedManager(EonCore plugin) {
         this.plugin = plugin;
         this.luckPerms = LuckPermsProvider.get();
         Bukkit.getPluginManager().registerEvents(this, plugin);
@@ -43,10 +42,16 @@ public class AdminSQLManager implements Listener {
         }
     }
 
-    public Cooldown loadPlayer(UUID uuid) {
+    public void loadPlayer(UUID uuid) {
         if (hasMute(uuid)) {
-            
-        } else return null;
+            luckPerms.getUserManager().loadUser(uuid).thenAcceptAsync(user -> {
+                 MetaNode mutedNode = user.getNodes(NodeType.META).stream().filter(node -> node.getMetaKey().equals("muted"))
+                         .findFirst().orElseThrow();
+                 String[] cooldownString = mutedNode.getMetaValue().split(";");
+                 Cooldown cooldown = new Cooldown(uuid, Long.parseLong(cooldownString[0]), Long.parseLong(cooldownString[1]));
+                 cooldownManager.add(cooldown);
+            });
+        }
     }
 
     public void addCooldown(Cooldown cooldown) {
@@ -55,9 +60,8 @@ public class AdminSQLManager implements Listener {
 
     public void removePlayer(UUID uuid) {
         cooldownManager.remove(uuid);
-        luckPerms.getUserManager().modifyUser(uuid, user -> {
-            user.data().clear(NodeType.META.predicate(node -> node.getMetaKey().equals("muted")));
-        });
+        luckPerms.getUserManager().modifyUser(uuid,
+                user -> user.data().clear(NodeType.META.predicate(node -> node.getMetaKey().equals("muted"))));
     }
 
     public Cooldown getCooldown(UUID uuid) {
@@ -86,10 +90,7 @@ public class AdminSQLManager implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
-        if (hasMute(p.getUniqueId())) {
-            Cooldown cooldown = loadPlayer(p.getUniqueId());
-            cooldownManager.add(cooldown);
-        }
+        loadPlayer(p.getUniqueId());
     }
 
     @EventHandler

@@ -3,7 +3,7 @@ package me.squid.eoncore.listeners;
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.managers.Cooldown;
 import me.squid.eoncore.menus.AdminGUI;
-import me.squid.eoncore.sql.AdminSQLManager;
+import me.squid.eoncore.sql.MutedManager;
 import me.squid.eoncore.utils.Utils;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -19,14 +19,14 @@ import java.util.UUID;
 public class AdminMenuManager implements Listener {
 
     EonCore plugin;
-    AdminSQLManager adminSQLManager;
+    MutedManager mutedManager;
     AdminGUI adminGUI;
 
     final String prefix = "&7[&b&lEon Admin&7] &r";
 
-    public AdminMenuManager(EonCore plugin, AdminSQLManager adminSQLManager, AdminGUI adminGUI) {
+    public AdminMenuManager(EonCore plugin, MutedManager mutedManager, AdminGUI adminGUI) {
         this.plugin = plugin;
-        this.adminSQLManager = adminSQLManager;
+        this.mutedManager = mutedManager;
         this.adminGUI = adminGUI;
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
@@ -183,7 +183,7 @@ public class AdminMenuManager implements Listener {
                         break;
                 }
                 Cooldown cooldown = new Cooldown(uuid, length, System.currentTimeMillis());
-                adminSQLManager.addCooldown(cooldown);
+                mutedManager.addCooldown(cooldown);
                 if (player.getPlayer() != null) {
                     player.getPlayer().sendMessage(Utils.getPrefix("moderation")
                             .append(Utils.chat("&aYou have been muted for " + reason + " by " + p.getName() + " for " + Utils.getFormattedTimeString(length))));
@@ -234,7 +234,7 @@ public class AdminMenuManager implements Listener {
             UUID uuid = UUID.fromString(e.getView().getItem(4).getLore().get(1).split(": ")[1]);
             switch (e.getCurrentItem().getType()) {
                 case EMERALD_BLOCK -> {
-                    adminSQLManager.removePlayer(uuid);
+                    mutedManager.removePlayer(uuid);
                     p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1, 1);
                     p.closeInventory();
                     p.sendMessage(Utils.chat("&aPlayer successfully unmuted."));

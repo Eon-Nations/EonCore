@@ -3,7 +3,7 @@ package me.squid.eoncore;
 import me.squid.eoncore.commands.*;
 import me.squid.eoncore.listeners.*;
 import me.squid.eoncore.menus.AdminGUI;
-import me.squid.eoncore.sql.AdminSQLManager;
+import me.squid.eoncore.sql.MutedManager;
 import me.squid.eoncore.tasks.AutoAnnouncementTask;
 import me.squid.eoncore.utils.Utils;
 import me.squid.eoncore.utils.VoidChunkGenerator;
@@ -110,13 +110,13 @@ public class EonCore extends JavaPlugin {
     }
 
     public void registerModeration() {
-        AdminSQLManager adminSQLManager = new AdminSQLManager(this);
-        AdminGUI adminGUI = new AdminGUI(adminSQLManager);
-        new AdminMenuManager(this, adminSQLManager, adminGUI);
-        new ChatFormatListener(this, adminSQLManager);
+        MutedManager mutedManager = new MutedManager(this);
+        AdminGUI adminGUI = new AdminGUI(mutedManager);
+        new AdminMenuManager(this, mutedManager, adminGUI);
+        new ChatFormatListener(this, mutedManager);
         new MutedCommand(this, adminGUI);
         new AdminGUICommand(this, adminGUI);
-        new BanMuteCommand(this, adminSQLManager);
+        new BanMuteCommand(this, mutedManager);
     }
 
     public void runTasks() {

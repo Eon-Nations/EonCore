@@ -3,7 +3,7 @@ package me.squid.eoncore.listeners;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.managers.Cooldown;
-import me.squid.eoncore.sql.AdminSQLManager;
+import me.squid.eoncore.sql.MutedManager;
 import me.squid.eoncore.utils.Utils;
 import net.kyori.adventure.audience.MessageType;
 import net.kyori.adventure.text.Component;
@@ -25,15 +25,15 @@ import java.util.HashMap;
 public class ChatFormatListener implements Listener {
 
     EonCore plugin;
-    AdminSQLManager adminSQLManager;
+    MutedManager mutedManager;
     LuckPerms lp = EonCore.getPerms();
     HashMap<String, TextColor> groupColors;
     private static boolean isChatLocked = false;
 
 
-    public ChatFormatListener(EonCore plugin, AdminSQLManager adminSQLManager) {
+    public ChatFormatListener(EonCore plugin, MutedManager mutedManager) {
         this.plugin = plugin;
-        this.adminSQLManager = adminSQLManager;
+        this.mutedManager = mutedManager;
         Bukkit.getPluginManager().registerEvents(this, plugin);
         initializeGroupColors();
     }
@@ -43,8 +43,8 @@ public class ChatFormatListener implements Listener {
         Player p = e.getPlayer();
         Server server = Bukkit.getServer();
 
-        if (adminSQLManager.hasCooldown(p.getUniqueId())) {
-            Cooldown cooldown = adminSQLManager.getCooldown(p.getUniqueId());
+        if (mutedManager.hasCooldown(p.getUniqueId())) {
+            Cooldown cooldown = mutedManager.getCooldown(p.getUniqueId());
             if (!cooldown.isExpired()) {
                 long timeRemaining = cooldown.getTimeRemaining();
                 p.sendMessage(Utils.getPrefix("moderation").append(Component.text("You are muted for ").color(TextColor.color(255, 0, 0)))
