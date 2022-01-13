@@ -31,4 +31,9 @@ public class Cooldown extends Object implements Serializable {
     public long getTime() { return time; }
 
     public long getLength() { return length; }
+
+    @Override
+    public String toString() {
+        return time + ";" + "length";
+    }
 }

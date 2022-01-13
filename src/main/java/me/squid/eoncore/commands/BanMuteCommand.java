@@ -60,7 +60,7 @@ public class BanMuteCommand implements CommandExecutor {
 
                     plugin.getLogger().info("Amount After Multiplication: " + amount);
                     boolean isMute = command.getName().equals("mute");
-                    if (isMute) adminSQLManager.addCooldownToMap(new Cooldown(playerToBan.getUniqueId(), amount, System.currentTimeMillis()));
+                    if (isMute) adminSQLManager.addCooldown(new Cooldown(playerToBan.getUniqueId(), amount, System.currentTimeMillis()));
                     else playerToBan.banPlayer(reason, new Date(amount + System.currentTimeMillis()), p.getName(), true);
 
                     if (isMute && playerToBan.getPlayer() != null)

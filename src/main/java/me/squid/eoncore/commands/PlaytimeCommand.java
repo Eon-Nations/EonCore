@@ -1,7 +1,6 @@
 package me.squid.eoncore.commands;
 
 import me.squid.eoncore.EonCore;
-import me.squid.eoncore.sql.MySQL;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -34,7 +33,6 @@ public class PlaytimeCommand implements CommandExecutor {
     }
 
     private long loadFromSQL(UUID uuid) {
-        MySQL sql = plugin.sql;
         return 0;
     }
 

@@ -183,7 +183,7 @@ public class AdminMenuManager implements Listener {
                         break;
                 }
                 Cooldown cooldown = new Cooldown(uuid, length, System.currentTimeMillis());
-                adminSQLManager.addCooldownToMap(cooldown);
+                adminSQLManager.addCooldown(cooldown);
                 if (player.getPlayer() != null) {
                     player.getPlayer().sendMessage(Utils.getPrefix("moderation")
                             .append(Utils.chat("&aYou have been muted for " + reason + " by " + p.getName() + " for " + Utils.getFormattedTimeString(length))));
@@ -234,7 +234,7 @@ public class AdminMenuManager implements Listener {
             UUID uuid = UUID.fromString(e.getView().getItem(4).getLore().get(1).split(": ")[1]);
             switch (e.getCurrentItem().getType()) {
                 case EMERALD_BLOCK -> {
-                    adminSQLManager.removePlayerFromMap(uuid);
+                    adminSQLManager.removePlayer(uuid);
                     p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1, 1);
                     p.closeInventory();
                     p.sendMessage(Utils.chat("&aPlayer successfully unmuted."));
