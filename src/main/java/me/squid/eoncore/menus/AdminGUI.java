@@ -1,6 +1,6 @@
 package me.squid.eoncore.menus;
 
-import me.squid.eoncore.sql.MutedManager;
+import me.squid.eoncore.managers.MutedManager;
 import me.squid.eoncore.utils.Utils;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang.StringUtils;

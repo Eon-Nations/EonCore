@@ -1,8 +1,6 @@
-package me.squid.eoncore.sql;
+package me.squid.eoncore.managers;
 
 import me.squid.eoncore.EonCore;
-import me.squid.eoncore.managers.Cooldown;
-import me.squid.eoncore.managers.CooldownManager;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.node.NodeType;

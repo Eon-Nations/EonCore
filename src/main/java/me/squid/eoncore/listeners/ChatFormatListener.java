@@ -1,9 +1,10 @@
 package me.squid.eoncore.listeners;
 
+import io.papermc.paper.chat.ChatRenderer;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.managers.Cooldown;
-import me.squid.eoncore.sql.MutedManager;
+import me.squid.eoncore.managers.MutedManager;
 import me.squid.eoncore.utils.Utils;
 import net.kyori.adventure.audience.MessageType;
 import net.kyori.adventure.text.Component;
@@ -59,7 +60,7 @@ public class ChatFormatListener implements Listener {
                 return;
             }
         }
-
+        
         if (!p.hasPermission("eoncommands.staffchat") && isChatLocked) {
             p.sendMessage(Utils.getPrefix("moderation")
                     .append(Component.text("Chat is locked. Please wait while we resolve the conflict. Thank you for your patience")

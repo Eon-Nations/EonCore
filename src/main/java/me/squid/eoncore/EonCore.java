@@ -3,7 +3,7 @@ package me.squid.eoncore;
 import me.squid.eoncore.commands.*;
 import me.squid.eoncore.listeners.*;
 import me.squid.eoncore.menus.AdminGUI;
-import me.squid.eoncore.sql.MutedManager;
+import me.squid.eoncore.managers.MutedManager;
 import me.squid.eoncore.tasks.AutoAnnouncementTask;
 import me.squid.eoncore.utils.Utils;
 import me.squid.eoncore.utils.VoidChunkGenerator;

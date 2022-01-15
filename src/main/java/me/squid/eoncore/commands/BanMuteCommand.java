@@ -2,7 +2,7 @@ package me.squid.eoncore.commands;
 
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.managers.Cooldown;
-import me.squid.eoncore.sql.MutedManager;
+import me.squid.eoncore.managers.MutedManager;
 import me.squid.eoncore.utils.Utils;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang.StringUtils;
