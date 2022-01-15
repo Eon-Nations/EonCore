@@ -3,29 +3,20 @@ package me.squid.eoncore;
 import me.squid.eoncore.commands.*;
 import me.squid.eoncore.listeners.*;
 import me.squid.eoncore.menus.AdminGUI;
-import me.squid.eoncore.sql.AdminSQLManager;
-import me.squid.eoncore.sql.MySQL;
-import me.squid.eoncore.sql.VotesManager;
+import me.squid.eoncore.managers.MutedManager;
 import me.squid.eoncore.tasks.AutoAnnouncementTask;
 import me.squid.eoncore.utils.Utils;
 import me.squid.eoncore.utils.VoidChunkGenerator;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import org.bukkit.*;
-import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.Async;
 
-import java.sql.SQLException;
 import java.time.Duration;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -119,13 +110,13 @@ public class EonCore extends JavaPlugin {
     }
 
     public void registerModeration() {
-        AdminSQLManager adminSQLManager = new AdminSQLManager(this);
-        AdminGUI adminGUI = new AdminGUI(adminSQLManager);
-        new AdminMenuManager(this, adminSQLManager, adminGUI);
-        new ChatFormatListener(this, adminSQLManager);
+        MutedManager mutedManager = new MutedManager(this);
+        AdminGUI adminGUI = new AdminGUI(mutedManager);
+        new AdminMenuManager(this, mutedManager, adminGUI);
+        new ChatFormatListener(this, mutedManager);
         new MutedCommand(this, adminGUI);
         new AdminGUICommand(this, adminGUI);
-        new BanMuteCommand(this, adminSQLManager);
+        new BanMuteCommand(this, mutedManager);
     }
 
     public void runTasks() {

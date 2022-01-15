@@ -3,8 +3,9 @@ package me.squid.eoncore.listeners;
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.managers.Cooldown;
 import me.squid.eoncore.menus.AdminGUI;
-import me.squid.eoncore.sql.AdminSQLManager;
+import me.squid.eoncore.managers.MutedManager;
 import me.squid.eoncore.utils.Utils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,14 +20,14 @@ import java.util.UUID;
 public class AdminMenuManager implements Listener {
 
     EonCore plugin;
-    AdminSQLManager adminSQLManager;
+    MutedManager mutedManager;
     AdminGUI adminGUI;
 
     final String prefix = "&7[&b&lEon Admin&7] &r";
 
-    public AdminMenuManager(EonCore plugin, AdminSQLManager adminSQLManager, AdminGUI adminGUI) {
+    public AdminMenuManager(EonCore plugin, MutedManager mutedManager, AdminGUI adminGUI) {
         this.plugin = plugin;
-        this.adminSQLManager = adminSQLManager;
+        this.mutedManager = mutedManager;
         this.adminGUI = adminGUI;
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
@@ -163,33 +164,25 @@ public class AdminMenuManager implements Listener {
             if (action.equals("mute")) {
                 long hour = 60 * 1000 * 60;
                 switch (ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName())) {
-                    case "1 Hour":
-                        length = hour;
-                        break;
-                    case "3 Hours":
-                        length = hour * 3;
-                        break;
-                    case "12 Hours":
-                        length = hour * 12;
-                        break;
-                    case "24 Hours":
-                        length = hour * 24;
-                        break;
-                    case "7 Days":
-                        length = hour * 24 * 7;
-                        break;
-                    case "Perm Mute":
-                        length = -1;
-                        break;
+                    case "1 Hour" -> length = hour;
+                    case "3 Hours" -> length = hour * 3;
+                    case "12 Hours" -> length = hour * 12;
+                    case "24 Hours" -> length = hour * 24;
+                    case "7 Days" -> length = hour * 24 * 7;
+                    case "Perm Mute" -> length = -1;
                 }
                 Cooldown cooldown = new Cooldown(uuid, length, System.currentTimeMillis());
-                adminSQLManager.addCooldownToMap(cooldown);
+                mutedManager.addCooldown(cooldown);
+                if (length == -1 && player.isOnline()) {
+                    player.getPlayer().sendMessage(Utils.getPrefix("moderation").append(
+                            Utils.chat("&aYou have been permanently muted for " + reason + " by " + p.getName())));
+                }
                 if (player.getPlayer() != null) {
                     player.getPlayer().sendMessage(Utils.getPrefix("moderation")
                             .append(Utils.chat("&aYou have been muted for " + reason + " by " + p.getName() + " for " + Utils.getFormattedTimeString(length))));
                 }
-                for (Player p1 : Bukkit.getOnlinePlayers()) {
-                    if (p1.hasPermission("eoncommands.staffchat")) p1.sendMessage(Utils.chat("&7[&a&lEon Moderation&7] &a" + player.getName() + " has been muted for " + reason + " by " + p.getName() + " for "
+                for (Player staff : Bukkit.getOnlinePlayers()) {
+                    if (staff.hasPermission("eoncommands.staffchat")) staff.sendMessage(Utils.chat("&7[&a&lEon Moderation&7] &a" + player.getName() + " has been muted for " + reason + " by " + p.getName() + " for "
                             + Utils.getFormattedTimeString(length)));
                 }
             } else {
@@ -214,11 +207,10 @@ public class AdminMenuManager implements Listener {
                         break;
                 }
                 player.banPlayer(reason, new Date(System.currentTimeMillis() + day), p.getName(), true);
-                for (Player staff : Bukkit.getOnlinePlayers()) {
-                    if (staff.hasPermission("eoncommands.staffchat")) staff.sendMessage(Utils.getPrefix("moderation")
-                            .append(Utils.chat("&a" + player.getName() + " has been banned for " + reason + " by " + p.getName() + " for " +
-                                ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()))));
-                }
+                Bukkit.getOnlinePlayers().stream().filter(online -> online.hasPermission("eoncommands.staffchat"))
+                        .forEach(staff -> staff.sendMessage(Utils.getPrefix("moderation").append(
+                                Utils.chat("&a" + player.getName() + " has been banned for " + reason + " by " + p.getName() + " for " +
+                                        ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName())))));
             }
             e.setCancelled(true);
         }
@@ -234,7 +226,7 @@ public class AdminMenuManager implements Listener {
             UUID uuid = UUID.fromString(e.getView().getItem(4).getLore().get(1).split(": ")[1]);
             switch (e.getCurrentItem().getType()) {
                 case EMERALD_BLOCK -> {
-                    adminSQLManager.removePlayerFromMap(uuid);
+                    mutedManager.removePlayer(uuid);
                     p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1, 1);
                     p.closeInventory();
                     p.sendMessage(Utils.chat("&aPlayer successfully unmuted."));

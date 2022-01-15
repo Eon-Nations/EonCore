@@ -1,7 +1,6 @@
 package me.squid.eoncore.listeners;
 
 import me.squid.eoncore.EonCore;
-import me.squid.eoncore.sql.VotesManager;
 import me.squid.eoncore.utils.Utils;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
@@ -19,12 +18,10 @@ import java.util.List;
 public class JoinLeaveListener implements Listener {
 
     EonCore plugin;
-    VotesManager votesManager;
 
     public JoinLeaveListener(EonCore plugin) {
         this.plugin = plugin;
         Bukkit.getPluginManager().registerEvents(this, plugin);
-        votesManager = new VotesManager(plugin);
     }
 
     @EventHandler
@@ -47,7 +44,6 @@ public class JoinLeaveListener implements Listener {
             givePlayerStarterKit(p);
             p.showTitle(title);
         }
-        createSQLPlayers(p);
     }
 
     @EventHandler
@@ -68,9 +64,5 @@ public class JoinLeaveListener implements Listener {
         for (ItemStack item : itemsToGive) {
             p.getInventory().addItem(item);
         }
-    }
-
-    private void createSQLPlayers(Player p) {
-        votesManager.createPlayer(p);
     }
 }

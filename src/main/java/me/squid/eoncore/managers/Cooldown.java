@@ -1,9 +1,8 @@
 package me.squid.eoncore.managers;
 
-import java.io.Serializable;
 import java.util.UUID;
 
-public class Cooldown extends Object implements Serializable {
+public class Cooldown {
 
     private final UUID uuid;
     private final long length;
@@ -31,4 +30,9 @@ public class Cooldown extends Object implements Serializable {
     public long getTime() { return time; }
 
     public long getLength() { return length; }
+
+    @Override
+    public String toString() {
+        return time + ";" + length;
+    }
 }
