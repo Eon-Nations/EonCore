@@ -103,7 +103,7 @@ public class ChatFormatListener implements Listener {
                     .append(Component.text(StringUtils.capitalize(prefix.toLowerCase()))
                             .color(groupColors.get(prefix.toLowerCase())))
                     .append(Component.text("] ")).append(sourceDisplayName)
-                    .append(Component.text(": ")).append(message);
+                    .append(Component.text(": ")).append(message).color(TextColor.color(192, 192, 192));
         };
     }
 
