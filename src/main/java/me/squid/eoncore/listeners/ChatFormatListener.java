@@ -27,6 +27,7 @@ public class ChatFormatListener implements Listener {
 
     EonCore plugin;
     MutedManager mutedManager;
+    ChatRenderer customRender;
     LuckPerms lp = EonCore.getPerms();
     HashMap<String, TextColor> groupColors;
     private static boolean isChatLocked = false;
@@ -35,6 +36,7 @@ public class ChatFormatListener implements Listener {
     public ChatFormatListener(EonCore plugin, MutedManager mutedManager) {
         this.plugin = plugin;
         this.mutedManager = mutedManager;
+        this.customRender = getNewRenderer();
         Bukkit.getPluginManager().registerEvents(this, plugin);
         initializeGroupColors();
     }
@@ -60,7 +62,7 @@ public class ChatFormatListener implements Listener {
                 return;
             }
         }
-        
+
         if (!p.hasPermission("eoncommands.staffchat") && isChatLocked) {
             p.sendMessage(Utils.getPrefix("moderation")
                     .append(Component.text("Chat is locked. Please wait while we resolve the conflict. Thank you for your patience")
@@ -68,29 +70,8 @@ public class ChatFormatListener implements Listener {
             e.setCancelled(true);
             return;
         }
-
-        // Reaching into LuckPerms API to get the Prefix for the Player that has chat
-        User user = lp.getUserManager().getUser(p.getUniqueId());
-        ImmutableContextSet contextSet = lp.getContextManager().getContext(user).orElseGet(lp.getContextManager()::getStaticContext);
-        CachedMetaData cachedMetaData = user.getCachedData().getMetaData(QueryOptions.contextual(contextSet));
-        String prefix = cachedMetaData.getPrefix();
-
-        if (prefix.equals("default")) prefix = "member";
-
-        /*
-        e.renderer().render(p, Component.text("[").color(TextColor.color(128, 128, 128))
-                        .append(Component.text(StringUtils.capitalize(prefix.toLowerCase()))
-                                .color(groupColors.get(prefix.toLowerCase())))
-                        .append(Component.text("] ").append(p.displayName())).append(Component.text(": ")),
-                e.originalMessage().color(TextColor.color(192, 192, 192)), server);
-    */
-        Component message = Component.text("[").color(TextColor.color(128, 128, 128))
-                .append(Component.text(StringUtils.capitalize(prefix.toLowerCase()))
-                        .color(groupColors.get(prefix.toLowerCase())))
-                .append(Component.text("] ").append(p.displayName())).append(Component.text(": "))
-                .append(e.originalMessage()).color(TextColor.color(192, 192, 192));
-        server.sendMessage(message);
-        e.setCancelled(true);
+        e.renderer(customRender);
+        e.renderer().render(p, p.displayName(), e.originalMessage(), server);
         //Utils.chat("&7[&r" + prefix + "&r&7] >> " + p.displayName() + ": " + e.originalMessage());
     }
 
@@ -107,6 +88,23 @@ public class ChatFormatListener implements Listener {
         groupColors.put("mod", TextColor.color(102, 0, 204));
         groupColors.put("admin", TextColor.color(204, 0, 0));
         groupColors.put("owner", TextColor.color(0, 128, 255));
+    }
+
+    private ChatRenderer getNewRenderer() {
+        return (player, sourceDisplayName, message, audience) -> {
+            // Reaching into LuckPerms API to get the Prefix for the Player that has chat
+            User user = lp.getUserManager().getUser(player.getUniqueId());
+            ImmutableContextSet contextSet = lp.getContextManager().getContext(user).orElseGet(lp.getContextManager()::getStaticContext);
+            CachedMetaData cachedMetaData = user.getCachedData().getMetaData(QueryOptions.contextual(contextSet));
+            String prefix = cachedMetaData.getPrefix();
+            if (prefix.equals("default")) prefix = "member";
+
+            return Component.text("[").color(TextColor.color(128, 128, 128))
+                    .append(Component.text(StringUtils.capitalize(prefix.toLowerCase()))
+                            .color(groupColors.get(prefix.toLowerCase())))
+                    .append(Component.text("] ")).append(sourceDisplayName)
+                    .append(Component.text(": ")).append(message);
+        };
     }
 
     public static void setChatLocked(boolean state) {
