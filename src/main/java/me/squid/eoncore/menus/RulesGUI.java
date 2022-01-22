@@ -31,7 +31,7 @@ public class RulesGUI {
         Utils.createItem(inv, Material.GREEN_WOOL, 1, 15, "&6Excessive swearing is not allowed", "&f(Verbal Warning -> 5h mute)");
         Utils.createItem(inv, Material.GRAY_WOOL, 1, 16, "&6No political discussions/statements allowed", "&f(2 Verbal Warnings -> 3h mute)");
         Utils.createItem(inv, Material.RED_WOOL, 1, 17, "&6No sexual statements/discussions in chat", "&f(2 Verbal Warnings -> 3h mute)");
-        Utils.createItem(inv, Material.GREEN_WOOL, 1, 18, "&6DoX and DDoS threats are now allowed", "&f(Perm Ban)");
+        Utils.createItem(inv, Material.GREEN_WOOL, 1, 18, "&6DoX and DDoS threats are not allowed", "&f(Perm Ban)");
 
         Utils.createItem(inv, Material.BARRIER, 1, 23, "&4Go Back");
         Utils.makeDummySlots(inv);
