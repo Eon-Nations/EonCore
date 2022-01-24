@@ -108,5 +108,11 @@
             <version>5.15.2</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.nuvotifier.NuVotifier</groupId>
+            <artifactId>nuvotifier-bukkit</artifactId> <!-- fr? -->
+            <version>2.6.0</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>
