@@ -2,17 +2,7 @@ package me.squid.eoncore.managers;
 
 import java.util.UUID;
 
-public class Cooldown {
-
-    private final UUID uuid;
-    private final long length;
-    private final long time;
-
-    public Cooldown(UUID uuid, long length, long time) {
-        this.uuid = uuid;
-        this.length = length;
-        this.time = time;
-    }
+public record Cooldown(UUID uuid, long length, long time) {
 
     public UUID getUUID() {
         return uuid;
@@ -27,9 +17,13 @@ public class Cooldown {
         return (time + length) - System.currentTimeMillis();
     }
 
-    public long getTime() { return time; }
+    public long getTime() {
+        return time;
+    }
 
-    public long getLength() { return length; }
+    public long getLength() {
+        return length;
+    }
 
     @Override
     public String toString() {
