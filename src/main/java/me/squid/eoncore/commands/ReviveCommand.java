@@ -3,6 +3,7 @@ package me.squid.eoncore.commands;
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.utils.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -23,6 +24,8 @@ public class ReviveCommand implements CommandExecutor, Listener {
 
     public ReviveCommand(EonCore plugin) {
         this.plugin = plugin;
+        plugin.getCommand("revive").setExecutor(this);
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
@@ -41,10 +44,11 @@ public class ReviveCommand implements CommandExecutor, Listener {
 
     @EventHandler
     public void onDeath(PlayerDeathEvent e) {
-        List<ItemStack> allItems = new ArrayList<>();
-        List<ItemStack[]> deathItems = List.of(e.getEntity().getInventory().getArmorContents(),
-                e.getEntity().getInventory().getContents(), e.getEntity().getInventory().getExtraContents());
-        deathItems.forEach(itemList -> allItems.addAll(List.of(itemList)));
-        items.put(e.getEntity(), allItems);
+        items.put(e.getEntity(), e.getDrops());
+
+        Location deathLocation = e.getPlayer().getLocation();
+        // Log the death location in case a bug happens and further investigation should be added
+        plugin.getLogger().info("Player died at: x=" + deathLocation.getX() + " y=" + deathLocation.getY() +
+                " z=" + deathLocation.getZ() + " world=" + deathLocation.getWorld().getName());
     }
 }
