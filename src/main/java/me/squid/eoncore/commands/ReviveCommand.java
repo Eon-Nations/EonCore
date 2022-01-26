@@ -12,6 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,8 +36,10 @@ public class ReviveCommand implements CommandExecutor, Listener {
             if (target != null) {
                 List<ItemStack> targetItems = items.remove(target);
                 targetItems.forEach(item -> target.getInventory().addItem(item));
-                target.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Target-Success-Revive-Message")));
-                sender.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Success-Revive-Message")));
+                target.sendMessage(Utils.getPrefix("nations")
+                        .append(Utils.chat(plugin.getConfig().getString("Target-Success-Revive-Message"))));
+                sender.sendMessage(Utils.getPrefix("nations")
+                        .append(Utils.chat(plugin.getConfig().getString("Success-Revive-Message"))));
             } else sender.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Target-Null")));
         }
         return true;
