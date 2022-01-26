@@ -3,6 +3,7 @@ package me.squid.eoncore.commands;
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.utils.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -46,5 +47,10 @@ public class ReviveCommand implements CommandExecutor, Listener {
                 e.getEntity().getInventory().getContents(), e.getEntity().getInventory().getExtraContents());
         deathItems.forEach(itemList -> allItems.addAll(List.of(itemList)));
         items.put(e.getEntity(), allItems);
+
+        Location deathLocation = e.getPlayer().getLocation();
+        // Log the death location in case a bug happens and further investigation should be added
+        plugin.getLogger().info("Player died at: x=" + deathLocation.getX() + " y=" + deathLocation.getY() +
+                " z=" + deathLocation.getZ() + " world=" + deathLocation.getWorld().getName());
     }
 }
