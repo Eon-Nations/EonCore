@@ -24,6 +24,8 @@ public class ReviveCommand implements CommandExecutor, Listener {
 
     public ReviveCommand(EonCore plugin) {
         this.plugin = plugin;
+        plugin.getCommand("revive").setExecutor(this);
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
