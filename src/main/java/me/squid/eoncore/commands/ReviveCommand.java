@@ -19,39 +19,32 @@ import java.util.List;
 public class ReviveCommand implements CommandExecutor, Listener {
 
     EonCore plugin;
-    private static HashMap<Player, List<ItemStack[]>> items = new HashMap<>();
+    private final HashMap<Player, List<ItemStack>> items = new HashMap<>();
 
     public ReviveCommand(EonCore plugin) {
         this.plugin = plugin;
     }
 
     @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
-
-        if (commandSender instanceof Player) {
-            Player p = (Player) commandSender;
-            if (args.length == 1) {
-                Player target = Bukkit.getPlayer(args[0]);
-                if (target != null) {
-                    for (ItemStack[] itemStacks : items.get(p)) {
-                        for (ItemStack item : itemStacks) {
-                            target.getInventory().addItem(item);
-                        }
-                    }
-                    target.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Target-Success-Revive-Message")));
-                    p.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Success-Revive-Message")));
-                } else p.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Target-Null")));
-            }
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (args.length == 1) {
+            Player target = Bukkit.getPlayer(args[0]);
+            if (target != null) {
+                List<ItemStack> targetItems = items.remove(target);
+                targetItems.forEach(item -> target.getInventory().addItem(item));
+                target.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Target-Success-Revive-Message")));
+                sender.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Success-Revive-Message")));
+            } else sender.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Target-Null")));
         }
         return true;
     }
 
     @EventHandler
     public void onDeath(PlayerDeathEvent e) {
-        List<ItemStack[]> threeTypes = new ArrayList<>();
-        threeTypes.add(e.getEntity().getInventory().getArmorContents());
-        threeTypes.add(e.getEntity().getInventory().getExtraContents());
-        threeTypes.add(e.getEntity().getInventory().getContents());
-        items.put(e.getEntity(), threeTypes);
+        List<ItemStack> allItems = new ArrayList<>();
+        List<ItemStack[]> deathItems = List.of(e.getEntity().getInventory().getArmorContents(),
+                e.getEntity().getInventory().getContents(), e.getEntity().getInventory().getExtraContents());
+        deathItems.forEach(itemList -> allItems.addAll(List.of(itemList)));
+        items.put(e.getEntity(), allItems);
     }
 }
