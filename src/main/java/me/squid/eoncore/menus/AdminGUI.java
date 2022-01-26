@@ -134,27 +134,24 @@ public class AdminGUI {
     }
 
     public Inventory getLengthGUI(UUID uuid, String action, String reason) {
+        if (action.equals("mute")) {
+            return getLength(uuid, action, reason, "Hour");
+        } else {
+            return getLength(uuid, action, reason, "Day");
+        }
+    }
+
+    private Inventory getLength(UUID uuid, String action, String reason, String time) {
         Inventory inv = Bukkit.createInventory(null, 27, Utils.chat("&a&lLength"));
 
-        if (action.equals("mute")) {
-            Utils.createItem(inv, Material.WOODEN_SWORD, 1, 5, "&bUUID: " + uuid.toString(), "&fReason: " + reason, "&fAction: " + action);
-            Utils.createItem(inv, Material.RED_WOOL, 1, 10, "&c&l1 Hour");
-            Utils.createItem(inv, Material.RED_WOOL, 1, 12, "&c&l3 Hours");
-            Utils.createItem(inv, Material.RED_WOOL, 1, 14, "&c&l12 Hours");
-            Utils.createItem(inv, Material.RED_WOOL, 1, 16, "&c&l24 Hours");
-            Utils.createItem(inv, Material.RED_WOOL, 1, 18, "&c&l7 Days");
-            Utils.createItem(inv, Material.PURPLE_WOOL, 1, 22, "&5&lPerm Mute");
-            Utils.createItem(inv, Material.PURPLE_WOOL, 1, 24, "&5&lPerm Mute");
-        } else {
-            Utils.createItem(inv, Material.WOODEN_SWORD, 1, 5, "&bUUID: " + uuid.toString(), "&fReason: " + reason, "&fAction: " + action);
-            Utils.createItem(inv, Material.RED_WOOL, 1, 10, "&c&l1 Day");
-            Utils.createItem(inv, Material.RED_WOOL, 1, 12, "&c&l3 Days");
-            Utils.createItem(inv, Material.RED_WOOL, 1, 14, "&c&l7 Days");
-            Utils.createItem(inv, Material.RED_WOOL, 1, 16, "&c&l14 Days");
-            Utils.createItem(inv, Material.RED_WOOL, 1, 18, "&c&l30 Days");
-            Utils.createItem(inv, Material.PURPLE_WOOL, 1, 22, "&5&lPerm Ban");
-            Utils.createItem(inv, Material.PURPLE_WOOL, 1, 24, "&5&lPerm Ban");
-        }
+        Utils.createItem(inv, Material.WOODEN_SWORD, 1, 5, "&bUUID: " + uuid.toString(), "&fReason: " + reason, "&fAction: " + action);
+        Utils.createItem(inv, Material.RED_WOOL, 1, 10, "&c&l1 " + time);
+        Utils.createItem(inv, Material.RED_WOOL, 1, 12, "&c&l3 " + time);
+        Utils.createItem(inv, Material.RED_WOOL, 1, 14, "&c&l7 " + time);
+        Utils.createItem(inv, Material.RED_WOOL, 1, 16, "&c&l14 " + time);
+        Utils.createItem(inv, Material.RED_WOOL, 1, 18, "&c&l30 " + time);
+        Utils.createItem(inv, Material.PURPLE_WOOL, 1, 22, "&5&lPerm Ban");
+        Utils.createItem(inv, Material.PURPLE_WOOL, 1, 24, "&5&lPerm Ban");
 
         return inv;
     }

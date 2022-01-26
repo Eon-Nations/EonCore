@@ -25,7 +25,6 @@ import java.util.concurrent.TimeUnit;
 public class EonCore extends JavaPlugin {
 
     public static final String prefix = "&7[&5&lEon Nations&7] &r";
-    private static LuckPerms api;
 
     @Override
     public void onEnable() {
@@ -134,7 +133,7 @@ public class EonCore extends JavaPlugin {
     public void runRestartTask() {
         Runnable restartTask = () -> {
             Bukkit.getOnlinePlayers().forEach(
-                    player -> player.kick(Utils.getPrefix("nations").append(Utils.chat("Restarting server!")), PlayerKickEvent.Cause.PLUGIN));
+                    player -> player.sendMessage(Utils.getPrefix("nations").append(Utils.chat("Restarting server!"))));
             Bukkit.getScheduler().runTaskLater(this, Bukkit::shutdown, 40L);
         };
         Runnable messageTask = () -> Bukkit.getServer().sendMessage(Utils.getPrefix("nations").append(Utils.chat("Restarting Server in 5 minutes!")));
@@ -161,10 +160,8 @@ public class EonCore extends JavaPlugin {
     }
 
     public void disableRecipes() {
-        List<Material> bannedMats = new ArrayList<>(3){{add(Material.HOPPER); add(Material.ITEM_FRAME); add(Material.TNT);}};
-        for (Material material : bannedMats) {
-            Utils.removeRecipe(material);
-        }
+        List<Material> bannedMats = List.of(Material.HOPPER);
+        bannedMats.forEach(Utils::removeRecipe);
     }
 
     private void loadWorlds() {
