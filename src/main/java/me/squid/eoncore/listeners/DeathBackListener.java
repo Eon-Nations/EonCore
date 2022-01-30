@@ -46,7 +46,7 @@ public class DeathBackListener implements Listener {
     @EventHandler
     public void onBackCommand(BackToDeathLocationEvent e) {
         Player p = e.getPlayer();
-        Location toTeleport = backLocations.get(p);
+        Location toTeleport = backLocations.remove(p);
 
         if (!backLocations.containsKey(p)) {
             p.sendMessage(Utils.chat(EonCore.prefix + "&7There is no back location to teleport to"));
@@ -65,7 +65,6 @@ public class DeathBackListener implements Listener {
     private Runnable doTeleportDelay(Player p, Location toTeleport) {
         return () -> {
             p.teleport(toTeleport);
-            backLocations.remove(p);
             p.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Teleport-Successful")));
         };
     }

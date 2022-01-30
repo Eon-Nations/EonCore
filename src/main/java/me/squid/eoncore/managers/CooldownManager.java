@@ -3,15 +3,14 @@ package me.squid.eoncore.managers;
 import java.util.*;
 
 public class CooldownManager {
-    private Map<UUID, Cooldown> cooldowns;
+    private final Map<UUID, Cooldown> cooldowns;
 
     public CooldownManager() {
         cooldowns = new HashMap<>();
     }
 
     public void add(Cooldown cooldown) {
-        final UUID uuid = cooldown.getUUID();
-        cooldowns.remove(uuid);
+        UUID uuid = cooldown.uuid();
         cooldowns.put(uuid, cooldown);
     }
 
@@ -20,9 +19,7 @@ public class CooldownManager {
     }
 
     public Cooldown getCooldown(UUID uuid) {
-        if (hasCooldown(uuid)) {
-            return cooldowns.get(uuid);
-        } else return null;
+        return cooldowns.get(uuid);
     }
 
     public boolean hasCooldown(UUID uuid) {
@@ -36,7 +33,7 @@ public class CooldownManager {
         return true;
     }
 
-    public List<UUID> getUUIDsFromCooldownMap() {
-        return new ArrayList<>(cooldowns.keySet());
+    public Set<UUID> getUUIDsFromCooldownMap() {
+        return cooldowns.keySet();
     }
 }

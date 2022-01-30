@@ -25,7 +25,7 @@ public class HealCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if (sender instanceof Player p){
+        if (sender instanceof Player p) {
             if (args.length == 0) {
                 if (cooldownManager.hasCooldown(p.getUniqueId())) {
                     Cooldown cooldown = cooldownManager.getCooldown(p.getUniqueId());
@@ -40,7 +40,7 @@ public class HealCommand implements CommandExecutor {
                     p.setFoodLevel(20);
                     p.sendMessage(Utils.chat(plugin.getConfig().getString("Heal-Message")));
                 }
-            } else if (args.length == 1){
+            } else if (args.length == 1) {
                 Player target = Bukkit.getPlayer(args[0]);
                 if (target != null && p.hasPermission(getOthersPermNode())) {
                     target.setFoodLevel(20);

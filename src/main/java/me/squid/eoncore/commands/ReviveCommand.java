@@ -48,7 +48,6 @@ public class ReviveCommand implements CommandExecutor, Listener {
     @EventHandler
     public void onDeath(PlayerDeathEvent e) {
         items.put(e.getEntity(), e.getDrops());
-
         Location deathLocation = e.getPlayer().getLocation();
         // Log the death location in case a bug happens and further investigation should be added
         plugin.getLogger().info("Player died at: x=" + deathLocation.getX() + " y=" + deathLocation.getY() +

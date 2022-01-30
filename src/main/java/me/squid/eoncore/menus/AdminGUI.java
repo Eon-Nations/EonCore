@@ -14,6 +14,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public class AdminGUI {
@@ -157,7 +158,7 @@ public class AdminGUI {
     }
 
     public Inventory getMutedInventory() {
-        List<UUID> uuids = mutedManager.getAllUUIDs();
+        List<UUID> uuids = new ArrayList<>(mutedManager.getAllUUIDs());
         Inventory inv = Bukkit.createInventory(null, 54, Utils.chat("&b&lMuted Chat"));
 
         for (int i = 0; i < uuids.size(); i++) {

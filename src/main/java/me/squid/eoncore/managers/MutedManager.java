@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -70,7 +71,7 @@ public class MutedManager implements Listener {
         return cooldownManager.hasCooldown(uuid);
     }
 
-    public List<UUID> getAllUUIDs() {
+    public Set<UUID> getAllUUIDs() {
         return cooldownManager.getUUIDsFromCooldownMap();
     }
 
