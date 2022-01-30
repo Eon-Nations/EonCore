@@ -5,7 +5,7 @@ import java.util.UUID;
 public record Cooldown(UUID uuid, long length, long time) {
 
     public boolean isExpired() {
-        if (time == -1) return false;
+        if (length == -1) return false;
         return System.currentTimeMillis() >= time + length;
     }
 
