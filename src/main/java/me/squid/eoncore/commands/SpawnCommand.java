@@ -24,9 +24,8 @@ public class SpawnCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if (args.length == 0 && sender instanceof Player) {
-            Player p = (Player) sender;
-            if (p.hasPermission("eoncommands.spawn.cooldown.immune")) p.teleportAsync(Utils.getSpawnLocation());
+        if (args.length == 0 && sender instanceof Player p) {
+            if (p.hasPermission("eoncommands.spawn.cooldown.immune")) p.teleport(Utils.getSpawnLocation());
             else {
                 p.sendMessage(Utils.chat(EonCore.prefix + "&7Teleporting in 3 seconds..."));
                 Bukkit.getScheduler().runTaskLater(plugin, teleportSpawn(p, Utils.getSpawnLocation()), 60L);
@@ -34,7 +33,7 @@ public class SpawnCommand implements CommandExecutor {
         } else if (args.length == 1) {
             Player target = Bukkit.getPlayer(args[0]);
             if (target != null && sender.hasPermission("eoncommands.spawn.others")) {
-                target.teleportAsync(Utils.getSpawnLocation());
+                target.teleport(Utils.getSpawnLocation());
                 target.playSound(target.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
                 target.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Spawn-Message")));
             } else sender.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Target-Null")));
@@ -44,7 +43,7 @@ public class SpawnCommand implements CommandExecutor {
 
     private Runnable teleportSpawn(Player p, Location spawn) {
         return () -> {
-            p.teleportAsync(spawn);
+            p.teleport(spawn);
             p.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Spawn-Message")));
         };
     }

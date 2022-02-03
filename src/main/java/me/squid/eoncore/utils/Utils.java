@@ -1,7 +1,5 @@
 package me.squid.eoncore.utils;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -10,57 +8,64 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 import static org.bukkit.Bukkit.getServer;
 
 public class Utils {
 
-    public static @NotNull Component chat(String s) {
-        return Component.text(ChatColor.translateAlternateColorCodes('&', s));
+    public static String chat(String s) {
+        return ChatColor.translateAlternateColorCodes('&', s);
+    }
+
+    public static String translateHex(String message) {
+        Pattern pattern = Pattern.compile("#[a-fA-F0-9]{6}");
+        Matcher matcher = pattern.matcher(message);
+        while (matcher.find()) {
+            String hexCode = message.substring(matcher.start(), matcher.end());
+            String replaceSharp = hexCode.replace('#', 'x');
+
+            char[] hexCharacters = replaceSharp.toCharArray();
+            StringBuilder builder = new StringBuilder();
+            for (char hexChar : hexCharacters) {
+                builder.append("&").append(hexChar);
+            }
+
+            message = message.replace(hexCode, builder.toString());
+            matcher = pattern.matcher(message);
+        }
+        return ChatColor.translateAlternateColorCodes('&', message);
     }
 
     public static void createItem(Inventory inv, Material material, int amount, int invSlot, String displayName, String... loreString) {
         ItemStack item = new ItemStack(material, amount);
-        List<Component> lore = new ArrayList<>();
+        List<String> lore = new ArrayList<>();
         ItemMeta meta = item.getItemMeta();
 
-        meta.displayName(Utils.chat(displayName));
+        meta.setDisplayName(displayName);
         for (String s : loreString) {
             lore.add(Utils.chat(s));
         }
-        meta.lore(lore);
-        item.setItemMeta(meta);
-        inv.setItem(invSlot - 1, item);
-    }
-
-    public static void createItem(Inventory inv, Material material, int amount, int invSlot, Component displayName, Component... loreString) {
-        ItemStack item;
-        List<Component> lore = new ArrayList<>();
-        item = new ItemStack(material, amount);
-        ItemMeta meta = item.getItemMeta();
-
-        meta.displayName(displayName);
-        Collections.addAll(lore, loreString);
-        meta.lore(lore);
+        meta.setLore(lore);
         item.setItemMeta(meta);
         inv.setItem(invSlot - 1, item);
     }
 
     public static void createItem(Inventory inv, Material material, int amount, int invSlot, String displayName, List<String> loreString) {
         ItemStack item = new ItemStack(material, amount);
-        List<Component> lore = new ArrayList<>();
         ItemMeta meta = item.getItemMeta();
 
-        for (String s : loreString) {
-            lore.add(Utils.chat(s));
-        }
+        // Create lore array
+        Stream<String> loreStream = loreString.stream();
+        List<String> lore = loreStream.map(Utils::translateHex).toList();
 
-        meta.displayName(Utils.chat(displayName));
-        meta.lore(lore);
+        meta.setDisplayName(Utils.chat(displayName));
+        meta.setLore(lore);
         item.setItemMeta(meta);
         inv.setItem(invSlot - 1, item);
     }
@@ -107,12 +112,12 @@ public class Utils {
         return !(blackList.contains(below.getType()))  || block.getType().isSolid() || above.getType().isSolid();
     }
 
-    public static ItemStack createKitItem(Material material, int amount, String displayName, @Nullable List<Component> lore, @Nullable HashMap<Enchantment, Integer> enchantments) {
+    public static ItemStack createKitItem(Material material, int amount, String displayName, @Nullable List<String> lore, @Nullable HashMap<Enchantment, Integer> enchantments) {
         ItemStack item = new ItemStack(material, amount);
         ItemMeta meta = item.getItemMeta();
 
-        meta.displayName(Utils.chat(displayName));
-        meta.lore(lore);
+        meta.setDisplayName(Utils.chat(displayName));
+        meta.setLore(lore);
         item.setItemMeta(meta);
 
         if (enchantments != null) {
@@ -126,7 +131,7 @@ public class Utils {
     public static void makeDummySlots(Inventory inv) {
         ItemStack item = new ItemStack(Material.BLACK_STAINED_GLASS_PANE, 1);
         ItemMeta meta = item.getItemMeta();
-        meta.displayName(Component.text(""));
+        meta.setDisplayName("");
         item.setItemMeta(meta);
 
         for (int i = 0; i < inv.getSize(); i++) {
@@ -151,18 +156,12 @@ public class Utils {
         }
     }
 
-    public static Component getPrefix(String name) {
+    public static String getPrefix(String name) {
         return switch (name) {
-            case "admin" -> Component.text("[").color(TextColor.color(128, 128, 128))
-                    .append(Component.text("Eon Admin").color(TextColor.color(102, 178, 255))
-                            .append(Component.text("] ").append(Component.text(" "))));
-            case "nations" -> Component.text("[").color(TextColor.color(128, 128, 128))
-                    .append(Component.text("Eon Nations").color(TextColor.color(102, 178, 255))
-                            .append(Component.text("] ").append(Component.text(" "))));
-            case "moderation" -> Component.text("[").color(TextColor.color(128, 128, 128))
-                    .append(Component.text("Eon Moderation").color(TextColor.color(102, 178, 255))
-                            .append(Component.text("] ").color(TextColor.color(128, 128, 128))));
-            default -> Component.text("Invalid prefix");
+            case "admin" -> translateHex("#7f7f7f[#66b2ffEon Admin] ");
+            case "nations" -> translateHex("#7f7f7f[#66b2ffEon Nations] ");
+            case "moderation" -> translateHex("#7f7f7f[#66b2ffEon Moderation] ");
+            default -> "Invalid Prefix";
         };
     }
 
@@ -170,12 +169,10 @@ public class Utils {
         return new Location(Bukkit.getWorld("spawn_void"), -12, 87, -16);
     }
 
-    public static String getMessage(String[] args) {
+    public static String getMessageFromArgs(String[] args) {
         StringBuilder sb = new StringBuilder();
-        for (String arg : args) {
-            sb.append(arg).append(" ");
-        }
-        String allArgs = sb.toString().trim();
-        return ChatColor.translateAlternateColorCodes('&', allArgs);
+        Stream<String> argStream = Arrays.stream(args);
+        argStream.forEach(arg -> sb.append(arg).append(" "));
+        return ChatColor.translateAlternateColorCodes('&', sb.toString().trim());
     }
 }

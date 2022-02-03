@@ -31,7 +31,7 @@ public class TpposCommand implements CommandExecutor {
                         double y = Double.parseDouble(args[1]);
                         double z = Double.parseDouble(args[2]);
 
-                        p.teleportAsync(new Location(p.getWorld(), x, y, z));
+                        p.teleport(new Location(p.getWorld(), x, y, z));
                         p.sendMessage(Utils.chat(EonCore.prefix + "&bTeleport to x:" + x + " y:" + y + " z:" + z));
                     } else {
                         p.sendMessage(Utils.chat(EonCore.prefix + "&7Usage: /tppos x y z"));

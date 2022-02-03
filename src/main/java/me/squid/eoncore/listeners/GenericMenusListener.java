@@ -30,7 +30,7 @@ public class GenericMenusListener implements Listener {
         Player p = (Player) e.getWhoClicked();
 
         // Rules Menu Listeners (The four below)
-        if (e.getView().title().equals(Utils.chat("&5&lEon Rules"))){
+        if (e.getView().getTitle().equals(Utils.chat("&5&lEon Rules"))){
             switch (e.getCurrentItem().getType()) {
                 case BLUE_WOOL -> {
                     p.openInventory(rulesGUI.ChatRules());
@@ -48,7 +48,7 @@ public class GenericMenusListener implements Listener {
             e.setCancelled(true);
         }
 
-        if (e.getView().title().equals(Utils.chat("&b&lChat Rules"))){
+        if (e.getView().getTitle().equals(Utils.chat("&b&lChat Rules"))){
             if (e.getCurrentItem().getType().equals(Material.BARRIER)){
                 p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1, 1);
                 p.openInventory(rulesGUI.Categories());
@@ -56,7 +56,7 @@ public class GenericMenusListener implements Listener {
             e.setCancelled(true);
         }
 
-        if (e.getView().title().equals(Utils.chat("&6&lGeneral Rules"))){
+        if (e.getView().getTitle().equals(Utils.chat("&6&lGeneral Rules"))){
             if (e.getCurrentItem().getType().equals(Material.BARRIER)){
                 p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1, 1);
                 p.openInventory(rulesGUI.Categories());
@@ -64,7 +64,7 @@ public class GenericMenusListener implements Listener {
             e.setCancelled(true);
         }
 
-        if (e.getView().title().equals(Utils.chat("&5&lMarket Rules"))){
+        if (e.getView().getTitle().equals(Utils.chat("&5&lMarket Rules"))){
             if (e.getCurrentItem().getType().equals(Material.BARRIER)){
                 p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1, 1);
                 p.openInventory(rulesGUI.Categories());
@@ -72,7 +72,7 @@ public class GenericMenusListener implements Listener {
             e.setCancelled(true);
         }
 
-        if (e.getView().title().equals(Utils.chat("&a&lVote Ranks"))) {
+        if (e.getView().getTitle().equals(Utils.chat("&a&lVote Ranks"))) {
             switch (e.getCurrentItem().getType()) {
                 case GOLD_BLOCK:
                     p.openInventory(voteRanksGUI.VoterOfTheMonthGUI());
@@ -94,42 +94,42 @@ public class GenericMenusListener implements Listener {
             e.setCancelled(true);
         }
 
-        if (e.getView().title().equals(Utils.chat("&a&lVoter I"))) {
+        if (e.getView().getTitle().equals(Utils.chat("&a&lVoter I"))) {
             if (e.getCurrentItem().getType().equals(Material.BARRIER)) {
                 p.openInventory(voteRanksGUI.MainGUI());
             }
             e.setCancelled(true);
         }
 
-        if (e.getView().title().equals(Utils.chat("&a&lVoter II"))) {
+        if (e.getView().getTitle().equals(Utils.chat("&a&lVoter II"))) {
             if (e.getCurrentItem().getType().equals(Material.BARRIER)) {
                 p.openInventory(voteRanksGUI.MainGUI());
             }
             e.setCancelled(true);
         }
 
-        if (e.getView().title().equals(Utils.chat("&a&lVoter III"))) {
+        if (e.getView().getTitle().equals(Utils.chat("&a&lVoter III"))) {
             if (e.getCurrentItem().getType().equals(Material.BARRIER)) {
                 p.openInventory(voteRanksGUI.MainGUI());
             }
             e.setCancelled(true);
         }
 
-        if (e.getView().title().equals(Utils.chat("&a&lVoter IV"))) {
+        if (e.getView().getTitle().equals(Utils.chat("&a&lVoter IV"))) {
             if (e.getCurrentItem().getType().equals(Material.BARRIER)) {
                 p.openInventory(voteRanksGUI.MainGUI());
             }
             e.setCancelled(true);
         }
 
-        if (e.getView().title().equals(Utils.chat("&a&lVoter Of The Month"))) {
+        if (e.getView().getTitle().equals(Utils.chat("&a&lVoter Of The Month"))) {
             if (e.getCurrentItem().getType().equals(Material.BARRIER)) {
                 p.openInventory(voteRanksGUI.MainGUI());
             }
             e.setCancelled(true);
         }
 
-        if (e.getView().title().equals(Utils.chat("&a&lHelp Menu"))) {
+        if (e.getView().getTitle().equals(Utils.chat("&a&lHelp Menu"))) {
             switch (e.getCurrentItem().getType()) {
                 case DIAMOND_HOE:
                     p.closeInventory();
@@ -165,7 +165,7 @@ public class GenericMenusListener implements Listener {
             e.setCancelled(true);
         }
 
-        if (e.getView().title().equals(Utils.chat("&a&lMob Arena Selection"))) {
+        if (e.getView().getTitle().equals(Utils.chat("&a&lMob Arena Selection"))) {
             switch (e.getCurrentItem().getType()) {
                 case ZOMBIE_HEAD:
                     p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1, 1);
@@ -180,7 +180,7 @@ public class GenericMenusListener implements Listener {
             e.setCancelled(true);
         }
 
-        if (e.getView().title().equals(Utils.chat("&a&lVote Help"))) {
+        if (e.getView().getTitle().equals(Utils.chat("&a&lVote Help"))) {
             switch (e.getCurrentItem().getType()) {
                 case TRIPWIRE_HOOK:
                     p.closeInventory();

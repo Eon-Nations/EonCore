@@ -33,7 +33,7 @@ public class BasicMineTask extends BukkitRunnable {
     @Override
     public void run() {
         for (Player p : Bukkit.getOnlinePlayers()) {
-            if (cuboid.contains(p.getLocation())) p.teleportAsync(mine);
+            if (cuboid.contains(p.getLocation())) p.teleport(mine);
             Bukkit.getScheduler().runTask(plugin, () -> p.sendMessage(Utils.chat(EonCore.prefix + "&bBasic Mine has reset")));
         }
 

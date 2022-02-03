@@ -2,7 +2,6 @@ package me.squid.eoncore.commands;
 
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.utils.Utils;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -27,22 +26,11 @@ public class DirectMessageCommand implements CommandExecutor {
                 Player target = Bukkit.getPlayer(args[0]);
                 if (target != null) {
                     args[0] = "";
-                    target.sendMessage(Utils.chat("&7[&6" + sender.getName() + "&r&7 -> &6" + target.getName() + "&7] >> ")
-                            .append(getMessage(args)));
-                    sender.sendMessage(Utils.chat("&7[&6" + sender.getName() + "&r&7 -> &6" + target.getName() + "&7] >> ")
-                            .append(getMessage(args)));
+                    target.sendMessage(Utils.chat("&7[&6" + sender.getName() + "&r&7 -> &6" + target.getName() + "&7] >> ") + Utils.getMessageFromArgs(args));
+                    sender.sendMessage(Utils.chat("&7[&6" + sender.getName() + "&r&7 -> &6" + target.getName() + "&7] >> ") + Utils.getMessageFromArgs(args));
                 } else return false;
             }
         }
         return true;
-    }
-
-    private Component getMessage(String[] args) {
-        StringBuilder sb = new StringBuilder();
-        for (String arg : args) {
-            sb.append(arg).append(" ");
-        }
-        String allArgs = sb.toString().trim();
-        return Utils.chat(allArgs);
     }
 }

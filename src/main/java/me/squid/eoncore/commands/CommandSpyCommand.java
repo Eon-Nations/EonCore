@@ -10,16 +10,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Stream;
 
 public class CommandSpyCommand implements CommandExecutor, Listener {
-
     EonCore plugin;
 
     private final List<Player> peopleSpying = new ArrayList<>();
@@ -30,8 +26,7 @@ public class CommandSpyCommand implements CommandExecutor, Listener {
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player p) {
             if (!peopleSpying.contains(p)){
                 peopleSpying.add(p);
@@ -51,7 +46,7 @@ public class CommandSpyCommand implements CommandExecutor, Listener {
 
         if (!p.hasPermission(getImmunePerm())) {
             Stream<? extends Player> playerStream = Bukkit.getOnlinePlayers().stream();
-            playerStream.filter(player -> player.hasPermission(getPermissionNode())).filter(peopleSpying::contains)
+            playerStream.filter(peopleSpying::contains)
                         .forEach(player -> player.sendMessage(Utils.chat(plugin.getConfig().getString("CommandSpy-Message")
                             .replace("<player>", p.getName()).replace("<command>", cmd))));
         }

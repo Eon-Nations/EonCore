@@ -2,16 +2,19 @@ package me.squid.eoncore;
 
 import me.squid.eoncore.commands.*;
 import me.squid.eoncore.listeners.*;
-import me.squid.eoncore.menus.AdminGUI;
 import me.squid.eoncore.managers.MutedManager;
+import me.squid.eoncore.menus.AdminGUI;
 import me.squid.eoncore.tasks.AutoAnnouncementTask;
 import me.squid.eoncore.utils.Utils;
 import me.squid.eoncore.utils.VoidChunkGenerator;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import org.bukkit.*;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.java.JavaPluginLoader;
 
+import java.io.File;
 import java.time.Duration;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -23,6 +26,12 @@ import java.util.concurrent.TimeUnit;
 public class EonCore extends JavaPlugin {
 
     public static final String prefix = "&7[&5&lEon Nations&7] &r";
+
+    public EonCore() { super(); }
+
+    protected EonCore(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
+        super(loader, description, dataFolder, file);
+    }
 
     @Override
     public void onEnable() {
@@ -52,7 +61,6 @@ public class EonCore extends JavaPlugin {
         new ClearInventoryCommand(this);
         new ExtinguishCommand(this);
         new DiscordCommand(this);
-        new VanishCommand(this);
         new BurnCommand(this);
         new DisposalCommand(this);
         new NightVisionCommand(this);
@@ -61,7 +69,6 @@ public class EonCore extends JavaPlugin {
         new InvseeCommand(this);
         new FlyCommand(this);
         new CommandSpyCommand(this);
-        new FreezeCommand(this);
         new TopCommand(this);
         new RulesCommand(this);
         new TphereCommand(this);
@@ -98,7 +105,6 @@ public class EonCore extends JavaPlugin {
     public void registerListeners() {
         new JoinLeaveListener(this);
         new GenericMenusListener(this);
-        new DeathBackListener(this);
         new WildTpListener(this);
         new WarpsListener(this);
         new PhantomSpawnListener(this);
@@ -117,23 +123,15 @@ public class EonCore extends JavaPlugin {
 
     public void runTasks() {
         new AutoAnnouncementTask(this).runTaskTimerAsynchronously(this, 0, getConfig().getLong("Announcement-Delay") * 20L);
-        /*
-        new PortalTeleportTask(this).runTaskTimerAsynchronously(this, 0, 20L);
-        Bukkit.getScheduler().runTaskTimerAsynchronously(this, new UtilityDoorTask(this), 0, 20L);
-        new BasicMineTask(this, new Location(Bukkit.getWorld("spawn"), -443, 94, -288),
-               new Location(Bukkit.getWorld("spawn"), -455, 73, -300),
-               new Location(Bukkit.getWorld("spawn"), -430, 94, -294)).runTaskTimerAsynchronously(this, 3000L, 24000L);
-         */
         runRestartTask();
     }
 
     public void runRestartTask() {
         Runnable restartTask = () -> {
-            Bukkit.getOnlinePlayers().forEach(
-                    player -> player.sendMessage(Utils.getPrefix("nations").append(Utils.chat("Restarting server!"))));
+            Bukkit.broadcastMessage(getRestartingMessage());
             Bukkit.getScheduler().runTaskLater(this, Bukkit::shutdown, 40L);
         };
-        Runnable messageTask = () -> Bukkit.getServer().sendMessage(Utils.getPrefix("nations").append(Utils.chat("Restarting Server in 5 minutes!")));
+        Runnable messageTask = () -> Bukkit.broadcastMessage(getWarningMessage());
 
         runScheduledTask(messageTask, true);
         runScheduledTask(restartTask, false);
@@ -181,5 +179,13 @@ public class EonCore extends JavaPlugin {
 
     public static LuckPerms getPerms() {
         return LuckPermsProvider.get();
+    }
+
+    private String getWarningMessage() {
+        return Utils.getPrefix("nations") + Utils.chat("Restarting Server in 5 minutes!");
+    }
+
+    private String getRestartingMessage() {
+        return Utils.getPrefix("nations") + Utils.chat("Restarting server!");
     }
 }

@@ -21,7 +21,6 @@ public class AutoAnnouncementTask extends BukkitRunnable {
     @Override
     public void run() {
         int message = random.nextInt(plugin.getConfig().getStringList("Messages").size());
-        Server server = Bukkit.getServer();
-        server.sendMessage(Utils.chat("&6&lEon Info &r&7&l>> " + ChatColor.AQUA + plugin.getConfig().getStringList("Messages").get(message)));
+        Bukkit.broadcastMessage(Utils.chat("&6&lEon Info &r&7&l>> " + ChatColor.AQUA + plugin.getConfig().getStringList("Messages").get(message)));
     }
 }

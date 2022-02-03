@@ -2,11 +2,9 @@ package me.squid.eoncore.commands;
 
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.utils.Utils;
-import net.kyori.adventure.text.Component;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
 
 public class UptimeCommand implements CommandExecutor {
 
@@ -21,9 +19,9 @@ public class UptimeCommand implements CommandExecutor {
 
 
     @Override
-    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
-        commandSender.sendMessage(Utils.getPrefix("moderation")
-                .append(Component.text(Utils.getFormattedTimeString(System.currentTimeMillis() - startupTime))));
+    public boolean onCommand(CommandSender commandSender, Command command, String label, String[] strings) {
+        commandSender.sendMessage(Utils.getPrefix("moderation") +
+                Utils.getFormattedTimeString(System.currentTimeMillis() - startupTime));
         return true;
     }
 }

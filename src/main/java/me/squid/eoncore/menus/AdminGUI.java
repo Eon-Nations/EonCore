@@ -2,7 +2,6 @@ package me.squid.eoncore.menus;
 
 import me.squid.eoncore.managers.MutedManager;
 import me.squid.eoncore.utils.Utils;
-import net.kyori.adventure.text.Component;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -14,7 +13,6 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 public class AdminGUI {
@@ -63,14 +61,14 @@ public class AdminGUI {
             ItemStack item = new ItemStack(Material.PLAYER_HEAD, 1);
             SkullMeta skull = (SkullMeta) item.getItemMeta();
             skull.setOwningPlayer(p);
-            skull.displayName(Component.text(p.getName()));
+            skull.setDisplayName(p.getName());
 
-            List<Component> lore = new ArrayList<>();
+            List<String> lore = new ArrayList<>();
             lore.add(Utils.chat("&bHealth: " + p.getHealth()));
             lore.add(Utils.chat("&bFood Level: " + p.getFoodLevel()));
             lore.add(Utils.chat("&bWorld: " + StringUtils.capitalize(p.getWorld().getName())));
             lore.add(Utils.chat("&bUUID: " + p.getUniqueId()));
-            skull.lore(lore);
+            skull.setLore(lore);
 
             item.setItemMeta(skull);
             inv.addItem(item);
@@ -166,15 +164,12 @@ public class AdminGUI {
             SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
             OfflinePlayer p = Bukkit.getOfflinePlayer(uuids.get(i));
             skullMeta.setOwningPlayer(p);
-            if (p.getPlayer() != null) {
-                skullMeta.setPlayerProfile(p.getPlayer().getPlayerProfile());
-            }
 
-            List<Component> lore = new ArrayList<>();
-            skullMeta.displayName(Utils.chat("&b" + p.getName()));
+            List<String> lore = new ArrayList<>();
+            skullMeta.setDisplayName(Utils.chat("&b" + p.getName()));
             lore.add(Utils.chat("&b" + mutedManager.getCooldown(p.getUniqueId()).getTimeRemaining() / 60000));
             lore.add(Utils.chat("&bUUID: " + p.getUniqueId()));
-            skullMeta.lore(lore);
+            skullMeta.setLore(lore);
             head.setItemMeta(skullMeta);
             inv.setItem(i, head);
         }

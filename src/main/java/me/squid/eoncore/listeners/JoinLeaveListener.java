@@ -2,7 +2,6 @@ package me.squid.eoncore.listeners;
 
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.utils.Utils;
-import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -27,30 +26,37 @@ public class JoinLeaveListener implements Listener {
     @EventHandler
     public void JoinMessage(PlayerJoinEvent e) {
         Player p = e.getPlayer();
-        if (p.hasPlayedBefore()){
-            Title title = Title.title(Utils.chat("&5&lEon Nations"), Utils.chat("&bWelcome back!"));
-            e.joinMessage(Utils.chat(plugin.getConfig().getString("Join-Message")
-            .replace("<player>", p.getName())));
-            p.showTitle(title);
+        if (p.hasPlayedBefore()) {
+            sendPlayerTitle(p);
+            e.setJoinMessage(getJoinMessage(p));
             if (p.isOp()) {
                 p.setSleepingIgnored(true);
-                p.setAffectsSpawning(false);
             }
         } else {
-            Title title = Title.title(Utils.chat("&5&lEon Nations"), Utils.chat("&bWelcome " + p.getName()));
-            e.joinMessage(Utils.chat(plugin.getConfig().getString("Welcome-Message")
-                    .replace("<player>", p.getName())));
-            p.teleportAsync(Utils.getSpawnLocation());
+            e.setJoinMessage(getJoinMessage(p));
+            p.teleport(Utils.getSpawnLocation());
             givePlayerStarterKit(p);
-            p.showTitle(title);
         }
     }
 
     @EventHandler
     public void LeaveMessage(PlayerQuitEvent e) {
         Player p = e.getPlayer();
-        e.quitMessage(Utils.chat(plugin.getConfig().getString("Leave-Message")
+        e.setQuitMessage(Utils.chat(plugin.getConfig().getString("Leave-Message")
         .replace("<player>", p.getName())));
+    }
+
+    private void sendPlayerTitle(Player p) {
+        String subTitle = p.hasPlayedBefore() ? Utils.chat("&bWelcome back!") : Utils.chat("&bWelcome " + p.getName());
+        p.sendTitle(Utils.chat("&5&lEon Nations"), subTitle, 20, 40, 20);
+    }
+
+    private String getJoinMessage(Player p) {
+        if (p.hasPlayedBefore()) {
+            return Utils.chat(plugin.getConfig().getString("Join-Message")
+                    .replace("<player>", p.getName()));
+        } else return Utils.chat(plugin.getConfig().getString("Welcome-Message")
+                    .replace("<player>", p.getName()));
     }
 
     private void givePlayerStarterKit(Player p) {

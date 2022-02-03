@@ -1,6 +1,5 @@
 # Eon Survival Config File
 
-
 # Join/Leave Message
 Welcome-Message: "&b&lWelcome <player> to Eon Survival!! <player> has logged in for the first time!"
 
@@ -139,7 +138,7 @@ Messages:
   - 'Join the discord for free daily giveaways and announcements! >> /discord'
   - 'Obtain ranks with in game currency to gain perks (/ranks for more info)'
   - 'McMMO has various helpful skills. Do /help and go to the McMMO area to see additional info'
-  - 'Jobs are the best way to make money. Do "/jobs browse" to see what jobs fit your playstyle'
+  - 'Jobs are the best way to make money. Do "/jobsmenu" to see what jobs fit your playstyle'
   - 'Make sure to read over the server rules >> /rules'
   - 'To claim giveaways, make a ticket in the discord'
 
@@ -163,13 +162,4 @@ Weather-Set-Rain: "&bSummoned the rain"
 
 # Other Messages
 Reload-Message: "&bSuccessfully reloaded"
-No-Perms: "Unknown command. Type /help for help"
 Target-Null: "&bThat player is offline!"
-
-# SQL Connection Data
-SQLHost: "null"
-SQLPort: "null"
-SQLDatabase: "null"
-SQLUser: "null"
-SQLPassword: "null"
-TrustFilesPassword: "null"

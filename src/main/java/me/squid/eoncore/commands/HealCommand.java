@@ -4,7 +4,6 @@ import me.squid.eoncore.EonCore;
 import me.squid.eoncore.managers.Cooldown;
 import me.squid.eoncore.managers.CooldownManager;
 import me.squid.eoncore.utils.Utils;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -29,8 +28,8 @@ public class HealCommand implements CommandExecutor {
             if (args.length == 0) {
                 if (cooldownManager.hasCooldown(p.getUniqueId())) {
                     Cooldown cooldown = cooldownManager.getCooldown(p.getUniqueId());
-                    p.sendMessage(Utils.getPrefix("nations").append(Component.text("You can do /heal in " +
-                            Utils.getFormattedTimeString(cooldown.getTimeRemaining()))));
+                    p.sendMessage(Utils.getPrefix("nations") + "You can do /heal in " +
+                            Utils.getFormattedTimeString(cooldown.getTimeRemaining()));
                     return true;
                 } else {
                     long minutes = plugin.getConfig().getLong("Heal-Cooldown");

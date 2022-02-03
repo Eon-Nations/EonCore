@@ -12,9 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -36,10 +34,10 @@ public class ReviveCommand implements CommandExecutor, Listener {
             if (target != null) {
                 List<ItemStack> targetItems = items.remove(target);
                 targetItems.forEach(item -> target.getInventory().addItem(item));
-                target.sendMessage(Utils.getPrefix("nations")
-                        .append(Utils.chat(plugin.getConfig().getString("Target-Success-Revive-Message"))));
-                sender.sendMessage(Utils.getPrefix("nations")
-                        .append(Utils.chat(plugin.getConfig().getString("Success-Revive-Message"))));
+                target.sendMessage(Utils.getPrefix("nations") +
+                        Utils.chat(plugin.getConfig().getString("Target-Success-Revive-Message")));
+                sender.sendMessage(Utils.getPrefix("nations") +
+                        Utils.chat(plugin.getConfig().getString("Success-Revive-Message")));
             } else sender.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Target-Null")));
         }
         return true;
@@ -48,7 +46,7 @@ public class ReviveCommand implements CommandExecutor, Listener {
     @EventHandler
     public void onDeath(PlayerDeathEvent e) {
         items.put(e.getEntity(), e.getDrops());
-        Location deathLocation = e.getPlayer().getLocation();
+        Location deathLocation = e.getEntity().getLocation();
         // Log the death location in case a bug happens and further investigation should be added
         plugin.getLogger().info("Player died at: x=" + deathLocation.getX() + " y=" + deathLocation.getY() +
                 " z=" + deathLocation.getZ() + " world=" + deathLocation.getWorld().getName());

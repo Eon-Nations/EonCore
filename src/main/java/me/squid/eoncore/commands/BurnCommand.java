@@ -31,11 +31,11 @@ public class BurnCommand implements CommandExecutor {
                     int seconds = Integer.parseInt(args[1]);
                     if (target != null) {
                         target.setFireTicks(seconds * 20);
-                        target.sendMessage(Utils.getPrefix("nations").append(Utils.chat(plugin.getConfig().getString("Target-Burn-Message"))));
-                        p.sendMessage(Utils.getPrefix("nations").append(Utils.chat(plugin.getConfig().getString("Burn-Message")
-                        .replace("<target>", target.getDisplayName()).replace("<seconds>", String.valueOf(seconds)))));
+                        target.sendMessage(Utils.getPrefix("nations") + Utils.chat(plugin.getConfig().getString("Target-Burn-Message")));
+                        p.sendMessage(Utils.getPrefix("nations") + Utils.chat(plugin.getConfig().getString("Burn-Message")
+                        .replace("<target>", target.getDisplayName()).replace("<seconds>", String.valueOf(seconds))));
                     } else {
-                        p.sendMessage(Utils.getPrefix("nations").append(Utils.chat(plugin.getConfig().getString("Target-Null"))));
+                        p.sendMessage(Utils.getPrefix("nations") + Utils.chat(plugin.getConfig().getString("Target-Null")));
                     }
                 }
             } else {

@@ -3,13 +3,10 @@ package me.squid.eoncore.commands;
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.listeners.ChatFormatListener;
 import me.squid.eoncore.utils.Utils;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
 
 public class ClockCommand implements CommandExecutor {
 
@@ -22,12 +19,11 @@ public class ClockCommand implements CommandExecutor {
 
 
     @Override
-    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if (!ChatFormatListener.isChatLocked()) {
             ChatFormatListener.setChatLocked(true);
-            Bukkit.getServer().sendMessage(Utils.getPrefix("moderation")
-                    .append(Component.text("Chat is locked. Please wait while we resolve the conflict. Thank you for your patience")
-                            .color(TextColor.color(255, 0, 0))));
+            Bukkit.broadcastMessage(Utils.getPrefix("moderation") +
+                    Utils.translateHex(" #ff0000Chat is locked. Please wait while we resolve the conflict. Thank you for your patience"));
 
             if (commandSender.equals(Bukkit.getConsoleSender())) {
                 commandSender.sendMessage("Chat lock successful");

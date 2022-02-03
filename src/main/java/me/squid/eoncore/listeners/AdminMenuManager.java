@@ -5,7 +5,6 @@ import me.squid.eoncore.managers.Cooldown;
 import me.squid.eoncore.menus.AdminGUI;
 import me.squid.eoncore.managers.MutedManager;
 import me.squid.eoncore.utils.Utils;
-import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -38,28 +37,28 @@ public class AdminMenuManager implements Listener {
         Player p = (Player) e.getWhoClicked();
 
         // Main Menu
-        if (e.getView().title().equals(Utils.chat("&5&lEon Admin GUI"))) {
-             switch (e.getCurrentItem().getType()) {
-                 case PLAYER_HEAD:
-                     p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, SoundCategory.BLOCKS, 1, 1);
-                     p.openInventory(adminGUI.PeopleGUI());
-                     break;
-                 case PAPER:
-                     plugin.reloadConfig();
-                     p.sendMessage(Utils.chat(prefix + plugin.getConfig().getString("Reload-Message")));
-                     p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, SoundCategory.BLOCKS, 1, 1);
-                     break;
-                 case CLOCK:
-                     p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, SoundCategory.BLOCKS, 1, 1);
-                     p.closeInventory();
-                     p.openInventory(adminGUI.WeatherTimeGUI(p));
-                     break;
-             }
+        if (e.getView().getTitle().equals(Utils.chat("&5&lEon Admin GUI"))) {
+            switch (e.getCurrentItem().getType()) {
+                case PLAYER_HEAD -> {
+                    p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, SoundCategory.BLOCKS, 1, 1);
+                    p.openInventory(adminGUI.PeopleGUI());
+                }
+                case PAPER -> {
+                    plugin.reloadConfig();
+                    p.sendMessage(Utils.chat(prefix + plugin.getConfig().getString("Reload-Message")));
+                    p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, SoundCategory.BLOCKS, 1, 1);
+                }
+                case CLOCK -> {
+                    p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, SoundCategory.BLOCKS, 1, 1);
+                    p.closeInventory();
+                    p.openInventory(adminGUI.WeatherTimeGUI(p));
+                }
+            }
              e.setCancelled(true);
         }
 
         // Player Management Tab
-        if (e.getView().title().equals(Utils.chat("&5&lEon Management"))) {
+        if (e.getView().getTitle().equals(Utils.chat("&5&lEon Management"))) {
             if (e.getCurrentItem().getType().equals(Material.PLAYER_HEAD)) {
                 p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1, 1);
                 p.openInventory(adminGUI.PeopleOptionsGUI(e.getCurrentItem()));
@@ -68,7 +67,7 @@ public class AdminMenuManager implements Listener {
         }
 
         // Weather GUI
-        if (e.getView().title().equals(Utils.chat("&b&lWeather/Time Menu"))){
+        if (e.getView().getTitle().equals(Utils.chat("&b&lWeather/Time Menu"))){
             switch (e.getCurrentItem().getType()){
                 case LIGHT_BLUE_CONCRETE:
                     p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, SoundCategory.BLOCKS, 2, 1);
@@ -99,7 +98,7 @@ public class AdminMenuManager implements Listener {
         }
 
         // People Options
-        if (e.getView().title().equals(Utils.chat("&a&lPlayer Options"))) {
+        if (e.getView().getTitle().equals(Utils.chat("&a&lPlayer Options"))) {
             ItemStack head = e.getView().getItem(4);
             String u = head.getItemMeta().getLore().get(3).split(": ")[1];
             UUID uuid = UUID.fromString(u);
@@ -115,7 +114,7 @@ public class AdminMenuManager implements Listener {
                     p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1, 1);
                     break;
                 case ENDER_PEARL:
-                    p.teleportAsync(target.getLocation());
+                    p.teleport(target.getLocation());
                     break;
                 case WOODEN_SHOVEL:
                     p.openInventory(adminGUI.getMuteReasons(uuid));
@@ -125,7 +124,7 @@ public class AdminMenuManager implements Listener {
         }
 
         // Reasons to ban on the server
-        if (e.getView().title().equals(Utils.chat("&bBan Reasons"))) {
+        if (e.getView().getTitle().equals(Utils.chat("&bBan Reasons"))) {
             if (e.getCurrentItem().getType() == Material.WOODEN_SHOVEL) {
                 e.setCancelled(true);
             } else {
@@ -139,7 +138,7 @@ public class AdminMenuManager implements Listener {
         }
 
         // Reasons to mute on the server
-        if (e.getView().title().equals(Utils.chat("&bMute Reasons"))) {
+        if (e.getView().getTitle().equals(Utils.chat("&bMute Reasons"))) {
             if (e.getCurrentItem().getType() == Material.WOODEN_SHOVEL) {
                 e.setCancelled(true);
             } else {
@@ -152,7 +151,7 @@ public class AdminMenuManager implements Listener {
             e.setCancelled(true);
         }
 
-        if (e.getView().title().equals(Utils.chat("&a&lLength"))) {
+        if (e.getView().getTitle().equals(Utils.chat("&a&lLength"))) {
             // Action and Reason from the Lore of the item
             String reason = e.getView().getItem(4).getItemMeta().getLore().get(0).split(": ")[1];
             String action = e.getView().getItem(4).getItemMeta().getLore().get(1).split(": ")[1];
@@ -174,12 +173,12 @@ public class AdminMenuManager implements Listener {
                 Cooldown cooldown = new Cooldown(uuid, length, System.currentTimeMillis());
                 mutedManager.addCooldown(cooldown);
                 if (length == -1 && player.isOnline()) {
-                    player.getPlayer().sendMessage(Utils.getPrefix("moderation").append(
-                            Utils.chat("&aYou have been permanently muted for " + reason + " by " + p.getName())));
+                    player.getPlayer().sendMessage(Utils.getPrefix("moderation") +
+                            Utils.chat("&aYou have been permanently muted for " + reason + " by " + p.getName()));
                 }
                 if (player.getPlayer() != null) {
-                    player.getPlayer().sendMessage(Utils.getPrefix("moderation")
-                            .append(Utils.chat("&aYou have been muted for " + reason + " by " + p.getName() + " for " + Utils.getFormattedTimeString(length))));
+                    player.getPlayer().sendMessage(Utils.getPrefix("moderation") +
+                            Utils.chat("&aYou have been muted for " + reason + " by " + p.getName() + " for " + Utils.getFormattedTimeString(length)));
                 }
                 for (Player staff : Bukkit.getOnlinePlayers()) {
                     if (staff.hasPermission("eoncommands.staffchat")) staff.sendMessage(Utils.chat("&7[&a&lEon Moderation&7] &a" + player.getName() + " has been muted for " + reason + " by " + p.getName() + " for "
@@ -202,28 +201,20 @@ public class AdminMenuManager implements Listener {
                     case "30 Days":
                         day *= 30;
                         break;
-                    case "Perm Ban":
-                        player.banPlayer(reason, null, p.getName(), true);
-                        break;
                 }
-                player.banPlayer(reason, new Date(System.currentTimeMillis() + day), p.getName(), true);
-                Bukkit.getOnlinePlayers().stream().filter(online -> online.hasPermission("eoncommands.staffchat"))
-                        .forEach(staff -> staff.sendMessage(Utils.getPrefix("moderation").append(
-                                Utils.chat("&a" + player.getName() + " has been banned for " + reason + " by " + p.getName() + " for " +
-                                        ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName())))));
             }
             e.setCancelled(true);
         }
 
-        if (e.getView().title().equals(Utils.chat("&b&lMuted Chat"))) {
+        if (e.getView().getTitle().equals(Utils.chat("&b&lMuted Chat"))) {
             if (e.getCurrentItem().getType().equals(Material.PLAYER_HEAD)) {
                 p.openInventory(adminGUI.mutedOptions(e.getCurrentItem()));
             }
             e.setCancelled(true);
         }
 
-        if (e.getView().title().equals(Utils.chat("&b&lMuted Options"))) {
-            UUID uuid = UUID.fromString(e.getView().getItem(4).getLore().get(1).split(": ")[1]);
+        if (e.getView().getTitle().equals(Utils.chat("&b&lMuted Options"))) {
+            UUID uuid = UUID.fromString(e.getView().getItem(4).getItemMeta().getLore().get(1).split(": ")[1]);
             switch (e.getCurrentItem().getType()) {
                 case EMERALD_BLOCK -> {
                     mutedManager.removePlayer(uuid);

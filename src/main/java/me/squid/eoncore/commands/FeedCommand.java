@@ -52,8 +52,6 @@ public class FeedCommand implements CommandExecutor {
                 } else {
                     p.sendMessage(Utils.chat(plugin.getConfig().getString("Target-Null")));
                 }
-            } else {
-                p.sendMessage(Bukkit.getPermissionMessage());
             }
         }
         return true;

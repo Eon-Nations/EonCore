@@ -4,8 +4,7 @@ import me.squid.eoncore.EonCore;
 import me.squid.eoncore.managers.Cooldown;
 import me.squid.eoncore.managers.CooldownManager;
 import me.squid.eoncore.utils.Utils;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.ClickEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -39,7 +38,7 @@ public class FixCommand implements CommandExecutor {
             if (cooldownManager.hasCooldown(p.getUniqueId())) {
                 Cooldown cooldown = cooldownManager.getCooldown(p.getUniqueId());
                 String timeRemaining = Utils.getFormattedTimeString(cooldown.getTimeRemaining());
-                p.sendMessage(Utils.getPrefix("nations").append(Component.text("You can use /fix in " + timeRemaining)));
+                p.sendMessage(Utils.getPrefix("nations") + ("You can use /fix in " + timeRemaining));
                 return true;
             }
 
@@ -53,7 +52,7 @@ public class FixCommand implements CommandExecutor {
                             p.sendMessage(Utils.chat(EonCore.prefix + "&7Item Repaired"));
                             addCooldownToPlayer(p);
                         }
-                    } else p.sendMessage(Utils.chat(plugin.getConfig().getString("No-Perms")));
+                    } else p.sendMessage();
                 } else if (args[0].equalsIgnoreCase("all")) {
                     if (p.hasPermission("eoncommands.fix.all")) {
                         for (ItemStack item : p.getInventory().getContents()) {

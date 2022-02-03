@@ -1,15 +1,12 @@
 package me.squid.eoncore.commands;
 
 import me.squid.eoncore.EonCore;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -24,21 +21,18 @@ public class WorldCommand implements CommandExecutor {
 
 
     @Override
-    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 
-        if (commandSender instanceof Player) {
-            Player p = (Player) commandSender;
-            List<World> worlds = Bukkit.getWorlds();
-
+        if (commandSender instanceof Player p) {
             if (args.length == 0) {
-                p.sendMessage(Component.text("Worlds: " + worlds).color(TextColor.color(128, 128, 128)));
+                List<World> worlds = Bukkit.getWorlds();
+                p.sendMessage("Worlds: " + worlds);
             } else if (args.length == 1) {
                 World world = Bukkit.getWorld(args[0]);
-                p.teleportAsync(world.getSpawnLocation());
-                p.sendMessage(Component.text("Succesfully teleported to " + world.getName()).color(TextColor.color(128, 128, 128)));
+                p.teleport(world.getSpawnLocation());
+                p.sendMessage("Succesfully teleported to " + world.getName());
             }
         }
-
         return true;
     }
 }

@@ -3,7 +3,7 @@ version: ${project.version}
 main: me.squid.eoncore.EonCore
 api-version: 1.17
 authors: [Squid]
-depend: [LuckPerms, WorldGuard]
+depend: [LuckPerms]
 softdepend: [AsyncWorldManager]
 description: Epic description
 commands:
@@ -74,9 +74,6 @@ commands:
   commandspy:
     permission: eoncommands.commandspy
     description: Toggle seeing people's commands
-  freeze:
-    permission: eoncommands.freeze
-    description: Freeze players in place
   top:
     permission: eoncommands.top
     description: Teleports you to the highest block available

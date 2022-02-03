@@ -1,7 +1,6 @@
 package me.squid.eoncore.commands;
 
 import me.squid.eoncore.EonCore;
-import net.kyori.adventure.text.Component;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -23,20 +22,19 @@ public class PlaytimeCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
-        if (commandSender instanceof Player) {
-            Player p = (Player) commandSender;
-            long timePlayedOnServer = loadFromSQL(p.getUniqueId());
+        if (commandSender instanceof Player p) {
+            long timePlayedOnServer = loadPlayer(p.getUniqueId());
             long timePlayed = System.currentTimeMillis() - playMap.get(p.getUniqueId());
-            p.sendMessage(Component.text(timePlayed + timePlayedOnServer));
+            p.sendMessage(String.valueOf(timePlayed + timePlayedOnServer));
         }
         return true;
     }
 
-    private long loadFromSQL(UUID uuid) {
+    private long loadPlayer(UUID uuid) {
         return 0;
     }
 
-    private void pushToSQL(UUID uuid) {
+    private void savePlayer(UUID uuid) {
 
     }
 }

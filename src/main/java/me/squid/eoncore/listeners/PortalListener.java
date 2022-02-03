@@ -2,7 +2,6 @@ package me.squid.eoncore.listeners;
 
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.events.WildTeleportEvent;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -35,8 +34,8 @@ public class PortalListener implements Listener {
     @EventHandler
     public void onRedstoneBlockClick(PlayerInteractEvent e) {
         if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-            if (e.getClickedBlock().getType().equals(Material.REDSTONE_BLOCK) && e.getHand().equals(e.getPlayer().getHandRaised())) {
-                e.getPlayer().sendMessage(Component.text("That's a redstone block"));
+            if (e.getClickedBlock().getType().equals(Material.REDSTONE_BLOCK)) {
+                e.getPlayer().sendMessage("That's a redstone block");
             }
         }
     }

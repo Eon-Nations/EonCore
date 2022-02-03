@@ -4,8 +4,6 @@ import me.squid.eoncore.EonCore;
 import me.squid.eoncore.menus.MobArenaGUI;
 import me.squid.eoncore.tasks.WarpTeleportTask;
 import me.squid.eoncore.utils.Utils;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -31,7 +29,7 @@ public class WarpsListener implements Listener {
     public void onWarp(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
 
-        if (e.getView().title().equals(Utils.chat("&5&lEon Warps"))) {
+        if (e.getView().getTitle().equals(Utils.chat("&5&lEon Warps"))) {
             String name = e.getCurrentItem().getItemMeta().getDisplayName();
             switch (e.getCurrentItem().getType()) {
                 case ANVIL:
@@ -69,7 +67,7 @@ public class WarpsListener implements Listener {
         if (player.hasPermission("eoncommands.warp.cooldown.bypass")) {
             new WarpTeleportTask(plugin, location, player, warpName).runTaskAsynchronously(plugin);
         } else {
-            player.sendMessage(Utils.getPrefix("nations").append(Utils.chat("&7Teleporting in 3 seconds...")));
+            player.sendMessage(Utils.getPrefix("nations") + Utils.chat("&7Teleporting in 3 seconds..."));
             new WarpTeleportTask(plugin, location, player, warpName).runTaskLaterAsynchronously(plugin, plugin.getConfig().getLong("Warp-Delay") * 20);
         }
     }
