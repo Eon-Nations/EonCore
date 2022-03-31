@@ -13,6 +13,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,12 +48,12 @@ public class FixCommand implements CommandExecutor {
                     if (p.hasPermission("eoncommands.fix.hand")) {
                         ItemStack item = p.getInventory().getItemInMainHand();
                         if (!applyFix(item)) {
-                            p.sendMessage(Utils.chat(EonCore.prefix + "&bNo item in hand found"));
+                            p.sendMessage(Utils.chat(Utils.getPrefix("nations") + "&bNo item in hand found"));
                         } else {
-                            p.sendMessage(Utils.chat(EonCore.prefix + "&7Item Repaired"));
+                            p.sendMessage(Utils.chat(Utils.getPrefix("nations") + "&7Item Repaired"));
                             addCooldownToPlayer(p);
                         }
-                    } else p.sendMessage();
+                    }
                 } else if (args[0].equalsIgnoreCase("all")) {
                     if (p.hasPermission("eoncommands.fix.all")) {
                         for (ItemStack item : p.getInventory().getContents()) {
@@ -60,12 +61,12 @@ public class FixCommand implements CommandExecutor {
                                 applyFix(item);
                             }
                         }
-                        p.sendMessage(Utils.chat(EonCore.prefix + "&7All items in inventory repaired"));
+                        p.sendMessage(Utils.chat(Utils.getPrefix("nations") + "&7All items in inventory repaired"));
                         addCooldownToPlayer(p);
                         return true;
-                    } else p.sendMessage(Utils.chat(plugin.getConfig().getString("No-Perms")));
+                    }
                 }
-            } else p.sendMessage(Utils.chat(EonCore.prefix + "&7Usage: /fix hand/all"));
+            } else p.sendMessage(Utils.chat(Utils.getPrefix("nations") + "&7Usage: /fix hand/all"));
         }
         return true;
     }
@@ -81,7 +82,7 @@ public class FixCommand implements CommandExecutor {
         Damageable damageable = (Damageable) item.getItemMeta();
         try {
             damageable.setDamage(0);
-            item.setItemMeta(damageable);
+            item.setItemMeta((ItemMeta) damageable);
             return true;
         }
         catch (NullPointerException e) {

@@ -3,8 +3,7 @@ version: ${project.version}
 main: me.squid.eoncore.EonCore
 api-version: 1.17
 authors: [Squid]
-depend: [LuckPerms]
-softdepend: [AsyncWorldManager]
+depend: [LuckPerms, Votifier, helper]
 description: Epic description
 commands:
   gmc:

@@ -28,7 +28,7 @@ public class TopCommand implements CommandExecutor {
             Location top = p.getWorld().getHighestBlockAt(p.getLocation()).getLocation();
 
             p.teleport(top.add(0, 1, 0));
-            p.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Top-Message")));
+            p.sendMessage(Utils.chat(Utils.getPrefix("nations") + plugin.getConfig().getString("Top-Message")));
         }
         return true;
     }

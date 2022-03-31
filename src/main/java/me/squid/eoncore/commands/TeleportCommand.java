@@ -30,7 +30,7 @@ public class TeleportCommand implements CommandExecutor {
                 Player target = Bukkit.getPlayer(args[0]);
                 if (target != null){
                     p.teleport(target.getLocation());
-                    p.sendMessage(Utils.chat(EonCore.prefix + Objects.requireNonNull(plugin.getConfig().getString("Teleport-Message"))
+                    p.sendMessage(Utils.chat(Utils.getPrefix("nations") + Objects.requireNonNull(plugin.getConfig().getString("Teleport-Message"))
                     .replace("<player>", target.getDisplayName())));
                 }
             }

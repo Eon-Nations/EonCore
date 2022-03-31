@@ -47,7 +47,7 @@ public class HealCommand implements CommandExecutor {
                     target.sendMessage(Utils.chat(plugin.getConfig().getString("Heal-Message")));
                     p.sendMessage(Utils.chat(plugin.getConfig().getString("Heal-Other").replace("<player>", target.getName())));
                 } else {
-                    p.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Target-Null")));
+                    p.sendMessage(Utils.chat(Utils.getPrefix("nations") + plugin.getConfig().getString("Target-Null")));
                 }
             }
         }

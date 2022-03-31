@@ -38,7 +38,7 @@ public class ReviveCommand implements CommandExecutor, Listener {
                         Utils.chat(plugin.getConfig().getString("Target-Success-Revive-Message")));
                 sender.sendMessage(Utils.getPrefix("nations") +
                         Utils.chat(plugin.getConfig().getString("Success-Revive-Message")));
-            } else sender.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Target-Null")));
+            } else sender.sendMessage(Utils.chat(Utils.getPrefix("nations") + plugin.getConfig().getString("Target-Null")));
         }
         return true;
     }

@@ -27,7 +27,7 @@ public class GetPositionCommand implements CommandExecutor {
             int z = p.getLocation().getBlockZ();
             float yaw = p.getLocation().getYaw();
             float pitch = p.getLocation().getPitch();
-            p.sendMessage(Utils.chat(EonCore.prefix + "&bCurrent position is x:" + x + " y:" + y + " z:" + z + " yaw: " + yaw + " pitch:" + pitch));
+            p.sendMessage(Utils.chat(Utils.getPrefix("nations") + "&bCurrent position is x:" + x + " y:" + y + " z:" + z + " yaw: " + yaw + " pitch:" + pitch));
         }
 
         return true;

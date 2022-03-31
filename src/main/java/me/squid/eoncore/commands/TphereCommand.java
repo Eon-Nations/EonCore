@@ -22,18 +22,15 @@ public class TphereCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
-        if (sender instanceof Player){
-            Player p = (Player) sender;
-
-            if (args.length == 1){
+        if (sender instanceof Player p){
+            if (args.length == 1) {
                 Player target = Bukkit.getPlayer(args[0]);
                 if (target != null) {
                     target.teleport(p.getLocation());
                     target.playSound(target.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
                     p.playSound(target.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
-                    p.sendMessage(Utils.chat(EonCore.prefix + Objects.requireNonNull(plugin.getConfig().getString("Tphere-Message"))
-                    .replace("<target>", target.getDisplayName())));
+                    p.sendMessage(Utils.chat(Utils.getPrefix("nations") + plugin.getConfig().getString("Tphere-Message"))
+                    .replace("<target>", target.getDisplayName()));
                 } else {
                     p.sendMessage(Utils.chat(plugin.getConfig().getString("Target-Null")));
                 }
@@ -41,7 +38,6 @@ public class TphereCommand implements CommandExecutor {
                 p.sendMessage(Utils.chat("&7[&5&lEon Survival&r&7] Usage: /tphere <player>"));
             }
         }
-
         return true;
     }
 }

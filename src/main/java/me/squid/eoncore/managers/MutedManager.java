@@ -1,5 +1,6 @@
 package me.squid.eoncore.managers;
 
+import me.lucko.helper.Events;
 import me.squid.eoncore.EonCore;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
@@ -7,9 +8,6 @@ import net.luckperms.api.node.NodeType;
 import net.luckperms.api.node.types.MetaNode;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -17,7 +15,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-public class MutedManager implements Listener {
+public class MutedManager {
 
     EonCore plugin;
     LuckPerms luckPerms;
@@ -26,7 +24,8 @@ public class MutedManager implements Listener {
     public MutedManager(EonCore plugin) {
         this.plugin = plugin;
         this.luckPerms = LuckPermsProvider.get();
-        Bukkit.getPluginManager().registerEvents(this, plugin);
+        subscribeLoadPlayer();
+        subscribeSavePlayer();
     }
 
     public void savePlayer(UUID uuid) {
@@ -43,7 +42,8 @@ public class MutedManager implements Listener {
     public void loadPlayer(UUID uuid) {
         if (hasMute(uuid)) {
             luckPerms.getUserManager().loadUser(uuid).thenAcceptAsync(user -> {
-                 MetaNode mutedNode = user.getNodes(NodeType.META).stream().filter(node -> node.getMetaKey().equals("muted"))
+                 MetaNode mutedNode = user.getNodes(NodeType.META).stream()
+                         .filter(node -> node.getMetaKey().equals("muted"))
                          .findFirst().orElseThrow();
                  String[] cooldownString = mutedNode.getMetaValue().split(";");
                  Cooldown cooldown = new Cooldown(uuid, Long.parseLong(cooldownString[0]), Long.parseLong(cooldownString[1]));
@@ -85,20 +85,14 @@ public class MutedManager implements Listener {
         }
     }
 
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent e) {
-        Player p = e.getPlayer();
-        loadPlayer(p.getUniqueId());
+    public void subscribeLoadPlayer() {
+        Events.subscribe(PlayerJoinEvent.class)
+                .handler(e -> loadPlayer(e.getPlayer().getUniqueId()));
     }
 
-    @EventHandler
-    public void onLeave(PlayerQuitEvent e) {
-        UUID uuid = e.getPlayer().getUniqueId();
-        Cooldown cooldown = getCooldown(uuid);
-        if (cooldown != null && hasCooldown(uuid)) {
-            savePlayer(uuid);
-        } else if (cooldown != null && cooldown.isExpired()) {
-            cooldownManager.remove(uuid);
-        }
+    public void subscribeSavePlayer() {
+        Events.subscribe(PlayerQuitEvent.class)
+                .filter(e -> hasCooldown(e.getPlayer().getUniqueId()))
+                .handler(e -> savePlayer(e.getPlayer().getUniqueId()));
     }
 }

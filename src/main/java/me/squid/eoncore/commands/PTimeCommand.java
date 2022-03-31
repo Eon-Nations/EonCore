@@ -31,10 +31,10 @@ public class PTimeCommand implements CommandExecutor {
                 for (String times : getTimes()) {
                     if (times.equalsIgnoreCase(args[0])) {
                         p.setPlayerTime(getTimeFromString(times), false);
-                        p.sendMessage(Utils.chat(EonCore.prefix + "&7Time set to " + getTimeFromString(times)));
+                        p.sendMessage(Utils.chat(Utils.getPrefix("nations") + "&7Time set to " + getTimeFromString(times)));
                         if (times.equalsIgnoreCase("reset")) {
                             p.resetPlayerTime();
-                            p.sendMessage(Utils.chat(EonCore.prefix + "&7Time reset to the normal cycle"));
+                            p.sendMessage(Utils.chat(Utils.getPrefix("nations") + "&7Time reset to the normal cycle"));
                         }
                     }
                 }

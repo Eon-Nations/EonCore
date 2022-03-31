@@ -131,36 +131,36 @@ public class GenericMenusListener implements Listener {
 
         if (e.getView().getTitle().equals(Utils.chat("&a&lHelp Menu"))) {
             switch (e.getCurrentItem().getType()) {
-                case DIAMOND_HOE:
+                case DIAMOND_HOE -> {
                     p.closeInventory();
                     p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1, 1);
                     Bukkit.dispatchCommand(p, "jobs browse");
-                    break;
-                case EXPERIENCE_BOTTLE:
+                }
+                case EXPERIENCE_BOTTLE -> {
                     p.closeInventory();
                     p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1, 1);
                     Bukkit.dispatchCommand(p, "ranks");
-                    p.sendMessage(Utils.chat(EonCore.prefix + "&&You can rankup with /rankup once you have enough money"));
-                    break;
-                case OAK_LEAVES:
+                    p.sendMessage(Utils.chat(Utils.getPrefix("nations") + "&bYou can rankup with /rankup once you have enough money"));
+                }
+                case OAK_LEAVES -> {
                     p.closeInventory();
                     p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1, 1);
                     Bukkit.dispatchCommand(p, "wild");
-                    break;
-                case TRIPWIRE_HOOK:
+                }
+                case TRIPWIRE_HOOK -> {
                     p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1, 1);
                     p.openInventory(voteRanksGUI.HelpVoteMenu());
-                    break;
-                case SLIME_BALL:
+                }
+                case SLIME_BALL -> {
                     p.closeInventory();
                     p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1, 1);
                     Bukkit.dispatchCommand(p, "mcstats");
-                    break;
-                case ZOMBIE_HEAD:
+                }
+                case ZOMBIE_HEAD -> {
                     p.openInventory(mobArenaGUI.MainGUI());
                     p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1, 1);
-                    break;
-                default:
+                }
+                default -> {}
             }
             e.setCancelled(true);
         }
@@ -174,7 +174,7 @@ public class GenericMenusListener implements Listener {
                 case SKELETON_SKULL:
                     p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1, 1);
                     p.closeInventory();
-                    p.sendMessage(Utils.chat(EonCore.prefix + "&aHard Mob Arena Coming Soon!"));
+                    p.sendMessage(Utils.chat(Utils.getPrefix("nations") + "&aHard Mob Arena Coming Soon!"));
                     break;
             }
             e.setCancelled(true);
@@ -188,7 +188,7 @@ public class GenericMenusListener implements Listener {
                     break;
                 case DIAMOND_PICKAXE:
                     p.openInventory(voteRanksGUI.MainGUI());
-                    p.sendMessage(Utils.chat(EonCore.prefix + "&7Explore the different vote ranks that you can obtain through voting."));
+                    p.sendMessage(Utils.chat(Utils.getPrefix("nations") + "&7Explore the different vote ranks that you can obtain through voting."));
                     break;
                 case BARRIER:
                     p.closeInventory();

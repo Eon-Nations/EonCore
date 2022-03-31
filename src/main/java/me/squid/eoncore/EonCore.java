@@ -7,6 +7,7 @@ import me.squid.eoncore.menus.AdminGUI;
 import me.squid.eoncore.tasks.AutoAnnouncementTask;
 import me.squid.eoncore.utils.Utils;
 import me.squid.eoncore.utils.VoidChunkGenerator;
+import me.squid.eoncore.voting.VotifierListener;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import org.bukkit.*;
@@ -24,10 +25,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class EonCore extends JavaPlugin {
-
-    public static final String prefix = "&7[&5&lEon Nations&7] &r";
-
-    public EonCore() { super(); }
+    public EonCore() {
+        super();
+    }
 
     protected EonCore(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
         super(loader, description, dataFolder, file);
@@ -109,6 +109,7 @@ public class EonCore extends JavaPlugin {
         new WarpsListener(this);
         new PhantomSpawnListener(this);
         new PortalListener(this);
+        new VotifierListener(this);
     }
 
     public void registerModeration() {
@@ -171,10 +172,11 @@ public class EonCore extends JavaPlugin {
             world.setGameRule(GameRule.COMMAND_BLOCK_OUTPUT, false);
             world.setGameRule(GameRule.SPECTATORS_GENERATE_CHUNKS, false);
         }
-        Bukkit.getWorld("spawn_void").setGameRule(GameRule.DO_FIRE_TICK, false);
-        Bukkit.getWorld("spawn_void").setGameRule(GameRule.DO_WEATHER_CYCLE, false);
-        Bukkit.getWorld("spawn_void").setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
-        Bukkit.getWorld("spawn_void").setGameRule(GameRule.DO_MOB_SPAWNING, false);
+        World spawn = Bukkit.getWorld("spawn_void");
+        spawn.setGameRule(GameRule.DO_FIRE_TICK, false);
+        spawn.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
+        spawn.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+        spawn.setGameRule(GameRule.DO_MOB_SPAWNING, false);
     }
 
     public static LuckPerms getPerms() {

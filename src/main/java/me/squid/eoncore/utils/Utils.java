@@ -158,9 +158,9 @@ public class Utils {
 
     public static String getPrefix(String name) {
         return switch (name) {
-            case "admin" -> translateHex("#7f7f7f[#66b2ffEon Admin] ");
-            case "nations" -> translateHex("#7f7f7f[#66b2ffEon Nations] ");
-            case "moderation" -> translateHex("#7f7f7f[#66b2ffEon Moderation] ");
+            case "admin" -> translateHex("#7f7f7f[#66b2ffEon Admin#7f7f7f] ");
+            case "nations" -> translateHex("#7f7f7f[#66b2ffEon Nations#7f7f7f] ");
+            case "moderation" -> translateHex("#7f7f7f[#66b2ffEon Moderation#7f7f7f] ");
             default -> "Invalid Prefix";
         };
     }

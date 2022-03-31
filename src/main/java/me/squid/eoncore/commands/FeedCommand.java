@@ -35,7 +35,7 @@ public class FeedCommand implements CommandExecutor {
                         p.sendMessage(Utils.chat(plugin.getConfig().getString("Feed-Message")));
                         p.setFoodLevel(20);
                         p.setSaturation(10);
-                    } else p.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Feed-Cooldown-Message")));
+                    } else p.sendMessage(Utils.chat(Utils.getPrefix("nations") + plugin.getConfig().getString("Feed-Cooldown-Message")));
                 } else {
                     p.sendMessage(Utils.chat(plugin.getConfig().getString("Feed-Message")));
                     p.setFoodLevel(20);

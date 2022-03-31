@@ -31,7 +31,7 @@ public class KickCommand implements CommandExecutor {
                 sender.sendMessage(Utils.chat(plugin.getConfig().getString("Target-Null")));
             }
         } else {
-            sender.sendMessage(Utils.chat(EonCore.prefix + "&7Usage: /kick <player> <message>"));
+            sender.sendMessage(Utils.chat(Utils.getPrefix("nations") + "&7Usage: /kick <player> <message>"));
         }
         return true;
     }

@@ -32,7 +32,7 @@ public class StaffChatCommand implements CommandExecutor {
                 }
             }
         } else {
-            sender.sendMessage(Utils.chat(EonCore.prefix + "&7Usage: /sc <message>"));
+            sender.sendMessage(Utils.chat(Utils.getPrefix("nations") + "&7Usage: /sc <message>"));
         }
         return true;
     }

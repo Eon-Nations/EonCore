@@ -67,14 +67,14 @@ public class BackCommand implements CommandExecutor, Listener {
             Bukkit.getScheduler().runTaskLater(plugin, doTeleportDelay(p, toTeleport), plugin.getConfig().getLong("Delay-Seconds") * 20);
         } else {
             p.teleport(toTeleport);
-            p.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Teleport-Successful")));
+            p.sendMessage(Utils.chat(Utils.getPrefix("nations") + plugin.getConfig().getString("Teleport-Successful")));
         }
     }
 
     private Runnable doTeleportDelay(Player p, Location toTeleport) {
         return () -> {
             p.teleport(toTeleport);
-            p.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Teleport-Successful")));
+            p.sendMessage(Utils.chat(Utils.getPrefix("nations") + plugin.getConfig().getString("Teleport-Successful")));
         };
     }
 }

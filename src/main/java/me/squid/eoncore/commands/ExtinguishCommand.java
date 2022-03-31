@@ -25,17 +25,17 @@ public class ExtinguishCommand implements CommandExecutor {
                 Player p = (Player) sender;
                 if (p.hasPermission(getPermissionNode())){
                     p.setFireTicks(0);
-                    p.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Extinguish-Message")));
+                    p.sendMessage(Utils.chat(Utils.getPrefix("nations") + plugin.getConfig().getString("Extinguish-Message")));
                 } else {
-                    p.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("No-Perms")));
+                    p.sendMessage(Utils.chat(Utils.getPrefix("nations") + plugin.getConfig().getString("No-Perms")));
                 }
             }
         } else if (args.length == 1){
             Player target = Bukkit.getPlayer(args[0]);
             if (target != null && sender.hasPermission(getOthersPermNode())) {
                 target.setFireTicks(0);
-                target.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Target-Extinguish-Message")));
-                sender.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Extinguish-Other-Message")
+                target.sendMessage(Utils.chat(Utils.getPrefix("nations") + plugin.getConfig().getString("Target-Extinguish-Message")));
+                sender.sendMessage(Utils.chat(Utils.getPrefix("nations") + plugin.getConfig().getString("Extinguish-Other-Message")
                 .replace("<target>", target.getDisplayName())));
             }
         }

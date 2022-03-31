@@ -24,10 +24,10 @@ public class HatCommand implements CommandExecutor {
             Player p = (Player) sender;
             if (p.getInventory().getHelmet() == null) {
                 p.getInventory().setHelmet(p.getInventory().getItemInMainHand());
-                p.sendMessage(Utils.chat(EonCore.prefix + "&bHat On"));
+                p.sendMessage(Utils.chat(Utils.getPrefix("nations") + "&bHat On"));
                 p.getInventory().remove(p.getInventory().getItemInMainHand());
             } else {
-                p.sendMessage(Utils.chat(EonCore.prefix + "&bTake off your helmet to put on the hat"));
+                p.sendMessage(Utils.chat(Utils.getPrefix("nations") + "&bTake off your helmet to put on the hat"));
             }
         }
 

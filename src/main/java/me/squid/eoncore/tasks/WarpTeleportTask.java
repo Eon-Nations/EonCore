@@ -28,7 +28,7 @@ public class WarpTeleportTask extends BukkitRunnable {
         Bukkit.getScheduler().runTask(plugin, () -> p.teleport(toWarp));
         p.playSound(p.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
         //noinspection ConstantConditions
-        p.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Warp-Message")
+        p.sendMessage(Utils.chat(Utils.getPrefix("nations") + plugin.getConfig().getString("Warp-Message")
                 .replace("<warp>", ChatColor.stripColor(name))));
     }
 }

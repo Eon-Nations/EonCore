@@ -23,7 +23,7 @@ public class ClearChatCommand implements CommandExecutor {
             if (!online.hasPermission("eoncommands.clearchat")) {
                 for (int i = 0; i < 100; i++) { online.sendMessage(""); }
             } else {
-                sender.sendMessage(Utils.chat(EonCore.prefix + "&bYou are immune to chat clear"));
+                sender.sendMessage(Utils.chat(Utils.getPrefix("nations") + "&bYou are immune to chat clear"));
             }
             sendClearMessage(online, sender.getName());
         }

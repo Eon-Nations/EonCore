@@ -36,12 +36,12 @@ public class PWeatherCommand implements CommandExecutor {
                 try {
                     WeatherType weather = WeatherType.valueOf(args[0].toUpperCase());
                     p.setPlayerWeather(weather);
-                    p.sendMessage(Utils.chat(EonCore.prefix + "&7Set weather to " + weather.name().toLowerCase()));
+                    p.sendMessage(Utils.chat(Utils.getPrefix("nations") + "&7Set weather to " + weather.name().toLowerCase()));
                 } catch (NullPointerException e) {
-                    p.sendMessage(Utils.chat(EonCore.prefix + "&7Invalid weather type"));
+                    p.sendMessage(Utils.chat(Utils.getPrefix("nations") + "&7Invalid weather type"));
                     return true;
                 }
-            } else p.sendMessage(Utils.chat(EonCore.prefix + "&7Usage: /pweather <clear/downfall/reset>"));
+            } else p.sendMessage(Utils.chat(Utils.getPrefix("nations") + "&7Usage: /pweather <clear/downfall/reset>"));
         }
 
         return true;

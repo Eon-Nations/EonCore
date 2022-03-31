@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class BasicMineTask extends BukkitRunnable {
 
@@ -34,7 +36,7 @@ public class BasicMineTask extends BukkitRunnable {
     public void run() {
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (cuboid.contains(p.getLocation())) p.teleport(mine);
-            Bukkit.getScheduler().runTask(plugin, () -> p.sendMessage(Utils.chat(EonCore.prefix + "&bBasic Mine has reset")));
+            Bukkit.getScheduler().runTask(plugin, () -> p.sendMessage(Utils.chat(Utils.getPrefix("nations") + "&bBasic Mine has reset")));
         }
 
         for (Block block : cuboid.getBlocks()) {
@@ -60,12 +62,12 @@ public class BasicMineTask extends BukkitRunnable {
     }
 
     private List<Material> initializeList(HashMap<Material, Integer> oremap) {
-        List<Material> temp = new ArrayList<>();
+        List<Material> oreList = new ArrayList<>();
         for (Material material : oremap.keySet()) { // Loop for each Material in materialMap
             for (int i = 0; i < oremap.get(material); i++) { // Loop according to int value in materialMap
-                temp.add(material); // Add material to temp list
+                oreList.add(material); // Add material to temp list
             }
         }
-        return temp;
+        return oreList;
     }
 }

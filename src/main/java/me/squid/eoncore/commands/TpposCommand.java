@@ -32,13 +32,13 @@ public class TpposCommand implements CommandExecutor {
                         double z = Double.parseDouble(args[2]);
 
                         p.teleport(new Location(p.getWorld(), x, y, z));
-                        p.sendMessage(Utils.chat(EonCore.prefix + "&bTeleport to x:" + x + " y:" + y + " z:" + z));
+                        p.sendMessage(Utils.chat(Utils.getPrefix("nations") + "&bTeleport to x:" + x + " y:" + y + " z:" + z));
                     } else {
-                        p.sendMessage(Utils.chat(EonCore.prefix + "&7Usage: /tppos x y z"));
+                        p.sendMessage(Utils.chat(Utils.getPrefix("nations") + "&7Usage: /tppos x y z"));
                         return true;
                     }
                 } else {
-                    p.sendMessage(Utils.chat(EonCore.prefix + "&7Usage: /tppos x y z"));
+                    p.sendMessage(Utils.chat(Utils.getPrefix("nations") + "&7Usage: /tppos x y z"));
                 }
             }
         }

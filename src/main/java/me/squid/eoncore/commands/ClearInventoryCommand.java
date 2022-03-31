@@ -25,7 +25,7 @@ public class ClearInventoryCommand implements CommandExecutor {
                 Player p = (Player) sender;
                 if (p.hasPermission(getPermissionNode())){
                     p.getInventory().clear();
-                    p.sendMessage(Utils.chat(EonCore.prefix + plugin.getConfig().getString("Clear-Self-Inventory")));
+                    p.sendMessage(Utils.chat(Utils.getPrefix("nations") + plugin.getConfig().getString("Clear-Self-Inventory")));
                 } else {
                     p.sendMessage(Utils.chat(plugin.getConfig().getString("No-Perms")));
                 }
