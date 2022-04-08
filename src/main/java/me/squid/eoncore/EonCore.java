@@ -2,8 +2,8 @@ package me.squid.eoncore;
 
 import me.squid.eoncore.commands.*;
 import me.squid.eoncore.listeners.*;
+import me.squid.eoncore.managers.InventoryManager;
 import me.squid.eoncore.managers.MutedManager;
-import me.squid.eoncore.menus.AdminGUI;
 import me.squid.eoncore.tasks.AutoAnnouncementTask;
 import me.squid.eoncore.utils.Utils;
 import me.squid.eoncore.utils.VoidChunkGenerator;
@@ -12,8 +12,10 @@ import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import org.bukkit.*;
 import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
+import scala.collection.immutable.Stream;
 
 import java.io.File;
 import java.time.Duration;
@@ -23,6 +25,9 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class EonCore extends JavaPlugin {
     public EonCore() {
@@ -61,7 +66,6 @@ public class EonCore extends JavaPlugin {
         new ClearInventoryCommand(this);
         new ExtinguishCommand(this);
         new DiscordCommand(this);
-        new BurnCommand(this);
         new DisposalCommand(this);
         new NightVisionCommand(this);
         new GamemodeCheckCommand(this);
@@ -100,6 +104,7 @@ public class EonCore extends JavaPlugin {
         new WorldCommand(this);
         new ClockCommand(this);
         new UptimeCommand(this);
+        new InventoryManager();
     }
 
     public void registerListeners() {
@@ -109,16 +114,15 @@ public class EonCore extends JavaPlugin {
         new WarpsListener(this);
         new PhantomSpawnListener(this);
         new PortalListener(this);
+    }
+
+    public void registerVoting() {
         new VotifierListener(this);
     }
 
     public void registerModeration() {
         MutedManager mutedManager = new MutedManager(this);
-        AdminGUI adminGUI = new AdminGUI(mutedManager);
-        new AdminMenuManager(this, mutedManager, adminGUI);
         new ChatFormatListener(this, mutedManager);
-        new MutedCommand(this, adminGUI);
-        new AdminGUICommand(this, adminGUI);
         new BanMuteCommand(this, mutedManager);
     }
 
@@ -161,26 +165,39 @@ public class EonCore extends JavaPlugin {
     }
 
     private void loadWorlds() {
-        new WorldCreator("spawn_void").generator(new VoidChunkGenerator()).createWorld();
+        try {
+            new WorldCreator("spawn_void").generator(new VoidChunkGenerator()).createWorld();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    @SuppressWarnings("ConstantConditions")
     private void setupGameRules() {
-        for (World world : Bukkit.getWorlds()) {
-            world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
-            world.setGameRule(GameRule.SHOW_DEATH_MESSAGES, false);
-            world.setGameRule(GameRule.COMMAND_BLOCK_OUTPUT, false);
-            world.setGameRule(GameRule.SPECTATORS_GENERATE_CHUNKS, false);
-        }
+        List<GameRule<Boolean>> gameRulesToSet = List.of(
+                GameRule.ANNOUNCE_ADVANCEMENTS,
+                GameRule.SHOW_DEATH_MESSAGES,
+                GameRule.COMMAND_BLOCK_OUTPUT,
+                GameRule.SPECTATORS_GENERATE_CHUNKS);
+        List<World> worlds = Bukkit.getWorlds();
+        BiConsumer<List<GameRule<Boolean>>, World> setGameRule =
+                (gameRules, world) -> gameRules.forEach(gameRule -> world.setGameRule(gameRule, false));
+        worlds.forEach(world -> setGameRule.accept(gameRulesToSet, world));
+        setSpawnGameRules(setGameRule);
+    }
+
+    private void setSpawnGameRules(BiConsumer<List<GameRule<Boolean>>, World> setGameRule) {
+        List<GameRule<Boolean>> spawnRules = List.of
+                (GameRule.DO_FIRE_TICK,
+                GameRule.DO_WEATHER_CYCLE,
+                GameRule.DO_DAYLIGHT_CYCLE,
+                GameRule.DO_MOB_SPAWNING);
         World spawn = Bukkit.getWorld("spawn_void");
-        spawn.setGameRule(GameRule.DO_FIRE_TICK, false);
-        spawn.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
-        spawn.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
-        spawn.setGameRule(GameRule.DO_MOB_SPAWNING, false);
+        setGameRule.accept(spawnRules, spawn);
     }
 
     public static LuckPerms getPerms() {
-        return LuckPermsProvider.get();
+        RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
+        return provider != null ? provider.getProvider() : null;
     }
 
     private String getWarningMessage() {

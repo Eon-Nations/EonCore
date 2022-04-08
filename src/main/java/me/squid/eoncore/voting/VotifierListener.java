@@ -6,7 +6,6 @@ import me.lucko.helper.Events;
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.utils.Utils;
 import net.luckperms.api.LuckPerms;
-import net.luckperms.api.LuckPermsProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -17,7 +16,7 @@ public class VotifierListener {
 
     public VotifierListener(EonCore plugin) {
         this.plugin = plugin;
-        this.luckPerms = LuckPermsProvider.get();
+        this.luckPerms = EonCore.getPerms();
         this.votePersistence = new VotePersistence();
         subscribeToVotifierEvent();
     }

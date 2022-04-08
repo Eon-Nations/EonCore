@@ -1,5 +1,6 @@
 package me.squid.eoncore.voting;
 
+import me.squid.eoncore.EonCore;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.cacheddata.CachedMetaData;
@@ -20,7 +21,7 @@ public class VotePersistence {
     LuckPerms luckPerms;
 
     public VotePersistence() {
-        this.luckPerms = LuckPermsProvider.get();
+        this.luckPerms = EonCore.getPerms();
     }
 
     public void addVoteToPlayer(Player p) {

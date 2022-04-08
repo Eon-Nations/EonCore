@@ -8,6 +8,12 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
 public class ClearChatCommand implements CommandExecutor {
 
     EonCore plugin;
@@ -19,14 +25,15 @@ public class ClearChatCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        for (Player online : Bukkit.getOnlinePlayers()) {
-            if (!online.hasPermission("eoncommands.clearchat")) {
-                for (int i = 0; i < 100; i++) { online.sendMessage(""); }
-            } else {
-                sender.sendMessage(Utils.chat(Utils.getPrefix("nations") + "&bYou are immune to chat clear"));
-            }
-            sendClearMessage(online, sender.getName());
-        }
+        String immuneMessage = Utils.chat(Utils.getPrefix("nations") + "&bYou are immune to chat clear");
+        Stream<? extends Player> onlinePlayers = Bukkit.getOnlinePlayers().stream();
+        Consumer<Player> sendEmptyMessage = player -> IntStream.range(0, 100).forEach(index -> player.sendMessage(""))  ;
+        Consumer<Player> sendImmuneMessage = player -> player.sendMessage(immuneMessage);
+        Predicate<Player> normalPlayer = player -> !player.hasPermission("eoncommands.clearchat");
+
+        onlinePlayers.filter(normalPlayer).forEach(sendEmptyMessage);
+        Bukkit.getOnlinePlayers().stream().filter(normalPlayer.negate()).forEach(sendImmuneMessage);
+        Bukkit.getOnlinePlayers().forEach(player -> sendClearMessage(player, sender.getName()));
         return true;
     }
 

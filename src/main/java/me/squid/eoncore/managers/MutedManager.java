@@ -8,6 +8,7 @@ import net.luckperms.api.node.NodeType;
 import net.luckperms.api.node.types.MetaNode;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -23,9 +24,13 @@ public class MutedManager {
 
     public MutedManager(EonCore plugin) {
         this.plugin = plugin;
-        this.luckPerms = LuckPermsProvider.get();
-        subscribeLoadPlayer();
-        subscribeSavePlayer();
+        this.luckPerms = EonCore.getPerms();
+        try {
+            subscribeLoadPlayer();
+            subscribeSavePlayer();
+        } catch (IllegalArgumentException e) {
+            // We're in the test runner
+        }
     }
 
     public void savePlayer(UUID uuid) {

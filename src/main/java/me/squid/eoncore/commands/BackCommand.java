@@ -56,7 +56,7 @@ public class BackCommand implements CommandExecutor, Listener {
         Player p = e.getPlayer();
         Location toTeleport = backLocations.remove(p);
 
-        if (!backLocations.containsKey(p)) {
+        if (toTeleport == null) {
             p.sendMessage(Utils.getPrefix("nations") + Utils.chat("&7There is no back location to teleport to"));
             return;
         }
