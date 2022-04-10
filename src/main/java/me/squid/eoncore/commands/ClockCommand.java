@@ -23,11 +23,7 @@ public class ClockCommand implements CommandExecutor {
         if (!ChatFormatListener.isChatLocked()) {
             ChatFormatListener.setChatLocked(true);
             Bukkit.broadcastMessage(Utils.getPrefix("moderation") +
-                    Utils.translateHex(" #ff0000Chat is locked. Please wait while we resolve the conflict. Thank you for your patience"));
-
-            if (commandSender.equals(Bukkit.getConsoleSender())) {
-                commandSender.sendMessage("Chat lock successful");
-            }
+                    Utils.translateHex("#ff0000Chat is locked. Please wait while we resolve the conflict. Thank you for your patience"));
         } else ChatFormatListener.setChatLocked(false);
         return true;
     }

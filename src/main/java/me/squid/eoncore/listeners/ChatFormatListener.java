@@ -35,24 +35,30 @@ public class ChatFormatListener implements Listener {
 
     @EventHandler
     public void onChatSend(AsyncPlayerChatEvent e) {
-        Player p = e.getPlayer();
+        cancelChatIfMuted(e);
+        cancelChatIfLocked(e);
+        e.setFormat(getPrefix(e.getPlayer()) + e.getMessage());
+    }
 
+    private void cancelChatIfMuted(AsyncPlayerChatEvent e) {
+        Player p = e.getPlayer();
         if (mutedManager.hasCooldown(p.getUniqueId())) {
             Cooldown cooldown = mutedManager.getCooldown(p.getUniqueId());
             if (!cooldown.isExpired()) {
                 long timeRemaining = cooldown.getTimeRemaining();
                 p.sendMessage(Utils.getPrefix("moderation") + " You are muted for "
-                    + Utils.getFormattedTimeString(timeRemaining));
+                        + Utils.getFormattedTimeString(timeRemaining));
                 e.setCancelled(true);
             }
         }
+    }
 
+    private void cancelChatIfLocked(AsyncPlayerChatEvent e) {
+        Player p = e.getPlayer();
         if (!p.hasPermission("eoncommands.staffchat") && isChatLocked) {
             p.sendMessage(Utils.getPrefix("moderation") + " Chat is locked. Please wait while we resolve the conflict. Thank you for your patience");
             e.setCancelled(true);
         }
-
-        e.setFormat(getPrefix(p) + e.getMessage());
     }
 
     private String getPrefix(Player p) {

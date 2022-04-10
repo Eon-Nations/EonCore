@@ -21,25 +21,19 @@ public class ClearInventoryCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (args.length == 0){
-            if (sender instanceof Player){
-                Player p = (Player) sender;
-                if (p.hasPermission(getPermissionNode())){
-                    p.getInventory().clear();
-                    p.sendMessage(Utils.chat(Utils.getPrefix("nations") + plugin.getConfig().getString("Clear-Self-Inventory")));
-                } else {
-                    p.sendMessage(Utils.chat(plugin.getConfig().getString("No-Perms")));
-                }
+            if (sender instanceof Player p) {
+                p.getInventory().clear();
+                p.sendMessage(Utils.chat(Utils.getPrefix("nations") + plugin.getConfig().getString("Clear-Self-Inventory")));
             }
         } else if (args.length == 1){
             Player target = Bukkit.getPlayer(args[0]);
-            if (target != null && sender.hasPermission(getOthersPermNode())){
+            if (target != null && sender.hasPermission(getOthersPermNode())) {
                 target.getInventory().clear();
                 target.sendMessage(Utils.chat(plugin.getConfig().getString("Target-Clear-Inventory")));
                 sender.sendMessage(Utils.chat(plugin.getConfig().getString("Clear-Other-Inventory")
                 .replace("<target>", target.getName())));
             }
         }
-
         return true;
     }
 
