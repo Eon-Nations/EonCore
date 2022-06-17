@@ -2,6 +2,7 @@ package commands;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
+import be.seeseemelk.mockbukkit.UnimplementedOperationException;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import me.squid.eoncore.EonCore;
 import org.bukkit.Bukkit;

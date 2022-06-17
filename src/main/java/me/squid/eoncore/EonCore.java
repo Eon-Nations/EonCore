@@ -116,10 +116,6 @@ public class EonCore extends JavaPlugin {
         new PortalListener(this);
     }
 
-    public void registerVoting() {
-        new VotifierListener(this);
-    }
-
     public void registerModeration() {
         MutedManager mutedManager = new MutedManager(this);
         new ChatFormatListener(this, mutedManager);

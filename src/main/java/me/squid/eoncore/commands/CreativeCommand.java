@@ -1,6 +1,7 @@
 package me.squid.eoncore.commands;
 
 import me.squid.eoncore.EonCore;
+import me.squid.eoncore.utils.FunctionalBukkit;
 import me.squid.eoncore.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -9,7 +10,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Objects;
+import java.util.Optional;
 
 public class CreativeCommand implements CommandExecutor {
 
@@ -20,22 +21,26 @@ public class CreativeCommand implements CommandExecutor {
         plugin.getCommand("gmc").setExecutor(this);
     }
 
+    private void sendPermPlayerMessage(Player p) {
+        String message = Utils.chat(plugin.getConfig().getString("Creative-Other")
+                .replace("<target>", p.getName()));
+        p.sendMessage(message);
+    }
+
+    private void setPlayerToCreative(Player p, Optional<Player> sender) {
+        p.setGameMode(GameMode.CREATIVE);
+        p.sendMessage(Utils.chat(plugin.getConfig().getString("Creative-Message")));
+        sender.ifPresent(this::sendPermPlayerMessage);
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
-        if (sender instanceof Player){
-            Player p = (Player) sender;
+        if (sender instanceof Player p) {
             if (args.length == 0){
-                p.setGameMode(GameMode.CREATIVE);
-                p.sendMessage(Utils.chat(plugin.getConfig().getString("Creative-Message")));
+                setPlayerToCreative(p, Optional.empty());
             } else if (args.length == 1 && p.hasPermission(getOthersPermNode())) {
-                Player target = Bukkit.getPlayer(args[0]);
-                if (target != null) {
-                    target.setGameMode(GameMode.CREATIVE);
-                    target.sendMessage(Utils.chat(plugin.getConfig().getString("Creative-Message")));
-                    p.sendMessage(Utils.chat(plugin.getConfig().getString("Creative-Other")
-                            .replace("<target>", target.getName())));
-                }
+                Optional<Player> maybeTarget = FunctionalBukkit.getPlayerFromName(args[0]);
+                maybeTarget.ifPresent(player -> setPlayerToCreative(player, Optional.of(p)));
             }
         }
         return true;

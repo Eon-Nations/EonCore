@@ -1,14 +1,14 @@
 package me.squid.eoncore.managers;
 
-import me.lucko.helper.Events;
 import me.squid.eoncore.EonCore;
 import net.luckperms.api.LuckPerms;
-import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.node.NodeType;
 import net.luckperms.api.node.types.MetaNode;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -16,7 +16,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-public class MutedManager {
+public class MutedManager implements Listener {
 
     EonCore plugin;
     LuckPerms luckPerms;
@@ -25,12 +25,7 @@ public class MutedManager {
     public MutedManager(EonCore plugin) {
         this.plugin = plugin;
         this.luckPerms = EonCore.getPerms();
-        try {
-            subscribeLoadPlayer();
-            subscribeSavePlayer();
-        } catch (IllegalArgumentException e) {
-            // We're in the test runner
-        }
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     public void savePlayer(UUID uuid) {
@@ -90,14 +85,17 @@ public class MutedManager {
         }
     }
 
-    public void subscribeLoadPlayer() {
-        Events.subscribe(PlayerJoinEvent.class)
-                .handler(e -> loadPlayer(e.getPlayer().getUniqueId()));
+    @EventHandler
+    public void subscribeLoadPlayer(PlayerJoinEvent e) {
+        Player player = e.getPlayer();
+        UUID uuid = player.getUniqueId();
+        loadPlayer(uuid);
     }
 
-    public void subscribeSavePlayer() {
-        Events.subscribe(PlayerQuitEvent.class)
-                .filter(e -> hasCooldown(e.getPlayer().getUniqueId()))
-                .handler(e -> savePlayer(e.getPlayer().getUniqueId()));
+    @EventHandler
+    public void subscribeSavePlayer(PlayerQuitEvent e) {
+        Player player = e.getPlayer();
+        UUID uuid = player.getUniqueId();
+        if (hasCooldown(uuid)) savePlayer(uuid);
     }
 }

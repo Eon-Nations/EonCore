@@ -1,9 +1,11 @@
 package me.squid.eoncore.listeners;
 
+import io.papermc.paper.event.player.AsyncChatEvent;
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.managers.Cooldown;
 import me.squid.eoncore.managers.MutedManager;
 import me.squid.eoncore.utils.Utils;
+import net.kyori.adventure.text.Component;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.cacheddata.CachedMetaData;
 import net.luckperms.api.context.ImmutableContextSet;
@@ -34,13 +36,14 @@ public class ChatFormatListener implements Listener {
     }
 
     @EventHandler
-    public void onChatSend(AsyncPlayerChatEvent e) {
+    public void onChatSend(AsyncChatEvent e) {
         cancelChatIfMuted(e);
         cancelChatIfLocked(e);
-        e.setFormat(getPrefix(e.getPlayer()) + e.getMessage());
+        String prefix = getPrefix(e.getPlayer());
+        e.message(Component.text(prefix + e.originalMessage()));
     }
 
-    private void cancelChatIfMuted(AsyncPlayerChatEvent e) {
+    private void cancelChatIfMuted(AsyncChatEvent e) {
         Player p = e.getPlayer();
         if (mutedManager.hasCooldown(p.getUniqueId())) {
             Cooldown cooldown = mutedManager.getCooldown(p.getUniqueId());
@@ -53,7 +56,7 @@ public class ChatFormatListener implements Listener {
         }
     }
 
-    private void cancelChatIfLocked(AsyncPlayerChatEvent e) {
+    private void cancelChatIfLocked(AsyncChatEvent e) {
         Player p = e.getPlayer();
         if (!p.hasPermission("eoncommands.staffchat") && isChatLocked) {
             p.sendMessage(Utils.getPrefix("moderation") + " Chat is locked. Please wait while we resolve the conflict. Thank you for your patience");
