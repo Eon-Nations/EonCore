@@ -1,6 +1,8 @@
 package me.squid.eoncore.commands;
 
 import me.squid.eoncore.EonCore;
+import me.squid.eoncore.utils.FunctionalBukkit;
+import me.squid.eoncore.utils.Messaging;
 import me.squid.eoncore.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -8,6 +10,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+
+import java.util.Optional;
+import java.util.function.Consumer;
 
 public class EnderChestCommand implements CommandExecutor {
 
@@ -18,33 +23,23 @@ public class EnderChestCommand implements CommandExecutor {
         plugin.getCommand("enderchest").setExecutor(this);
     }
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
-        if (sender instanceof Player){
-            Player p = (Player) sender;
-            if (p.hasPermission(getPermissionNode())){
-                if (args.length == 0){
-                    p.openInventory(p.getEnderChest());
-                } else if (args.length == 1){
-                    Player target = Bukkit.getPlayer(args[0]);
-                    if (target != null && p.hasPermission(getOthersPermNode())){
-                        Inventory targetEC = target.getEnderChest();
-                        p.openInventory(targetEC);
-                    } else {
-                        p.sendMessage(Utils.chat(plugin.getConfig().getString("Target-Null")));
-                    }
-                }
-            } else {
-                p.sendMessage(Utils.chat(plugin.getConfig().getString("No-Perms")));
-            }
-        }
-
-        return true;
+    private Consumer<Player> targetOpenEC(Player sender) {
+        return target -> {
+            Inventory targetEC = target.getEnderChest();
+            sender.openInventory(targetEC);
+        };
     }
 
-    public String getPermissionNode(){
-        return "eoncommands.enderchest";
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        Player p = (Player) sender;
+        if (args.length == 0) {
+            p.openInventory(p.getEnderChest());
+        } else if (args.length == 1 && p.hasPermission(getOthersPermNode())) {
+            Optional<Player> maybeTarget = FunctionalBukkit.getPlayerFromName(args[0]);
+            maybeTarget.ifPresentOrElse(targetOpenEC(p), () -> Messaging.sendNullMessage(p, plugin.getConfig()));
+        }
+        return true;
     }
 
     public String getOthersPermNode(){

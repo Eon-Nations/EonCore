@@ -1,6 +1,7 @@
 package me.squid.eoncore.commands;
 
 import me.squid.eoncore.EonCore;
+import me.squid.eoncore.utils.EonPrefix;
 import me.squid.eoncore.utils.FunctionalBukkit;
 import me.squid.eoncore.utils.Utils;
 import org.bukkit.command.Command;
@@ -10,6 +11,8 @@ import org.bukkit.entity.Player;
 
 import java.util.Optional;
 import java.util.function.Consumer;
+
+import static me.squid.eoncore.utils.EonPrefix.getPrefix;
 
 public class DirectMessageCommand implements CommandExecutor {
     EonCore plugin;
@@ -36,7 +39,7 @@ public class DirectMessageCommand implements CommandExecutor {
     }
 
     private Runnable sendMissingTarget(CommandSender sender) {
-        return () -> sender.sendMessage(Utils.getPrefix("nations") + "Failed to find player. Please try again.");
+        return () -> sender.sendMessage(getPrefix(EonPrefix.NATIONS) + "Failed to find player. Please try again.");
     }
 
     @Override

@@ -64,7 +64,6 @@ public class EonCore extends JavaPlugin {
         new FeedCommand(this);
         new EnderChestCommand(this);
         new ClearInventoryCommand(this);
-        new ExtinguishCommand(this);
         new DiscordCommand(this);
         new DisposalCommand(this);
         new NightVisionCommand(this);

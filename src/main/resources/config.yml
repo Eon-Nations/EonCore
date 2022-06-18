@@ -117,7 +117,7 @@ Delay-Seconds: 3
 No-Pending-Requests: "&7You have no pending requests to accept at this time"
 Pending-Request: "&7You already have a pending request to that player"
 
-Death-Back-Message: "&7Do /back to go back to your death location"
+Death-Back-Message: "Do /back to go back to your death location"
 Back-Message: "Teleporting back to your death location"
 
 # Kit Messages

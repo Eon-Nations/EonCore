@@ -16,4 +16,14 @@ public enum EonPrefix {
         }
         return translated;
     }
+
+    public static String bukkitPrefix(EonPrefix prefix) {
+        String translated = "";
+        switch (prefix) {
+            case NATIONS -> translated = "§8[§9Eon Nations§8] ";
+            case ADMIN -> translated = "§8[§9Eon Admin§8] ";
+            case MODERATION -> translated = "§8[§9Eon Moderation§8] ";
+        }
+        return translated;
+    }
 }

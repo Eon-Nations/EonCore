@@ -5,6 +5,8 @@ import be.seeseemelk.mockbukkit.ServerMock;
 import be.seeseemelk.mockbukkit.WorldMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import me.squid.eoncore.EonCore;
+import me.squid.eoncore.utils.EonPrefix;
+import me.squid.eoncore.utils.Messaging;
 import me.squid.eoncore.utils.Utils;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -38,9 +40,8 @@ public class TestBackCommand {
     @DisplayName("Get a message and no teleportation happens for /back without any death")
     public void testNoDeath() {
         PlayerMock player = server.addPlayer("Jim");
-        if (player.isDead()) player.respawn();
         player.performCommand("back");
-        player.assertSaid(Utils.getPrefix("nations") + Utils.chat("&7There is no back location to teleport to"));
+        player.assertSaid(EonPrefix.bukkitPrefix(EonPrefix.NATIONS) + "There is no back location to teleport to");
     }
 
     @Test
@@ -49,7 +50,8 @@ public class TestBackCommand {
         PlayerMock player = server.addPlayer("Bob");
         killPlayer(player);
         player.respawn();
-        player.assertSaid(Utils.getPrefix("nations") + Utils.chat(plugin.getConfig().getString("Death-Back-Message")));
+        String translatedPrefix = "§8[§9Eon Nations§8] ";
+        player.assertSaid(EonPrefix.bukkitPrefix(EonPrefix.NATIONS) + Utils.chat(plugin.getConfig().getString("Death-Back-Message")));
     }
 
     @Test
@@ -58,9 +60,9 @@ public class TestBackCommand {
         PlayerMock player = server.addPlayer();
         killPlayer(player);
         player.respawn();
-        player.assertSaid(Utils.getPrefix("nations") + Utils.chat(plugin.getConfig().getString("Death-Back-Message")));
+        player.assertSaid(EonPrefix.bukkitPrefix(EonPrefix.NATIONS) + Utils.chat(plugin.getConfig().getString("Death-Back-Message")));
         player.performCommand("back");
-        player.assertSaid(Utils.getPrefix("nations") + Utils.chat(plugin.getConfig().getString("Cooldown-Teleport-Message")
+        player.assertSaid(EonPrefix.bukkitPrefix(EonPrefix.NATIONS) + Utils.chat(plugin.getConfig().getString("Cooldown-Teleport-Message")
                 .replace("<seconds>", Long.toString(plugin.getConfig().getLong("Delay-Seconds")))));
     }
 
@@ -75,9 +77,9 @@ public class TestBackCommand {
     public void testWithOP() {
         PlayerMock player = server.addPlayer();
         killOPPlayer(player);
-        player.assertSaid(Utils.getPrefix("nations") + Utils.chat(plugin.getConfig().getString("Death-Back-Message")));
+        player.assertSaid(EonPrefix.bukkitPrefix(EonPrefix.NATIONS) + Utils.chat(plugin.getConfig().getString("Death-Back-Message")));
         player.performCommand("back");
-        player.assertSaid(Utils.chat(Utils.getPrefix("nations") + plugin.getConfig().getString("Teleport-Successful")));
+        player.assertSaid(Utils.chat(EonPrefix.bukkitPrefix(EonPrefix.NATIONS) + plugin.getConfig().getString("Teleport-Successful")));
     }
 
     @Test

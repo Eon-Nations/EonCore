@@ -5,6 +5,7 @@ import be.seeseemelk.mockbukkit.ServerMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.listeners.ChatFormatListener;
+import me.squid.eoncore.utils.EonPrefix;
 import me.squid.eoncore.utils.Utils;
 import org.junit.*;
 import org.junit.jupiter.api.DisplayName;
@@ -38,8 +39,8 @@ public class TestClockCommand {
         PlayerMock normie = server.addPlayer();
         owner.setOp(true);
         owner.performCommand("clock");
-        normie.assertSaid(Utils.getPrefix("moderation") +
-                Utils.translateHex("#ff0000Chat is locked. Please wait while we resolve the conflict. Thank you for your patience"));
+        normie.assertSaid(EonPrefix.bukkitPrefix(EonPrefix.MODERATION) +
+                Utils.chat("&4Chat is locked. Please wait while we resolve the conflict. Thank you for your patience"));
     }
 
     @After

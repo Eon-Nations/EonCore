@@ -4,6 +4,7 @@ import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import me.squid.eoncore.EonCore;
+import me.squid.eoncore.utils.EonPrefix;
 import me.squid.eoncore.utils.Utils;
 import org.junit.After;
 import org.junit.Before;
@@ -29,7 +30,7 @@ public class TestClearChatCommand {
         PlayerMock player = server.addPlayer();
         player.setOp(true);
         player.performCommand("clearchat");
-        player.assertSaid(Utils.chat(Utils.getPrefix("nations") + "&bYou are immune to chat clear"));
+        player.assertSaid(Utils.chat(EonPrefix.bukkitPrefix(EonPrefix.NATIONS) + "&bYou are immune to chat clear"));
     }
 
     @Test

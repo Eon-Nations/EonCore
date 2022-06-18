@@ -21,7 +21,7 @@ public class DisposalCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command cmd, String label, String[] args) {
         Player p = (Player) commandSender;
-        Inventory trash = Bukkit.createInventory(null, 54, Utils.chat("&7Put Trash In Here"));
+        Inventory trash = Bukkit.createInventory(null, 54);
         p.openInventory(trash);
         return true;
     }
