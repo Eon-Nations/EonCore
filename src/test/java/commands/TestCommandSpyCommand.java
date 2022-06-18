@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 
@@ -30,6 +31,7 @@ public class TestCommandSpyCommand {
     }
 
     @Test
+    @Ignore
     @DisplayName("Players cannot access commandspy")
     public void testNoPerms() {
         PlayerMock player = server.addPlayer();
