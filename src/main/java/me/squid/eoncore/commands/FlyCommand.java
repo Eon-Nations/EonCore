@@ -1,6 +1,8 @@
 package me.squid.eoncore.commands;
 
 import me.squid.eoncore.EonCore;
+import me.squid.eoncore.utils.FunctionalBukkit;
+import me.squid.eoncore.utils.Messaging;
 import me.squid.eoncore.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -10,6 +12,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Optional;
 
 public class FlyCommand implements CommandExecutor {
     EonCore plugin;
@@ -24,56 +27,39 @@ public class FlyCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         Player p = (Player) sender;
         if (args.length == 0) {
-            if (p.hasPermission(getPermissionNode())) {
-                if (!flyingPlayers.contains(p)){
-                    if (p.getWorld().getName().equals("spawn_void")) return true;
-                    p.setAllowFlight(true);
-                    p.sendMessage(Utils.chat(plugin.getConfig().getString("Fly-On")));
-                    flyingPlayers.add(p);
-                } else {
-                    p.setAllowFlight(false);
-                    p.sendMessage(Utils.chat(plugin.getConfig().getString("Fly-Off")));
-                    flyingPlayers.remove(p);
-                }
-            } else {
-                p.sendMessage(Utils.chat(plugin.getConfig().getString("No-Perms")));
-            }
-        } else if (args.length == 1){
-            if (p.hasPermission(getOthersPermNode())) {
-                Player target = Bukkit.getPlayer(args[0]);
-                if (target != null && !target.hasPermission(getImmuneNode())){
-                    if (!flyingPlayers.contains(target)){
-                        flyingPlayers.add(target);
-                        target.sendMessage(Utils.chat(plugin.getConfig().getString("Fly-On")));
-                        target.setAllowFlight(true);
-                        p.sendMessage(Utils.chat(Objects.requireNonNull(plugin.getConfig().getString("Target-Fly-On"))
-                                .replace("<target>", target.getName())));
-                    } else {
-                        flyingPlayers.remove(target);
-                        target.sendMessage(Utils.chat(plugin.getConfig().getString("Fly-Off")));
-                        target.setAllowFlight(false);
-                        p.sendMessage(Utils.chat(Objects.requireNonNull(plugin.getConfig().getString("Target-Fly-Off"))
-                                .replace("<target>", target.getName())));
-                    }
-                } else {
-                    p.sendMessage(Utils.chat(plugin.getConfig().getString("Target-Null")));
-                }
-            } else {
-                p.sendMessage(Utils.chat(plugin.getConfig().getString("No-Perms")));
-            }
+            toggleFly(p, false);
+        } else if (args.length == 1 && p.hasPermission(getOthersPermNode())) {
+            Optional<Player> maybeTarget = FunctionalBukkit.getPlayerFromName(args[0]);
+            maybeTarget.ifPresentOrElse(target -> toggleFly(target, p.hasPermission(getImmuneNode())), () -> Messaging.sendNullMessage(p, plugin.getConfig()));
         }
         return true;
     }
 
-    public String getPermissionNode(){
-        return "eoncommands.fly";
+    private void toggleFly(Player player, boolean immune) {
+        if (immune) return;
+        if (flyingPlayers.contains(player))
+            turnOffFly(player);
+        else turnOnFly(player);
     }
 
-    public String getOthersPermNode(){
+    private void turnOnFly(Player player) {
+        if (player.getWorld().getName().equals("spawn_void")) return;
+        player.setAllowFlight(true);
+        Messaging.sendNationsMessage(player, plugin.getConfig().getString("Fly-On"));
+        flyingPlayers.add(player);
+    }
+
+    private void turnOffFly(Player player) {
+        player.setAllowFlight(false);
+        Messaging.sendNationsMessage(player, plugin.getConfig().getString("Fly-Off"));
+        flyingPlayers.remove(player);
+    }
+
+    public String getOthersPermNode() {
         return "eoncommands.fly.others";
     }
 
-    public String getImmuneNode(){
+    public String getImmuneNode() {
         return "eoncommands.fly.others.immune";
     }
 }

@@ -67,8 +67,6 @@ public class JoinLeaveListener implements Listener {
         itemsToGive.add(Utils.createKitItem(Material.WOODEN_SHOVEL, 1, "&7Spoon", null, null));
         itemsToGive.add(new ItemStack(Material.COOKED_BEEF, 8));
 
-        for (ItemStack item : itemsToGive) {
-            p.getInventory().addItem(item);
-        }
+        itemsToGive.forEach(p.getInventory()::addItem);
     }
 }

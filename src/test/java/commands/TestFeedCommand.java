@@ -11,12 +11,6 @@ import org.junit.jupiter.api.DisplayName;
 
 public class TestFeedCommand extends TestUtility {
 
-    private void addPermissionToPlayer(String permission, PlayerMock player) {
-        EonCore plugin = MockBukkit.load(EonCore.class);
-        PermissionAttachment attachment = player.addAttachment(plugin);
-        attachment.setPermission(permission, true);
-    }
-
     @Test
     @DisplayName("Feed restores full hunger and includes saturation")
     public void testFullHunger() {

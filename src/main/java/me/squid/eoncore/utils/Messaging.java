@@ -1,5 +1,6 @@
 package me.squid.eoncore.utils;
 
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -18,13 +19,24 @@ public class Messaging {
         coolString.ifPresent(sendMessage(player));
     }
 
-    public static String getNationsMessage(String message) {
-        Optional<String> coolString = Optional.ofNullable(message);
-        return EonPrefix.getPrefix(EonPrefix.NATIONS) + coolString.orElse("");
+    public static void sendNationsMessage(CommandSender sender, String message) {
+        sendNationsMessage((Player) sender, message);
+    }
+
+    public static String getNullMessage(FileConfiguration config) {
+        return EonPrefix.getPrefix(EonPrefix.NATIONS) + Utils.chat(config.getString("Target-Null"));
+    }
+
+    public static String bukkitNullMessage(FileConfiguration config) {
+        return EonPrefix.bukkitPrefix(EonPrefix.NATIONS) + Utils.chat(config.getString("Target-Null"));
     }
 
     public static void sendNullMessage(Player player, FileConfiguration config) {
-        String message = EonPrefix.getPrefix(EonPrefix.NATIONS) + Utils.chat(config.getString("Target-Null"));
+        String message = getNullMessage(config);
         player.sendMessage(message);
+    }
+
+    public static void sendNullMessage(CommandSender sender, FileConfiguration config) {
+        sendNullMessage((Player) sender, config);
     }
 }
