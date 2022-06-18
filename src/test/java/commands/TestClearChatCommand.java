@@ -6,23 +6,13 @@ import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.utils.EonPrefix;
 import me.squid.eoncore.utils.Utils;
+import mockbukkit.TestUtility;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 
-public class TestClearChatCommand {
-
-    private ServerMock server;
-    private EonCore plugin;
-
-    @Before
-    public void setUp() {
-        server = MockBukkit.mock();
-        MockBukkit.createMockPlugin("LuckPerms");
-        server.addSimpleWorld("spawn_void");
-        plugin = MockBukkit.load(EonCore.class);
-    }
+public class TestClearChatCommand extends TestUtility {
 
     @Test
     @DisplayName("OP Doesn't get spammed with chat")
@@ -41,10 +31,5 @@ public class TestClearChatCommand {
         PlayerMock normie = server.addPlayer();
         owner.performCommand("clearchat");
         normie.assertSaid("");
-    }
-
-    @After
-    public void tearDown() {
-        MockBukkit.unmock();
     }
 }

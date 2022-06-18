@@ -7,20 +7,11 @@ import me.squid.eoncore.EonCore;
 import me.squid.eoncore.listeners.ChatFormatListener;
 import me.squid.eoncore.utils.EonPrefix;
 import me.squid.eoncore.utils.Utils;
+import mockbukkit.TestUtility;
 import org.junit.*;
 import org.junit.jupiter.api.DisplayName;
 
-public class TestClockCommand {
-    private ServerMock server;
-    private EonCore plugin;
-
-    @Before
-    public void setup() {
-        server = MockBukkit.mock();
-        MockBukkit.createMockPlugin("LuckPerms");
-        server.addSimpleWorld("spawn_void");
-        plugin = MockBukkit.load(EonCore.class);
-    }
+public class TestClockCommand extends TestUtility {
 
     @Test
     @Ignore
@@ -41,10 +32,5 @@ public class TestClockCommand {
         owner.performCommand("clock");
         normie.assertSaid(EonPrefix.bukkitPrefix(EonPrefix.MODERATION) +
                 Utils.chat("&4Chat is locked. Please wait while we resolve the conflict. Thank you for your patience"));
-    }
-
-    @After
-    public void tearDown() {
-        MockBukkit.unmock();
     }
 }

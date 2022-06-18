@@ -3,18 +3,23 @@ package mockbukkit;
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
 import me.squid.eoncore.EonCore;
+import org.junit.After;
+import org.junit.Before;
 
 public class TestUtility {
+    protected ServerMock server;
+    protected EonCore plugin;
 
-    public static ServerMock setup() {
-        ServerMock server = MockBukkit.mock();
+    @Before
+    public void setup() {
+        server = MockBukkit.mock();
         MockBukkit.createMockPlugin("LuckPerms");
         server.addSimpleWorld("spawn_void");
-        MockBukkit.load(EonCore.class);
-        return server;
+        plugin = MockBukkit.load(EonCore.class);
     }
 
-    public static void tearDown() {
+    @After
+    public void tearDown() {
         MockBukkit.unmock();
     }
 

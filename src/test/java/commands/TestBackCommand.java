@@ -1,33 +1,18 @@
 package commands;
 
-import be.seeseemelk.mockbukkit.MockBukkit;
-import be.seeseemelk.mockbukkit.ServerMock;
 import be.seeseemelk.mockbukkit.WorldMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
-import me.squid.eoncore.EonCore;
 import me.squid.eoncore.utils.EonPrefix;
-import me.squid.eoncore.utils.Messaging;
 import me.squid.eoncore.utils.Utils;
+import mockbukkit.TestUtility;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 
-public class TestBackCommand {
-    private ServerMock server;
-    private EonCore plugin;
-
-    @Before
-    public void setUp() {
-        server = MockBukkit.mock();
-        MockBukkit.createMockPlugin("LuckPerms");
-        server.addSimpleWorld("spawn_void");
-        plugin = MockBukkit.load(EonCore.class);
-    }
+public class TestBackCommand extends TestUtility {
 
     private void killPlayer(PlayerMock player) {
         WorldMock otherWorld = server.addSimpleWorld("nice");
@@ -50,7 +35,6 @@ public class TestBackCommand {
         PlayerMock player = server.addPlayer("Bob");
         killPlayer(player);
         player.respawn();
-        String translatedPrefix = "§8[§9Eon Nations§8] ";
         player.assertSaid(EonPrefix.bukkitPrefix(EonPrefix.NATIONS) + Utils.chat(plugin.getConfig().getString("Death-Back-Message")));
     }
 
@@ -89,10 +73,5 @@ public class TestBackCommand {
         player.getInventory().addItem(new ItemStack(Material.DIRT, 32));
         killOPPlayer(player);
         Assert.assertTrue(player.getInventory().getSize() > 0);
-    }
-
-    @After
-    public void tearDown() {
-        MockBukkit.unmock();
     }
 }

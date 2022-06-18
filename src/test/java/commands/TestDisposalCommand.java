@@ -9,14 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 
-public class TestDisposalCommand {
-
-    private ServerMock server;
-
-    @Before
-    public void setUp() {
-        server = TestUtility.setup();
-    }
+public class TestDisposalCommand extends TestUtility {
 
     @Test
     @DisplayName("Opens an inventory that has nothing in it")
@@ -24,11 +17,6 @@ public class TestDisposalCommand {
         PlayerMock player = server.addPlayer();
         player.performCommand("disposal");
         player.assertInventoryView(InventoryType.CHEST);
-    }
-
-    @After
-    public void tearDown() {
-        TestUtility.tearDown();
     }
 
 }

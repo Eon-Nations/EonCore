@@ -5,6 +5,7 @@ import be.seeseemelk.mockbukkit.ServerMock;
 import be.seeseemelk.mockbukkit.UnimplementedOperationException;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import me.squid.eoncore.EonCore;
+import mockbukkit.TestUtility;
 import org.bukkit.Bukkit;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.junit.After;
@@ -13,17 +14,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 
-public class TestCommandSpyCommand {
-
-    private ServerMock server;
-
-    @Before
-    public void setUp() {
-        server = MockBukkit.mock();
-        MockBukkit.createMockPlugin("LuckPerms");
-        server.addSimpleWorld("spawn_void");
-        MockBukkit.load(EonCore.class);
-    }
+public class TestCommandSpyCommand extends TestUtility {
 
     private void callCommandEvent(PlayerMock player, String command) {
         PlayerCommandPreprocessEvent preprocessEvent = new PlayerCommandPreprocessEvent(player, command);
@@ -51,11 +42,6 @@ public class TestCommandSpyCommand {
         PlayerMock dummy = server.addPlayer("Dummy");
         callCommandEvent(dummy, "/help");
         player.assertSaid("§7[§6§lCommandSpy§7] Dummy: /help");
-    }
-
-    @After
-    public void tearDown() {
-        MockBukkit.unmock();
     }
 
 }

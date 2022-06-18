@@ -10,14 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 
-public class TestEnderChestCommand {
-
-    private ServerMock server;
-
-    @Before
-    public void setup() {
-        server = TestUtility.setup();
-    }
+public class TestEnderChestCommand extends TestUtility {
 
     @Test
     @DisplayName("Personal ender chest successfully opens when called")
@@ -29,8 +22,4 @@ public class TestEnderChestCommand {
         Assert.assertEquals(player.getOpenInventory().getTopInventory(), player.getEnderChest());
     }
 
-    @After
-    public void tearDown() {
-        TestUtility.tearDown();
-    }
 }

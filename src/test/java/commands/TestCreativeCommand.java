@@ -5,6 +5,7 @@ import be.seeseemelk.mockbukkit.ServerMock;
 import be.seeseemelk.mockbukkit.UnimplementedOperationException;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import me.squid.eoncore.EonCore;
+import mockbukkit.TestUtility;
 import org.bukkit.GameMode;
 import org.junit.After;
 import org.junit.Before;
@@ -12,17 +13,7 @@ import org.junit.Test;
 
 import java.util.logging.Logger;
 
-public class TestCreativeCommand {
-
-    private ServerMock server;
-
-    @Before
-    public void setUp() {
-        server = MockBukkit.mock();
-        MockBukkit.createMockPlugin("LuckPerms");
-        server.addSimpleWorld("spawn_void");
-        MockBukkit.load(EonCore.class);
-    }
+public class TestCreativeCommand extends TestUtility {
 
     @Test
     public void noPerms() {
@@ -54,10 +45,5 @@ public class TestCreativeCommand {
         player.performCommand("gmc Target");
         target.assertGameMode(GameMode.CREATIVE);
         player.assertGameMode(GameMode.SURVIVAL);
-    }
-
-    @After
-    public void tearDown() {
-        MockBukkit.unmock();
     }
 }

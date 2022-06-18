@@ -10,14 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 
-public class TestDirectMessageCommand {
-
-    private ServerMock server;
-
-    @Before
-    public void setUp() {
-        server = TestUtility.setup();
-    }
+public class TestDirectMessageCommand extends TestUtility {
 
     @Test
     @DisplayName("Typing the command with no arguments does not message")
@@ -49,10 +42,5 @@ public class TestDirectMessageCommand {
         PlayerMock owner = server.addPlayer("Owner");
         owner.performCommand("message Player Nice");
         owner.assertSaid(EonPrefix.bukkitPrefix(EonPrefix.NATIONS) + "Failed to find player. Please try again.");
-    }
-
-    @After
-    public void tearDown() {
-        TestUtility.tearDown();
     }
 }

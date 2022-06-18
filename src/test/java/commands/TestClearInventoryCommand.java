@@ -5,6 +5,7 @@ import be.seeseemelk.mockbukkit.ServerMock;
 import be.seeseemelk.mockbukkit.UnimplementedOperationException;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import me.squid.eoncore.EonCore;
+import mockbukkit.TestUtility;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -18,18 +19,7 @@ import java.util.Arrays;
 import java.util.function.BiFunction;
 import java.util.stream.Stream;
 
-public class TestClearInventoryCommand {
-
-    private ServerMock server;
-    private EonCore plugin;
-
-    @Before
-    public void setup() {
-        server = MockBukkit.mock();
-        MockBukkit.createMockPlugin("LuckPerms");
-        server.addSimpleWorld("spawn_void");
-        plugin = MockBukkit.load(EonCore.class);
-    }
+public class TestClearInventoryCommand extends TestUtility {
 
     private void addItemsToPlayer(PlayerMock player) {
         player.getInventory().addItem(new ItemStack(Material.DIRT, 32));
@@ -81,10 +71,5 @@ public class TestClearInventoryCommand {
         player.setOp(true);
         player.performCommand("clearinventory other");
         assertInventoryEmpty(other);
-    }
-
-    @After
-    public void tearDown() {
-        MockBukkit.unmock();
     }
 }
