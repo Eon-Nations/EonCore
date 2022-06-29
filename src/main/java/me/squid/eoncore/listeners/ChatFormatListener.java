@@ -1,21 +1,25 @@
 package me.squid.eoncore.listeners;
 
+import io.papermc.paper.chat.ChatRenderer;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.managers.Cooldown;
 import me.squid.eoncore.managers.MutedManager;
 import me.squid.eoncore.utils.Utils;
+import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.cacheddata.CachedMetaData;
 import net.luckperms.api.context.ImmutableContextSet;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.query.QueryOptions;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
@@ -23,6 +27,7 @@ public class ChatFormatListener implements Listener {
 
     EonCore plugin;
     MutedManager mutedManager;
+    ChatRenderer eonRenderer = initializeRenderer();
     LuckPerms lp = EonCore.getPerms();
     HashMap<String, String> groupColors;
     private static boolean isChatLocked = false;
@@ -39,8 +44,19 @@ public class ChatFormatListener implements Listener {
     public void onChatSend(AsyncChatEvent e) {
         cancelChatIfMuted(e);
         cancelChatIfLocked(e);
-        String prefix = getPrefix(e.getPlayer());
-        e.message(Component.text(prefix + e.originalMessage()));
+        e.renderer(eonRenderer);
+    }
+
+    private ChatRenderer initializeRenderer() {
+        return (player, displayName, message, audience) -> {
+            String prefix = getPrefix(player);
+            return Component.text(Utils.chat("&7[&r"))
+                    .append(Component.text(Utils.chat(prefix)))
+                    .append(Component.text(Utils.chat("&r&7] >> ")))
+                    .append(displayName)
+                    .append(Component.text(": "))
+                    .append(message);
+        };
     }
 
     private void cancelChatIfMuted(AsyncChatEvent e) {
@@ -70,8 +86,7 @@ public class ChatFormatListener implements Listener {
         CachedMetaData cachedMetaData = user.getCachedData().getMetaData(QueryOptions.contextual(contextSet));
         String prefix = cachedMetaData.getPrefix();
         if (prefix.equals("default")) prefix = "member";
-
-        return "&7[&r" + prefix + "&r&7] >> " + p.getDisplayName() + ": ";
+        return StringUtils.capitalize(prefix);
     }
 
     private void initializeGroupColors() {
