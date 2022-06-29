@@ -3,63 +3,62 @@ package me.squid.eoncore.commands;
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.managers.Cooldown;
 import me.squid.eoncore.managers.CooldownManager;
+import me.squid.eoncore.utils.FunctionalBukkit;
+import me.squid.eoncore.utils.Messaging;
 import me.squid.eoncore.utils.Utils;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Optional;
+
 public class HealCommand implements CommandExecutor {
 
     EonCore plugin;
-    CooldownManager cooldownManager;
+    final CooldownManager cooldownManager = new CooldownManager();
+    static final String OTHERS_PERMISSION = "eoncommands.heal.others";
+    static final long HEAL_COOLDOWN_MINUTES = 60L;
 
     public HealCommand(EonCore plugin) {
         this.plugin = plugin;
-        this.cooldownManager = new CooldownManager();
         plugin.getCommand("heal").setExecutor(this);
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
         if (sender instanceof Player p) {
             if (args.length == 0) {
-                if (cooldownManager.hasCooldown(p.getUniqueId())) {
-                    Cooldown cooldown = cooldownManager.getCooldown(p.getUniqueId());
-                    p.sendMessage(Utils.getPrefix("nations") + "You can do /heal in " +
-                            Utils.getFormattedTimeString(cooldown.getTimeRemaining()));
-                    return true;
-                } else {
-                    long minutes = plugin.getConfig().getLong("Heal-Cooldown");
-                    Cooldown cooldown = new Cooldown(p.getUniqueId(), minutes * 60L * 1000L, System.currentTimeMillis());
-                    cooldownManager.add(cooldown);
-                    p.setHealth(20);
-                    p.setFoodLevel(20);
-                    p.sendMessage(Utils.chat(plugin.getConfig().getString("Heal-Message")));
+                if (addCooldownToPlayer(p)) {
+                    healPlayer(p);
                 }
-            } else if (args.length == 1) {
-                Player target = Bukkit.getPlayer(args[0]);
-                if (target != null && p.hasPermission(getOthersPermNode())) {
-                    target.setFoodLevel(20);
-                    target.setHealth(20);
-                    target.sendMessage(Utils.chat(plugin.getConfig().getString("Heal-Message")));
-                    p.sendMessage(Utils.chat(plugin.getConfig().getString("Heal-Other").replace("<player>", target.getName())));
-                } else {
-                    p.sendMessage(Utils.chat(Utils.getPrefix("nations") + plugin.getConfig().getString("Target-Null")));
-                }
+            } else if (p.hasPermission(OTHERS_PERMISSION) && args.length == 1) {
+                FunctionalBukkit.getPlayerOrSendMessage(p, this::healPlayer, args[0]);
+                Messaging.sendNationsMessage(p, args[0] + " has been successfully healed!");
             }
         }
-
         return true;
     }
 
-    public String getPermissionNode(){
-        return "eoncommands.heal";
+    private boolean addCooldownToPlayer(Player player) {
+        if (player.isOp()) return true;
+        if (cooldownManager.hasCooldown(player.getUniqueId())) {
+            Cooldown cooldown = cooldownManager.getCooldown(player.getUniqueId());
+            Messaging.sendNationsMessage(player, "You can do /heal in " + Utils.getFormattedTimeString(cooldown.getTimeRemaining()));
+            return false;
+        } else {
+            Cooldown cooldown = new Cooldown(player.getUniqueId(), HEAL_COOLDOWN_MINUTES * 60L * 1000L, System.currentTimeMillis());
+            cooldownManager.add(cooldown);
+            return true;
+        }
     }
 
-    public String getOthersPermNode(){
-        return "eoncommands.heal.others";
+    private void healPlayer(Player player) {
+        Optional<String> message = Optional.ofNullable(plugin.getConfig().getString("Heal-Message"));
+        String healMessage = message.orElse("Healed!");
+        player.setHealth(20);
+        player.setFoodLevel(20);
+        Messaging.sendNationsMessage(player, healMessage);
     }
+
 }

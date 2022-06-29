@@ -3,8 +3,6 @@ package me.squid.eoncore.commands;
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.utils.FunctionalBukkit;
 import me.squid.eoncore.utils.Messaging;
-import me.squid.eoncore.utils.Utils;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -17,6 +15,7 @@ import java.util.function.Consumer;
 public class EnderChestCommand implements CommandExecutor {
 
     EonCore plugin;
+    static final String IMMUNE_NODE = "eoncommands.enderchest.others";
 
     public EnderChestCommand(EonCore plugin) {
         this.plugin = plugin;
@@ -35,14 +34,10 @@ public class EnderChestCommand implements CommandExecutor {
         Player p = (Player) sender;
         if (args.length == 0) {
             p.openInventory(p.getEnderChest());
-        } else if (args.length == 1 && p.hasPermission(getOthersPermNode())) {
+        } else if (args.length == 1 && p.hasPermission(IMMUNE_NODE)) {
             Optional<Player> maybeTarget = FunctionalBukkit.getPlayerFromName(args[0]);
-            maybeTarget.ifPresentOrElse(targetOpenEC(p), () -> Messaging.sendNullMessage(p, plugin.getConfig()));
+            maybeTarget.ifPresentOrElse(targetOpenEC(p), () -> Messaging.sendNullMessage(p));
         }
         return true;
-    }
-
-    public String getOthersPermNode(){
-        return "eoncommands.enderchest.others";
     }
 }

@@ -60,6 +60,6 @@ public class TestFlyCommand extends TestUtility {
         addPermissionToPlayer("eoncommands.fly", player);
         addPermissionToPlayer("eoncommands.fly.others", player);
         player.performCommand("fly Timmy");
-        player.assertSaid(Messaging.bukkitNullMessage(plugin.getConfig()));
+        player.assertSaid(Messaging.bukkitNullMessage());
     }
 }

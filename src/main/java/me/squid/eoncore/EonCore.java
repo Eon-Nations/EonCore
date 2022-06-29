@@ -7,15 +7,13 @@ import me.squid.eoncore.managers.MutedManager;
 import me.squid.eoncore.tasks.AutoAnnouncementTask;
 import me.squid.eoncore.utils.Utils;
 import me.squid.eoncore.utils.VoidChunkGenerator;
-import me.squid.eoncore.voting.VotifierListener;
+import net.kyori.adventure.text.Component;
 import net.luckperms.api.LuckPerms;
-import net.luckperms.api.LuckPermsProvider;
 import org.bukkit.*;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
-import scala.collection.immutable.Stream;
 
 import java.io.File;
 import java.time.Duration;
@@ -26,8 +24,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 public class EonCore extends JavaPlugin {
     public EonCore() {
@@ -95,7 +91,6 @@ public class EonCore extends JavaPlugin {
         new PWeatherCommand(this);
         new PTimeCommand(this);
         new HelpCommand(this);
-        new GetPositionCommand(this);
         new FixCommand(this);
         new SudoCommand(this);
         new GrindstoneCommand(this);
@@ -127,11 +122,12 @@ public class EonCore extends JavaPlugin {
     }
 
     public void runRestartTask() {
+        Server server = Bukkit.getServer();
+        Runnable messageTask = () -> server.sendMessage(getRestartingMessage());
         Runnable restartTask = () -> {
-            Bukkit.broadcastMessage(getRestartingMessage());
+            server.sendMessage(getWarningMessage());
             Bukkit.getScheduler().runTaskLater(this, Bukkit::shutdown, 40L);
         };
-        Runnable messageTask = () -> Bukkit.broadcastMessage(getWarningMessage());
 
         runScheduledTask(messageTask, true);
         runScheduledTask(restartTask, false);
@@ -195,11 +191,11 @@ public class EonCore extends JavaPlugin {
         return provider != null ? provider.getProvider() : null;
     }
 
-    private String getWarningMessage() {
-        return Utils.getPrefix("nations") + Utils.chat("Restarting Server in 5 minutes!");
+    private Component getWarningMessage() {
+        return Component.text(Utils.getPrefix("nations") + Utils.chat("Restarting Server in 5 minutes!"));
     }
 
-    private String getRestartingMessage() {
-        return Utils.getPrefix("nations") + Utils.chat("Restarting server!");
+    private Component getRestartingMessage() {
+        return Component.text(Utils.getPrefix("nations") + Utils.chat("Restarting server!"));
     }
 }

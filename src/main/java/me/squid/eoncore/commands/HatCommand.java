@@ -1,7 +1,7 @@
 package me.squid.eoncore.commands;
 
 import me.squid.eoncore.EonCore;
-import me.squid.eoncore.utils.Utils;
+import me.squid.eoncore.utils.Messaging;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -19,18 +19,14 @@ public class HatCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
-        if (sender instanceof Player) {
-            Player p = (Player) sender;
+        if (sender instanceof Player p) {
             if (p.getInventory().getHelmet() == null) {
                 p.getInventory().setHelmet(p.getInventory().getItemInMainHand());
-                p.sendMessage(Utils.chat(Utils.getPrefix("nations") + "&bHat On"));
                 p.getInventory().remove(p.getInventory().getItemInMainHand());
             } else {
-                p.sendMessage(Utils.chat(Utils.getPrefix("nations") + "&bTake off your helmet to put on the hat"));
+                Messaging.sendNationsMessage(p, "Take off your helmet to put on the hat");
             }
         }
-
         return true;
     }
 }

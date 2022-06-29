@@ -3,20 +3,19 @@ package me.squid.eoncore.commands;
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.utils.FunctionalBukkit;
 import me.squid.eoncore.utils.Messaging;
-import me.squid.eoncore.utils.Utils;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Optional;
 
 public class FlyCommand implements CommandExecutor {
     EonCore plugin;
     private final ArrayList<Player> flyingPlayers = new ArrayList<>();
+    static final String OTHERS_PERM_NODE = "eoncommands.fly.others";
+    static final String IMMUNE_PERM_NODE = "eoncommands.fly.others.immune";
 
     public FlyCommand(EonCore plugin) {
         this.plugin = plugin;
@@ -28,9 +27,9 @@ public class FlyCommand implements CommandExecutor {
         Player p = (Player) sender;
         if (args.length == 0) {
             toggleFly(p, false);
-        } else if (args.length == 1 && p.hasPermission(getOthersPermNode())) {
+        } else if (args.length == 1 && p.hasPermission(OTHERS_PERM_NODE)) {
             Optional<Player> maybeTarget = FunctionalBukkit.getPlayerFromName(args[0]);
-            maybeTarget.ifPresentOrElse(target -> toggleFly(target, p.hasPermission(getImmuneNode())), () -> Messaging.sendNullMessage(p, plugin.getConfig()));
+            maybeTarget.ifPresentOrElse(target -> toggleFly(target, p.hasPermission(IMMUNE_PERM_NODE)), () -> Messaging.sendNullMessage(p));
         }
         return true;
     }
@@ -53,13 +52,5 @@ public class FlyCommand implements CommandExecutor {
         player.setAllowFlight(false);
         Messaging.sendNationsMessage(player, plugin.getConfig().getString("Fly-Off"));
         flyingPlayers.remove(player);
-    }
-
-    public String getOthersPermNode() {
-        return "eoncommands.fly.others";
-    }
-
-    public String getImmuneNode() {
-        return "eoncommands.fly.others.immune";
     }
 }

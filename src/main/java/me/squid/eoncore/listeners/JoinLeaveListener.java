@@ -11,7 +11,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class JoinLeaveListener implements Listener {
@@ -24,7 +23,7 @@ public class JoinLeaveListener implements Listener {
     }
 
     @EventHandler
-    public void JoinMessage(PlayerJoinEvent e) {
+    public void sendJoinMessage(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         if (p.hasPlayedBefore()) {
             sendPlayerTitle(p);
@@ -40,7 +39,7 @@ public class JoinLeaveListener implements Listener {
     }
 
     @EventHandler
-    public void LeaveMessage(PlayerQuitEvent e) {
+    public void sendLeaveMessage(PlayerQuitEvent e) {
         Player p = e.getPlayer();
         e.setQuitMessage(Utils.chat(plugin.getConfig().getString("Leave-Message")
         .replace("<player>", p.getName())));
@@ -59,14 +58,14 @@ public class JoinLeaveListener implements Listener {
                     .replace("<player>", p.getName()));
     }
 
-    private void givePlayerStarterKit(Player p) {
-        List<ItemStack> itemsToGive = new ArrayList<>();
-        itemsToGive.add(Utils.createKitItem(Material.WOODEN_SWORD, 1, "&7Stick", null, null));
-        itemsToGive.add(Utils.createKitItem(Material.WOODEN_PICKAXE, 1, "&7Pick", null, null));
-        itemsToGive.add(Utils.createKitItem(Material.WOODEN_AXE, 1, "&7Wood", null, null));
-        itemsToGive.add(Utils.createKitItem(Material.WOODEN_SHOVEL, 1, "&7Spoon", null, null));
-        itemsToGive.add(new ItemStack(Material.COOKED_BEEF, 8));
-
+    private static void givePlayerStarterKit(Player p) {
+        List<ItemStack> itemsToGive = List.of(
+            Utils.createKitItem(Material.WOODEN_SWORD, "&7Stick"),
+            Utils.createKitItem(Material.WOODEN_PICKAXE, "&7Pick"),
+            Utils.createKitItem(Material.WOODEN_AXE, "&7Wood"),
+            Utils.createKitItem(Material.WOODEN_SHOVEL, "&7Spoon"),
+            new ItemStack(Material.COOKED_BEEF, 8)
+        );
         itemsToGive.forEach(p.getInventory()::addItem);
     }
 }

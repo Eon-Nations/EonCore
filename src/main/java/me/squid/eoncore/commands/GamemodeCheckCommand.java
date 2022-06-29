@@ -3,9 +3,7 @@ package me.squid.eoncore.commands;
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.utils.FunctionalBukkit;
 import me.squid.eoncore.utils.Messaging;
-import me.squid.eoncore.utils.Utils;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -27,9 +25,9 @@ public class GamemodeCheckCommand implements CommandExecutor {
             Messaging.sendNationsMessage(sender, "Config message missing. Let the devs know");
             return;
         }
-        String gamemodeMessage = maybeGamemodeMessage.get();
-        gamemodeMessage = gamemodeMessage.replace("<target>", target.getName());
-        gamemodeMessage = gamemodeMessage.replace("<gamemode>", StringUtils.capitalize(target.getGameMode().toString().toLowerCase()));
+        String gamemodeMessage = maybeGamemodeMessage.get()
+            .replace("<target>", target.getName())
+            .replace("<gamemode>", StringUtils.capitalize(target.getGameMode().toString().toLowerCase()));
         Messaging.sendNationsMessage(sender, gamemodeMessage);
     }
 
@@ -38,7 +36,7 @@ public class GamemodeCheckCommand implements CommandExecutor {
         if (args.length == 1) {
             Optional<Player> maybeTarget = FunctionalBukkit.getPlayerFromName(args[0]);
             maybeTarget.ifPresentOrElse(target -> sendGamemodeMessage(sender, target),
-                    () -> Messaging.sendNullMessage(sender, plugin.getConfig()));
+                    () -> Messaging.sendNullMessage(sender));
         } else Messaging.sendNationsMessage(sender, "Usage: /gmcheck <player>");
         return true;
     }

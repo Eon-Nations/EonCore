@@ -5,7 +5,6 @@ import me.squid.eoncore.managers.Cooldown;
 import me.squid.eoncore.managers.CooldownManager;
 import me.squid.eoncore.utils.Messaging;
 import me.squid.eoncore.utils.Utils;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -14,9 +13,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -25,7 +22,7 @@ public class FixCommand implements CommandExecutor {
 
     EonCore plugin;
     // 10 Minutes converted to second converted to milliseconds
-    final long cooldownLength = 10L * 60L * 1000L;
+    static final long COOLDOWN_LENGTH = 10L * 60L * 1000L;
     final CooldownManager cooldownManager = new CooldownManager();
 
     public FixCommand(EonCore plugin) {
@@ -43,13 +40,15 @@ public class FixCommand implements CommandExecutor {
                 Cooldown cooldown = cooldownManager.getCooldown(p.getUniqueId());
                 String timeRemaining = Utils.getFormattedTimeString(cooldown.getTimeRemaining());
                 Messaging.sendNationsMessage(p, "You can /fix in " + timeRemaining);
-                return true;
+                return false;
             }
 
             if (args.length == 1) {
-                switch (args[0]) {
-                    case "hand" -> fixItemInHand(p);
-                    case "all" -> fixAllItems(p);
+                String hand = args[0];
+                if (hand.equals("hand")) {
+                    fixItemInHand(p);
+                } else if (hand.equals("all")) {
+                    fixAllItems(p);
                 }
             } else p.sendMessage(Utils.chat(Utils.getPrefix("nations") + "&7Usage: /fix hand/all"));
         }
@@ -83,7 +82,7 @@ public class FixCommand implements CommandExecutor {
 
     public void addCooldownToPlayer(Player p) {
         if (!p.hasPermission("eoncommands.fix.cooldown.immune")) {
-            Cooldown cooldown = new Cooldown(p.getUniqueId(), cooldownLength, System.currentTimeMillis());
+            Cooldown cooldown = new Cooldown(p.getUniqueId(), COOLDOWN_LENGTH, System.currentTimeMillis());
             cooldownManager.add(cooldown);
         }
     }

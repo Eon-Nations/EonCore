@@ -1,16 +1,20 @@
 package me.squid.eoncore.utils;
 
+import net.kyori.adventure.text.Component;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import javax.annotation.Nullable;
-import java.util.*;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -18,6 +22,8 @@ import java.util.stream.Stream;
 import static org.bukkit.Bukkit.getServer;
 
 public class Utils {
+    private Utils() { }
+    private static final Random random = createRandom();
 
     public static String chat(String s) {
         return ChatColor.translateAlternateColorCodes('&', s);
@@ -44,34 +50,19 @@ public class Utils {
 
     public static void createItem(Inventory inv, Material material, int amount, int invSlot, String displayName, String... loreString) {
         ItemStack item = new ItemStack(material, amount);
-        List<String> lore = new ArrayList<>();
         ItemMeta meta = item.getItemMeta();
-
-        meta.setDisplayName(displayName);
-        for (String s : loreString) {
-            lore.add(Utils.chat(s));
-        }
-        meta.setLore(lore);
-        item.setItemMeta(meta);
-        inv.setItem(invSlot - 1, item);
-    }
-
-    public static void createItem(Inventory inv, Material material, int amount, int invSlot, String displayName, List<String> loreString) {
-        ItemStack item = new ItemStack(material, amount);
-        ItemMeta meta = item.getItemMeta();
-
-        // Create lore array
-        Stream<String> loreStream = loreString.stream();
-        List<String> lore = loreStream.map(Utils::translateHex).toList();
-
-        meta.setDisplayName(Utils.chat(displayName));
-        meta.setLore(lore);
+        meta.displayName(Component.text(Utils.chat(displayName)));
+        List<Component> lore = Arrays.stream(loreString)
+                .map(Utils::chat)
+                .map(Component::text)
+                .map(Component::asComponent)
+                .toList();
+        meta.lore(lore);
         item.setItemMeta(meta);
         inv.setItem(invSlot - 1, item);
     }
 
     public static void removeRecipe(Material m) {
-
         Iterator<Recipe> it = getServer().recipeIterator();
         Recipe recipe;
         while (it.hasNext()) {
@@ -82,9 +73,15 @@ public class Utils {
         }
     }
 
-    public static Location generateLocation(World world, List<Material> blackList) {
-        Random random = new Random();
+    private static Random createRandom() {
+        try {
+            return SecureRandom.getInstanceStrong();
+        } catch (NoSuchAlgorithmException e) {
+            return new Random();
+        }
+    }
 
+    public static Location generateLocation(World world, List<Material> blackList) {
         int x = random.nextInt(7500) * (random.nextBoolean() ? -1 : 1);
         int y = 150;
         int z = random.nextInt(7500) * (random.nextBoolean() ? -1 : 1);
@@ -112,26 +109,18 @@ public class Utils {
         return !(blackList.contains(below.getType()))  || block.getType().isSolid() || above.getType().isSolid();
     }
 
-    public static ItemStack createKitItem(Material material, int amount, String displayName, @Nullable List<String> lore, @Nullable HashMap<Enchantment, Integer> enchantments) {
-        ItemStack item = new ItemStack(material, amount);
+    public static ItemStack createKitItem(Material material, String displayName) {
+        ItemStack item = new ItemStack(material, 1);
         ItemMeta meta = item.getItemMeta();
-
-        meta.setDisplayName(Utils.chat(displayName));
-        meta.setLore(lore);
+        meta.displayName(Component.text(Utils.chat(displayName)));
         item.setItemMeta(meta);
-
-        if (enchantments != null) {
-            for (Enchantment e : enchantments.keySet()) {
-                item.addUnsafeEnchantment(e, enchantments.get(e));
-            }
-        }
         return item;
     }
 
     public static void makeDummySlots(Inventory inv) {
         ItemStack item = new ItemStack(Material.BLACK_STAINED_GLASS_PANE, 1);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName("");
+        meta.displayName(Component.text(" "));
         item.setItemMeta(meta);
 
         for (int i = 0; i < inv.getSize(); i++) {

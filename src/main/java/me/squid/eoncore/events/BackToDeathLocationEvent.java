@@ -8,15 +8,15 @@ public class BackToDeathLocationEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
 
-    private Player p;
-    private boolean hasCooldown;
+    private final Player p;
+    private final boolean hasCooldown;
 
     public BackToDeathLocationEvent(Player p, boolean hasCooldown) {
         this.p = p;
         this.hasCooldown = hasCooldown;
     }
 
-    public Player getPlayer() {
+    public Player player() {
         return p;
     }
 
@@ -31,5 +31,4 @@ public class BackToDeathLocationEvent extends Event {
     public static HandlerList getHandlerList() {
         return handlers;
     }
-
 }

@@ -5,8 +5,6 @@ import me.squid.eoncore.managers.Cooldown;
 import me.squid.eoncore.managers.CooldownManager;
 import me.squid.eoncore.utils.FunctionalBukkit;
 import me.squid.eoncore.utils.Messaging;
-import me.squid.eoncore.utils.Utils;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,6 +16,8 @@ public class FeedCommand implements CommandExecutor {
 
     EonCore plugin;
     CooldownManager cooldownManager;
+    static final String OTHERS_IMMUNE_NODE = "eoncommands.feed.others";
+    static final String IMMUNE_COOLDOWN_NODE = "eoncommands.feed.cooldown.immune";
 
     public FeedCommand(EonCore plugin) {
         this.plugin = plugin;
@@ -34,7 +34,7 @@ public class FeedCommand implements CommandExecutor {
     }
 
     private void applyCooldown(Player player) {
-        if (!player.hasPermission(getImmuneCooldownNode())) {
+        if (!player.hasPermission(IMMUNE_COOLDOWN_NODE)) {
             int minutes = player.hasPermission("eoncommands.feed.5") ? 5 : 10;
             final long SECONDS_TO_MILLISECONDS = 60L * 1000L;
             long totalLength = minutes * SECONDS_TO_MILLISECONDS;
@@ -49,22 +49,15 @@ public class FeedCommand implements CommandExecutor {
         if (args.length == 0) {
             if (cooldownManager.hasCooldown(p.getUniqueId())) {
                 Messaging.sendNationsMessage(p, plugin.getConfig().getString("Feed-Cooldown-message"));
-                return true;
+                return false;
             }
             feedPlayer(p);
             applyCooldown(p);
-        } else if (args.length == 1 && p.hasPermission(getOthersPermNode())) {
+        } else if (args.length == 1 && p.hasPermission(OTHERS_IMMUNE_NODE)) {
             Optional<Player> maybeTarget = FunctionalBukkit.getPlayerFromName(args[0]);
-            maybeTarget.ifPresentOrElse(this::feedPlayer, () -> Messaging.sendNullMessage(p, plugin.getConfig()));
+            maybeTarget.ifPresentOrElse(this::feedPlayer, () -> Messaging.sendNullMessage(p));
+            return true;
         }
-        return true;
-    }
-
-    public String getOthersPermNode(){
-        return "eoncommands.feed.others";
-    }
-
-    public String getImmuneCooldownNode() {
-        return "eoncommands.feed.cooldown.immune";
+        return false;
     }
 }

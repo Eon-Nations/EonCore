@@ -2,7 +2,6 @@ package me.squid.eoncore.commands;
 
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.events.BackToDeathLocationEvent;
-import me.squid.eoncore.utils.EonPrefix;
 import me.squid.eoncore.utils.Messaging;
 import me.squid.eoncore.utils.Utils;
 import org.bukkit.Bukkit;
@@ -55,12 +54,11 @@ public class BackCommand implements CommandExecutor, Listener {
 
     @EventHandler
     public void onBackCommand(BackToDeathLocationEvent e) {
-        Player p = e.getPlayer();
+        Player p = e.player();
         Location toTeleport = backLocations.remove(p);
 
         if (toTeleport == null) {
             Messaging.sendNationsMessage(p, "There is no back location to teleport to");
-            //p.sendMessage(Utils.chat("There is no back location to teleport to"));
             return;
         }
 
