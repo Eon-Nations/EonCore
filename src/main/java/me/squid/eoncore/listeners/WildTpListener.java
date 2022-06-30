@@ -32,7 +32,7 @@ public class WildTpListener implements Listener {
 
     @EventHandler (priority = EventPriority.HIGH)
     public void onWildTeleport(WildTeleportEvent e) {
-        Player p = e.getPlayer();
+        Player p = e.player();
 
         if (e.isInPortal()) {
             if (!playersInPortal.contains(p.getUniqueId())) playersInPortal.add(p.getUniqueId());
@@ -41,13 +41,13 @@ public class WildTpListener implements Listener {
 
         if (!cooldownManager.hasCooldown(p.getUniqueId())) {
             p.sendMessage(getWildPrefix() + " Finding a location for you...");
-            Location toTp = Utils.generateLocation(e.getWorld(), blackList);
+            Location toTp = Utils.generateLocation(e.world(), blackList);
             p.sendMessage(getWildPrefix() + " Found a location. Loading...");
 
             Bukkit.getScheduler().runTask(plugin, () -> p.teleport(toTp));
             p.sendMessage(getWildPrefix() + " You have been teleported to the coords: x:" + toTp.getBlockX() + " y:" + toTp.getBlockY() + " z:" + toTp.getBlockZ());
             p.setInvulnerable(true);
-            applyCooldown(p, 5);
+            applyCooldown(p);
             removeInitialSafetyNet(p);
         } else {
             if (e.isInPortal()) Bukkit.getScheduler().runTask(plugin, () -> p.teleport(Utils.getSpawnLocation()));
@@ -67,9 +67,9 @@ public class WildTpListener implements Listener {
         Bukkit.getScheduler().runTaskLater(plugin, removal, 100L);
     }
 
-    private void applyCooldown(Player p, int minutes) {
+    private void applyCooldown(Player p) {
         if (!p.isOp()) {
-            Cooldown cooldown = new Cooldown(p.getUniqueId(), minutesToMilliseconds(minutes), System.currentTimeMillis());
+            Cooldown cooldown = new Cooldown(p.getUniqueId(), minutesToMilliseconds(5), System.currentTimeMillis());
             cooldownManager.add(cooldown);
         }
     }
