@@ -10,6 +10,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
 import java.util.function.Consumer;
 
 public class KickCommand implements CommandExecutor {
@@ -36,8 +37,9 @@ public class KickCommand implements CommandExecutor {
     }
 
     private Component reason(String[] args) {
-        args[0] = "";
-        String message = Utils.getMessageFromArgs(args);
+        String[] copyArgs = Arrays.copyOf(args, args.length);
+        copyArgs[0] = "";
+        String message = Utils.getMessageFromArgs(copyArgs);
         return Component.text(message);
     }
 }
