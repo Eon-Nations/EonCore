@@ -38,6 +38,7 @@ public class EonCore extends JavaPlugin {
     public void onEnable() {
         loadWorlds();
         saveDefaultConfig();
+        EonCommand.registerAllCommands(this);
         registerCommands();
         registerListeners();
         disableRecipes();
@@ -64,7 +65,6 @@ public class EonCore extends JavaPlugin {
         new DisposalCommand(this);
         new NightVisionCommand(this);
         new GamemodeCheckCommand(this);
-        new PickupCommand(this);
         new InvseeCommand(this);
         new FlyCommand(this);
         new CommandSpyCommand(this);
@@ -89,7 +89,6 @@ public class EonCore extends JavaPlugin {
         new VoteRanksCommand(this);
         new HatCommand(this);
         new PWeatherCommand(this);
-        new PTimeCommand(this);
         new HelpCommand(this);
         new FixCommand(this);
         new SudoCommand(this);
@@ -177,8 +176,8 @@ public class EonCore extends JavaPlugin {
     }
 
     private void setSpawnGameRules(BiConsumer<List<GameRule<Boolean>>, World> setGameRule) {
-        List<GameRule<Boolean>> spawnRules = List.of
-                (GameRule.DO_FIRE_TICK,
+        List<GameRule<Boolean>> spawnRules = List.of(
+                GameRule.DO_FIRE_TICK,
                 GameRule.DO_WEATHER_CYCLE,
                 GameRule.DO_DAYLIGHT_CYCLE,
                 GameRule.DO_MOB_SPAWNING);

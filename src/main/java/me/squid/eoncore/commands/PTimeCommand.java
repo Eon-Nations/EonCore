@@ -1,58 +1,47 @@
 package me.squid.eoncore.commands;
 
+import me.squid.eoncore.EonCommand;
 import me.squid.eoncore.EonCore;
-import me.squid.eoncore.utils.Utils;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+import me.squid.eoncore.utils.Messaging;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class PTimeCommand implements CommandExecutor {
-
-    EonCore plugin;
+@RegisterCommand
+public class PTimeCommand extends EonCommand {
 
     public PTimeCommand(EonCore plugin) {
-        this.plugin = plugin;
-        plugin.getCommand("ptime").setExecutor(this);
+        super("ptime", plugin);
         plugin.getCommand("ptime").setTabCompleter(getTabComplete());
     }
 
-
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
-        if (sender instanceof Player) {
-            Player p = (Player) sender;
-            if (args.length == 1) {
-                for (String times : getTimes()) {
-                    if (times.equalsIgnoreCase(args[0])) {
-                        p.setPlayerTime(getTimeFromString(times), false);
-                        p.sendMessage(Utils.chat(Utils.getPrefix("nations") + "&7Time set to " + getTimeFromString(times)));
-                        if (times.equalsIgnoreCase("reset")) {
-                            p.resetPlayerTime();
-                            p.sendMessage(Utils.chat(Utils.getPrefix("nations") + "&7Time reset to the normal cycle"));
-                        }
-                    }
-                }
+    public void execute(Player player, String[] args) {
+        if (args.length == 1 && isValidTime(args[0])) {
+            int time = getTimeFromString(args[0]);
+            if (time == 0) {
+                player.resetPlayerTime();
+                Messaging.sendNationsMessage(player, "Time reset to server cycle");
+            } else {
+                player.setPlayerTime(time, false);
+                Messaging.sendNationsMessage(player, "Time set to " + args[0]);
             }
+        } else {
+            Messaging.sendNationsMessage(player, "Usage: /ptime <day/night/reset>");
         }
-        return true;
     }
 
-    public TabCompleter getTabComplete() {
-        return (sender, command, alias, args) -> getTimes();
+    private boolean isValidTime(String argument) {
+        return times().contains(argument);
     }
 
-    public List<String> getTimes() {
-        List<String> list = new ArrayList<>();
-        list.add("day");
-        list.add("night");
-        list.add("reset");
-        return list;
+    private TabCompleter getTabComplete() {
+        return (sender, command, alias, args) -> times();
+    }
+
+    private static List<String> times() {
+        return List.of("day", "night", "reset");
     }
 
     public int getTimeFromString(String s) {
