@@ -21,9 +21,6 @@ commands:
   heal:
     permission: eoncommands.heal
     description: Feed and heal yourself
-  anvil:
-    permission: eoncommands.anvil
-    description: Portable anvil
   enderchest:
     permission: eoncommands.enderchest
     description: Portable ender chest
@@ -32,18 +29,6 @@ commands:
     permission: eoncommands.clearinventory
     description: Clears the inventory
     aliases: [ci]
-  burn:
-    permission: eoncommands.burn
-    description: Burn people lol
-  extinguish:
-    permission: eoncommands.extinguish
-    description: Sets out the fire
-  admin:
-    permission: eoncommands.admin
-    description: Opens the Admin GUI
-  softvanish:
-    permission: eoncommands.softvanish
-    description: Vanish from people
   discord:
     description: Shows the server discord
   disposal:
@@ -53,17 +38,10 @@ commands:
     permission: eoncommands.nightvision
     description: Grants infinite night vision without particles
     aliases: [inv]
-  f:
-    permission: eoncommands.f
-    description: F in the chat
-    aliases: [finchat]
   gamemodecheck:
     permission: eoncommands.gamemodecheck
     description: Sends back the gamemode of a player
     aliases: [gmcheck]
-  pickup:
-    permission: eoncommands.pickup
-    description: Sets the pickup
   invsee:
     permission: eoncommands.invsee
     description: Look into another player's inventory
@@ -82,18 +60,12 @@ commands:
   tphere:
     permission: eoncommands.tphere
     description: Teleport other players to your location
-  muted:
-    permission: eoncommands.muted
-    description: Shows the muted players currently on the server
   teleport:
     permission: eoncommands.teleport
     description: Teleport to a specified player
     aliases: [tp]
   spawn:
     description: Teleport to spawn
-  setspawn:
-    permission: eoncommands.setspawn
-    description: Set the spawn for the server
   wild:
     description: Test Wild Command
   tpa:
@@ -147,10 +119,6 @@ commands:
     permission: eoncommands.pweather
   help:
     description: Help menu for new players
-  getpos:
-    description: Get the position
-    permission: eoncommands.getpos
-    aliases: [coords, getposition]
   fix:
     description: Fix items with a command
     permission: eoncommands.fix
@@ -163,8 +131,6 @@ commands:
   message:
     description: Message other players
     aliases: [msg, pm]
-  shovel:
-    description: Get a claim shovel for the claim plugin
   worldlist:
     description: Teleport to worlds
     permission: eoncommands.world
@@ -180,6 +146,3 @@ commands:
   uptime:
     description: Gets the server uptime in a friendly manner
     permission: eoncommands.uptime
-  findblock:
-    description: Found the block
-    permission: eoncommands.findblock

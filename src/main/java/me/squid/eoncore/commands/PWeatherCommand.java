@@ -1,59 +1,49 @@
 package me.squid.eoncore.commands;
 
+import me.squid.eoncore.EonCommand;
 import me.squid.eoncore.EonCore;
-import me.squid.eoncore.utils.Utils;
+import me.squid.eoncore.utils.Messaging;
 import org.bukkit.WeatherType;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class PWeatherCommand implements CommandExecutor {
-
-    EonCore plugin;
+@RegisterCommand
+public class PWeatherCommand extends EonCommand {
 
     public PWeatherCommand(EonCore plugin) {
-        this.plugin = plugin;
-        plugin.getCommand("pweather").setExecutor(this);
-        plugin.getCommand("pweather").setTabCompleter(getTabComplete());
+        super("pweather", plugin);
+        plugin.getCommand("pweather").setTabCompleter(tabComplete());
     }
-
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
-        if (sender instanceof Player) {
-            Player p = (Player) sender;
-            if (args.length == 1) {
-                if (args[0].equalsIgnoreCase("reset")) {
-                    p.resetPlayerWeather();
-                    return true;
-                }
-                try {
-                    WeatherType weather = WeatherType.valueOf(args[0].toUpperCase());
-                    p.setPlayerWeather(weather);
-                    p.sendMessage(Utils.chat(Utils.getPrefix("nations") + "&7Set weather to " + weather.name().toLowerCase()));
-                } catch (NullPointerException e) {
-                    p.sendMessage(Utils.chat(Utils.getPrefix("nations") + "&7Invalid weather type"));
-                    return true;
-                }
-            } else p.sendMessage(Utils.chat(Utils.getPrefix("nations") + "&7Usage: /pweather <clear/downfall/reset>"));
-        }
-
-        return true;
+    protected void execute(Player player, String[] args) {
+        if (args.length == 1) {
+            switch (args[0]) {
+                case "downfall" -> setPlayerWeather(player, WeatherType.DOWNFALL);
+                case "clear" -> setPlayerWeather(player, WeatherType.CLEAR);
+                case "reset" -> resetPlayerWeather(player);
+                default -> sendUsageMessage(player);
+            }
+        } else sendUsageMessage(player);
     }
 
-    public TabCompleter getTabComplete() {
-        return (sender, command, alias, args) -> {
-            List<String> list = new ArrayList<>();
-            list.add("clear");
-            list.add("downfall");
-            list.add("reset");
-            return list;
-        };
+    private void sendUsageMessage(Player player) {
+        Messaging.sendNationsMessage(player, "Usage: /pweather <clear/downfall/reset>");
+    }
+
+    private void resetPlayerWeather(Player player) {
+        player.resetPlayerWeather();
+        Messaging.sendNationsMessage(player, "Reset weather to server's weather");
+    }
+
+    private void setPlayerWeather(Player player, WeatherType weather) {
+        player.setPlayerWeather(weather);
+        Messaging.sendNationsMessage(player, "Set weather to " + weather.name().toLowerCase());
+    }
+
+    public TabCompleter tabComplete() {
+        return (sender, command, alias, args) -> List.of("clear", "downfall", "reset");
     }
 }

@@ -1,7 +1,6 @@
 package me.squid.eoncore;
 
 import me.squid.eoncore.commands.RegisterCommand;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,7 +20,7 @@ public abstract class EonCommand implements CommandExecutor {
     }
 
     private void registerCommand(String name) {
-        PluginCommand pluginCommand = Bukkit.getServer().getPluginCommand(name);
+        PluginCommand pluginCommand = core.getCommand(name);
         pluginCommand.setExecutor(this);
     }
 
@@ -33,6 +32,7 @@ public abstract class EonCommand implements CommandExecutor {
             execute(p, args);
         } else {
             sender.sendMessage("Commands cannot be executed by the console");
+            return false;
         }
         return true;
     }

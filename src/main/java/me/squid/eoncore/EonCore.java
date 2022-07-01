@@ -88,7 +88,6 @@ public class EonCore extends JavaPlugin {
         new RenameCommand(this);
         new VoteRanksCommand(this);
         new HatCommand(this);
-        new PWeatherCommand(this);
         new HelpCommand(this);
         new FixCommand(this);
         new SudoCommand(this);

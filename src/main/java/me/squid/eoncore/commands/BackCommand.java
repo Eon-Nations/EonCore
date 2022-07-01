@@ -1,14 +1,12 @@
 package me.squid.eoncore.commands;
 
+import me.squid.eoncore.EonCommand;
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.events.BackToDeathLocationEvent;
 import me.squid.eoncore.utils.Messaging;
 import me.squid.eoncore.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,23 +15,19 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 
 import java.util.HashMap;
 
-public class BackCommand implements CommandExecutor, Listener {
+public class BackCommand extends EonCommand implements Listener {
     EonCore plugin;
     private final HashMap<Player, Location> backLocations = new HashMap<>();
 
     public BackCommand(EonCore plugin) {
+        super("back", plugin);
         this.plugin = plugin;
-        plugin.getCommand("back").setExecutor(this);
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player p) {
-            boolean hasCooldown = !p.hasPermission("eoncommands.back.cooldown.bypass");
-            Bukkit.getPluginManager().callEvent(new BackToDeathLocationEvent(p, hasCooldown));
-        }
-        return true;
+    public void execute(Player player, String[] args) {
+        boolean hasCooldown = !player.hasPermission("eoncommands.back.cooldown.bypass");
+        Bukkit.getPluginManager().callEvent(new BackToDeathLocationEvent(player, hasCooldown));
     }
 
     @EventHandler
