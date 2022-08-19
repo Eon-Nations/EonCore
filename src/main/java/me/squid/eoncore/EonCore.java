@@ -77,7 +77,6 @@ public class EonCore extends JavaPlugin {
         new TpaCommand(this);
         new TpaAcceptCommand(this);
         new TpDenyCommand(this);
-        new BackCommand(this);
         new WarpsCommand(this);
         new WorkbenchCommand(this);
         new TpposCommand(this);

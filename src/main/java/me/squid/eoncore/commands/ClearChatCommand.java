@@ -1,43 +1,43 @@
 package me.squid.eoncore.commands;
 
+import me.squid.eoncore.EonCommand;
 import me.squid.eoncore.EonCore;
+import me.squid.eoncore.utils.Messaging;
 import me.squid.eoncore.utils.Utils;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.List;
-import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
-public class ClearChatCommand implements CommandExecutor {
-
-    EonCore plugin;
+@RegisterCommand
+public class ClearChatCommand extends EonCommand {
 
     public ClearChatCommand(EonCore plugin) {
-        this.plugin = plugin;
-        plugin.getCommand("clearchat").setExecutor(this);
+        super("clearchat", plugin);
     }
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        String immuneMessage = Utils.chat(Utils.getPrefix("nations") + "&bYou are immune to chat clear");
-        Stream<? extends Player> onlinePlayers = Bukkit.getOnlinePlayers().stream();
-        Consumer<Player> sendEmptyMessage = player -> IntStream.range(0, 100).forEach(index -> player.sendMessage(""))  ;
-        Consumer<Player> sendImmuneMessage = player -> player.sendMessage(immuneMessage);
-        Predicate<Player> normalPlayer = player -> !player.hasPermission("eoncommands.clearchat");
-
-        onlinePlayers.filter(normalPlayer).forEach(sendEmptyMessage);
-        Bukkit.getOnlinePlayers().stream().filter(normalPlayer.negate()).forEach(sendImmuneMessage);
-        Bukkit.getOnlinePlayers().forEach(player -> sendClearMessage(player, sender.getName()));
-        return true;
+    public void execute(Player player, String[] args) {
+        Predicate<Player> normalPlayer = online -> !online.hasPermission("eoncommands.clearchat");
+        Bukkit.getOnlinePlayers().stream()
+                .filter(normalPlayer)
+                .forEach(ClearChatCommand::sendEmptyMessage);
+        Bukkit.getOnlinePlayers().stream()
+                .filter(normalPlayer.negate())
+                .forEach(ClearChatCommand::sendImmuneMessage);
+        Bukkit.getOnlinePlayers().forEach(online -> sendClearMessage(online, player.getName()));
     }
 
-    private void sendClearMessage(Player p, String senderName) {
+    private static void sendImmuneMessage(Player player) {
+        Messaging.sendNationsMessage(player, "You are immune to chat clear");
+    }
+
+    private static void sendEmptyMessage(Player player) {
+        IntStream stream = IntStream.range(0, 100);
+        stream.forEach(index -> player.sendMessage(""));
+    }
+
+    private static void sendClearMessage(Player p, String senderName) {
         p.sendMessage(Utils.chat("[--------------------------]"));
         p.sendMessage(Utils.chat("Chat has been cleared by " + senderName));
         p.sendMessage(Utils.chat("[--------------------------]"));

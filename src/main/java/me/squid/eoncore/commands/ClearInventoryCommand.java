@@ -1,47 +1,40 @@
 package me.squid.eoncore.commands;
 
+import me.squid.eoncore.EonCommand;
 import me.squid.eoncore.EonCore;
-import me.squid.eoncore.utils.Utils;
-import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+import me.squid.eoncore.utils.Messaging;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-public class ClearInventoryCommand implements CommandExecutor {
+import java.util.function.Consumer;
 
-    EonCore plugin;
+import static me.squid.eoncore.utils.FunctionalBukkit.getPlayerOrSendMessage;
+
+@RegisterCommand
+public class ClearInventoryCommand extends EonCommand {
+
+    private static final String OTHERS_NODE = "eoncommands.clearinventory.others";
 
     public ClearInventoryCommand(EonCore plugin) {
-        this.plugin = plugin;
-        plugin.getCommand("clearinventory").setExecutor(this);
+        super("clearinventory", plugin);
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
-        if (args.length == 0){
-            if (sender instanceof Player p) {
-                p.getInventory().clear();
-                p.sendMessage(Utils.chat(Utils.getPrefix("nations") + plugin.getConfig().getString("Clear-Self-Inventory")));
-            }
-        } else if (args.length == 1){
-            Player target = Bukkit.getPlayer(args[0]);
-            if (target != null && sender.hasPermission(getOthersPermNode())) {
-                target.getInventory().clear();
-                target.sendMessage(Utils.chat(plugin.getConfig().getString("Target-Clear-Inventory")));
-                sender.sendMessage(Utils.chat(plugin.getConfig().getString("Clear-Other-Inventory")
-                .replace("<target>", target.getName())));
-            }
+    protected void execute(Player player, String[] args) {
+        FileConfiguration config = core.getConfig();
+        Consumer<Player> inventoryClear = clearInventory(config);
+        if (args.length == 0) {
+            inventoryClear.accept(player);
+        } else if (args.length == 1 && player.hasPermission(OTHERS_NODE)) {
+            getPlayerOrSendMessage(player, inventoryClear, args[0]);
         }
-        return true;
     }
 
-    public String getPermissionNode(){
-        return "eoncommands.clearinventory";
-    }
-
-    public String getOthersPermNode(){
-        return "eoncommands.clearinventory.others";
+    private Consumer<Player> clearInventory(FileConfiguration config) {
+        String clearMessage = config.getString("Clear-Self-Inventory");
+        return player -> {
+            player.getInventory().clear();
+            Messaging.sendNationsMessage(player, clearMessage);
+        };
     }
 }

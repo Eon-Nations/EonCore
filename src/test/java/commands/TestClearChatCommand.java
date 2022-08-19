@@ -20,7 +20,7 @@ public class TestClearChatCommand extends TestUtility {
         PlayerMock player = server.addPlayer();
         player.setOp(true);
         player.performCommand("clearchat");
-        player.assertSaid(Utils.chat(EonPrefix.bukkitPrefix(EonPrefix.NATIONS) + "&bYou are immune to chat clear"));
+        player.assertSaid(Utils.chat(EonPrefix.bukkitPrefix(EonPrefix.NATIONS) + "You are immune to chat clear"));
     }
 
     @Test
