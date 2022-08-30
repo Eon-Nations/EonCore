@@ -14,15 +14,10 @@ import java.util.function.Consumer;
 public class Messaging {
     private Messaging() { }
     private static final String NULL_MESSAGE = "That player does not exist or is offline!";
+    private static final Map<EonPrefix, Component> prefixMap = EonPrefix.mapping();
 
     private static Consumer<String> sendMessage(EonPrefix prefix, Player player) {
         return message -> player.sendMessage(EonPrefix.getPrefix(prefix) + Utils.chat(message));
-    }
-
-    private static Messenger sendComponentMessage(EonPrefix prefix) {
-        Map<EonPrefix, Component> prefixMap = EonPrefix.mapping();
-        Component renderedPrefix = prefixMap.get(prefix);
-        return (target, message) -> target.sendMessage(renderedPrefix.append(message));
     }
 
     public static Component formatDM(FileConfiguration config, String playerName, String targetName) {
@@ -33,21 +28,21 @@ public class Messaging {
         return miniMessage.deserialize(format);
     }
 
+    public static Component fromFormatString(String formatString) {
+        MiniMessage miniMessage = MiniMessage.miniMessage();
+        return miniMessage.deserialize(formatString);
+    }
+
     public static void sendNationsMessage(Player player, String message) {
         Optional<String> coolString = Optional.ofNullable(message);
         coolString.ifPresent(sendMessage(EonPrefix.NATIONS, player));
-    }
-
-    public static void sendModerationMessage(Player player, Component message) {
-        Messenger messageSender = sendComponentMessage(EonPrefix.MODERATION);
-        messageSender.send(player, message);
     }
 
     public static ConfigMessenger setupConfigMessenger(FileConfiguration config, EonPrefix prefix) {
         return (target, path) -> {
             String format = config.getString(path)
                     .replace("<player>", target.getName());
-            Component messagePrefix = EonPrefix.mapping().get(prefix);
+            Component messagePrefix = prefixMap.get(prefix);
             Component suffix = Component.text(format);
             target.sendMessage(messagePrefix.append(suffix));
         };

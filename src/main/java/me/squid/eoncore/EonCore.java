@@ -55,19 +55,16 @@ public class EonCore extends JavaPlugin {
 
     public void registerCommands(){
         new SurvivalCommand(this);
-        new CreativeCommand(this);
         new SpectatorCommand(this);
         new HealCommand(this);
         new FeedCommand(this);
         new EnderChestCommand(this);
-        new ClearInventoryCommand(this);
         new DiscordCommand(this);
         new DisposalCommand(this);
         new NightVisionCommand(this);
         new GamemodeCheckCommand(this);
         new InvseeCommand(this);
         new FlyCommand(this);
-        new CommandSpyCommand(this);
         new TopCommand(this);
         new RulesCommand(this);
         new TphereCommand(this);
@@ -83,7 +80,6 @@ public class EonCore extends JavaPlugin {
         new ReviveCommand(this);
         new StaffChatCommand(this);
         new KickCommand(this);
-        new ClearChatCommand(this);
         new RenameCommand(this);
         new VoteRanksCommand(this);
         new HatCommand(this);
@@ -92,7 +88,6 @@ public class EonCore extends JavaPlugin {
         new SudoCommand(this);
         new GrindstoneCommand(this);
         new WorldCommand(this);
-        new ClockCommand(this);
         new UptimeCommand(this);
         new InventoryManager();
     }

@@ -9,6 +9,7 @@ import me.squid.eoncore.utils.FunctionalBukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
+@RegisterCommand
 public class CreativeCommand extends EonCommand {
     static final String OTHERS_NODE = "eoncommands.gmc.others";
 

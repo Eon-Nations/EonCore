@@ -55,9 +55,10 @@ Fly-Off: "&7[&b&lEon Fly&r&7] &bFly Off"
 Target-Fly: "Target has been toggled for flying"
 
 # Command Spy Messages
-CommandSpy-On: "&7[&6&lCommandSpy&r&7] &aCommand Spy On"
-CommandSpy-Off: "&7[&6&lCommandSpy&r&7] &aCommand Spy Off"
-CommandSpy-Message: "&7[&6&lCommandSpy&r&7] <player>: <command>"
+CommandSpy-On: "<green>Command Spy On"
+CommandSpy-Off: "<green>Command Spy Off"
+# Leaving the Prefix here since it's useful
+CommandSpy-Message: "<gray>[<gold><bold>CommandSpy</bold></gold>] <blue><player></blue>: <command>"
 
 # Top Message
 Top-Message: "&bTeleported to the Top!"
