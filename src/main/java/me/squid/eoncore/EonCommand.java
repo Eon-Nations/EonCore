@@ -1,6 +1,8 @@
 package me.squid.eoncore;
 
 import me.squid.eoncore.commands.RegisterCommand;
+import me.squid.eoncore.messaging.EonPrefix;
+import net.kyori.adventure.text.Component;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -9,10 +11,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.reflections.Reflections;
 
+import java.util.Map;
 import java.util.Set;
 
 public abstract class EonCommand implements CommandExecutor {
     protected JavaPlugin core;
+    protected static Map<EonPrefix, Component> prefixMap = EonPrefix.mapping();
 
     protected EonCommand(String name, JavaPlugin core) {
         this.core = core;

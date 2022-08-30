@@ -1,17 +1,21 @@
 # Eon Survival Config File
 
 # Join/Leave Message
-Welcome-Message: "&b&lWelcome <player> to Eon Survival!! <player> has logged in for the first time!"
-Join-Message: "&7[&a&l+&r&7] &b<player>"
-Leave-Message: "&7[&4&l-&r&7] &b<player>"
+Welcome-Message: "<blue>Welcome <player> to Eon Survival!! <player> has logged in for the first time!</blue>"
+Join-Message: "<gray>[<green><bold>+</green></bold>]</gray> &b<player>"
+Leave-Message: "<gray>[<red><bold>-</red></bold>]</gray> <blue><player>"
+
+# Clock Messages
+Clock-Lock: "<hover:show_text:'For more information, do /discord and join for further updates'><red>Chat is locked. Please wait while we resolve the conflict. Thank you for your patience!</red></hover>"
+Clock-Unlock: "<green>Chat is unlocked. You may continue to chat normally. Thank you for your patience!</green>"
+
+# Message Format
+DM-Format: "<hover:show_text:'Click anywhere to reply'><click:copy_to_clipboard:/msg <target>><gray>[<gold><player></gold> -> <gold><target></gold>] >> </gray></hover>"
 
 # Game-mode Messages
-Survival-Message: "Survival Time!"
-Survival-Other: "You have set <target> into survival mode!"
+Survival-Message: "<blue>Survival Time!"
 Creative-Message: "Creative Time!"
-Creative-Other: "You have set <target> into creative mode!"
 Spectator-Message: "Spectator Time!"
-Spectator-Other: "You have set <target> into spectator mode!"
 
 # Heal/Feed Message
 Heal-Message: "Healed!"

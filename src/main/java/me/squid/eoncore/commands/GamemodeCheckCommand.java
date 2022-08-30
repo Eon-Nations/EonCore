@@ -2,7 +2,7 @@ package me.squid.eoncore.commands;
 
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.utils.FunctionalBukkit;
-import me.squid.eoncore.utils.Messaging;
+import me.squid.eoncore.messaging.Messaging;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

@@ -91,7 +91,6 @@ public class EonCore extends JavaPlugin {
         new FixCommand(this);
         new SudoCommand(this);
         new GrindstoneCommand(this);
-        new DirectMessageCommand(this);
         new WorldCommand(this);
         new ClockCommand(this);
         new UptimeCommand(this);

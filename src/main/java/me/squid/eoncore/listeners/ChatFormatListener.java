@@ -6,7 +6,6 @@ import me.squid.eoncore.EonCore;
 import me.squid.eoncore.managers.Cooldown;
 import me.squid.eoncore.managers.MutedManager;
 import me.squid.eoncore.utils.Utils;
-import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.cacheddata.CachedMetaData;
@@ -18,8 +17,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
@@ -102,6 +99,11 @@ public class ChatFormatListener implements Listener {
         groupColors.put("mod", "#6600cc");
         groupColors.put("admin", "#cc0000");
         groupColors.put("owner", "#007fff");
+    }
+
+    public static boolean toggleChatLock() {
+        setChatLocked(!isChatLocked);
+        return isChatLocked;
     }
 
     public static void setChatLocked(boolean state) {

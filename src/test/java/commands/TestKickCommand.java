@@ -1,7 +1,7 @@
 package commands;
 
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
-import me.squid.eoncore.utils.Messaging;
+import me.squid.eoncore.messaging.Messaging;
 import mockbukkit.TestUtility;
 import org.junit.Assert;
 import org.junit.Ignore;

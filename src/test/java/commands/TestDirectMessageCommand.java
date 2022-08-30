@@ -1,28 +1,21 @@
 package commands;
 
-import be.seeseemelk.mockbukkit.ServerMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
-import me.squid.eoncore.utils.EonPrefix;
+import me.squid.eoncore.messaging.EonPrefix;
 import me.squid.eoncore.utils.Utils;
 import mockbukkit.TestUtility;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 
 public class TestDirectMessageCommand extends TestUtility {
 
-    @Test
+    @Test(expected = NullPointerException.class)
     @DisplayName("Typing the command with no arguments does not message")
     public void noArgs() {
         PlayerMock player = server.addPlayer();
         player.performCommand("message");
-        try {
-            player.assertNoMoreSaid();
-        } catch (NullPointerException e) {
-            // Expected behavior
-            // This will continue
-        }
+        player.assertNoMoreSaid();
     }
 
     @Test
@@ -41,6 +34,7 @@ public class TestDirectMessageCommand extends TestUtility {
     public void testNoTarget() {
         PlayerMock owner = server.addPlayer("Owner");
         owner.performCommand("message Player Nice");
-        owner.assertSaid(EonPrefix.bukkitPrefix(EonPrefix.NATIONS) + "Failed to find player. Please try again.");
+        String message = owner.nextMessage();
+        Assertions.assertTrue(message.contains("offline"));
     }
 }

@@ -1,5 +1,6 @@
 package me.squid.eoncore.utils;
 
+import me.squid.eoncore.messaging.Messaging;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

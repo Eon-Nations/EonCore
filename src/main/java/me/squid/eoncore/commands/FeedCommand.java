@@ -4,7 +4,7 @@ import me.squid.eoncore.EonCore;
 import me.squid.eoncore.managers.Cooldown;
 import me.squid.eoncore.managers.CooldownManager;
 import me.squid.eoncore.utils.FunctionalBukkit;
-import me.squid.eoncore.utils.Messaging;
+import me.squid.eoncore.messaging.Messaging;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

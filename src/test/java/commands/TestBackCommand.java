@@ -2,7 +2,7 @@ package commands;
 
 import be.seeseemelk.mockbukkit.WorldMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
-import me.squid.eoncore.utils.EonPrefix;
+import me.squid.eoncore.messaging.EonPrefix;
 import me.squid.eoncore.utils.Utils;
 import mockbukkit.TestUtility;
 import org.bukkit.Location;

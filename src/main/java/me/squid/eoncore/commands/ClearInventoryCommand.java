@@ -2,7 +2,7 @@ package me.squid.eoncore.commands;
 
 import me.squid.eoncore.EonCommand;
 import me.squid.eoncore.EonCore;
-import me.squid.eoncore.utils.Messaging;
+import me.squid.eoncore.messaging.Messaging;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 

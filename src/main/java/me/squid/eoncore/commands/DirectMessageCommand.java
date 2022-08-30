@@ -1,54 +1,46 @@
 package me.squid.eoncore.commands;
 
+import me.squid.eoncore.EonCommand;
 import me.squid.eoncore.EonCore;
-import me.squid.eoncore.utils.EonPrefix;
+import me.squid.eoncore.messaging.Messaging;
 import me.squid.eoncore.utils.FunctionalBukkit;
 import me.squid.eoncore.utils.Utils;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
-import java.util.Optional;
 import java.util.function.Consumer;
 
-import static me.squid.eoncore.utils.EonPrefix.getPrefix;
-
-public class DirectMessageCommand implements CommandExecutor {
-    EonCore plugin;
+@RegisterCommand
+public class DirectMessageCommand extends EonCommand {
 
     public DirectMessageCommand(EonCore plugin) {
-        this.plugin = plugin;
-        plugin.getCommand("message").setExecutor(this);
+        super("message", plugin);
     }
 
-    private String constructMessage(CommandSender sender, Player target, String[] args) {
-        return Utils.chat("&7[&6" + sender.getName() + "&r&7 -> &6" + target.getName() + "&7] >> ") + Utils.getMessageFromArgs(args);
+    private Component constructMessage(Player sender, Player target, String[] args) {
+        Component format = Messaging.formatDM(core.getConfig(), sender.getName(), target.getName());
+        String message = Utils.getMessageFromArgs(args);
+        return format.append(Component.text(message));
     }
 
-    private void sendDirectMessage(CommandSender sender, Player target, String message) {
+    private void sendDirectMessage(Player sender, Player target, Component message) {
         target.sendMessage(message);
         sender.sendMessage(message);
     }
 
-    private Consumer<Player> messageFunc(CommandSender sender, String[] args) {
+    private Consumer<Player> messageFunc(Player sender, String[] args) {
         return target -> {
-            String message = constructMessage(sender, target, args);
+            Component message = constructMessage(sender, target, args);
             sendDirectMessage(sender, target, message);
         };
     }
 
-    private Runnable sendMissingTarget(CommandSender sender) {
-        return () -> sender.sendMessage(getPrefix(EonPrefix.NATIONS) + "Failed to find player. Please try again.");
-    }
-
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    protected void execute(Player player, String[] args) {
         if (args.length >= 2) {
-            Optional<Player> maybeTarget = FunctionalBukkit.getPlayerFromName(args[0]);
+            String targetName = args[0];
             args[0] = "";
-            maybeTarget.ifPresentOrElse(messageFunc(sender, args), sendMissingTarget(sender));
+            FunctionalBukkit.getPlayerOrSendMessage(player, messageFunc(player, args), targetName);
         }
-        return true;
     }
 }

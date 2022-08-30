@@ -1,36 +1,31 @@
 package commands;
 
-import be.seeseemelk.mockbukkit.MockBukkit;
-import be.seeseemelk.mockbukkit.ServerMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
-import me.squid.eoncore.EonCore;
-import me.squid.eoncore.listeners.ChatFormatListener;
-import me.squid.eoncore.utils.EonPrefix;
-import me.squid.eoncore.utils.Utils;
 import mockbukkit.TestUtility;
-import org.junit.*;
+import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 
-public class TestClockCommand extends TestUtility {
+import static me.squid.eoncore.listeners.ChatFormatListener.isChatLocked;
 
-    @Test
-    @Ignore
-    @DisplayName("Normal people should not be able to access /clock")
-    public void testNoPerms() {
-        if (ChatFormatListener.isChatLocked()) ChatFormatListener.setChatLocked(false);
-        PlayerMock player = server.addPlayer();
-        player.performCommand("clock");
-        Assert.assertFalse(ChatFormatListener.isChatLocked());
-    }
+public class TestClockCommand extends TestUtility {
 
     @Test
     @DisplayName("OP successfully triggers chat lock")
     public void testClockMessage() {
         PlayerMock owner = server.addPlayer();
-        PlayerMock normie = server.addPlayer();
-        owner.setOp(true);
+        addPermissionToPlayer("eoncommands.clock", owner);
         owner.performCommand("clock");
-        normie.assertSaid(EonPrefix.bukkitPrefix(EonPrefix.MODERATION) +
-                Utils.chat("&4Chat is locked. Please wait while we resolve the conflict. Thank you for your patience"));
+        Assertions.assertTrue(isChatLocked());
+    }
+
+    @Test
+    @DisplayName("Toggle twice makes chat available again")
+    public void testTwiceToggle() {
+        PlayerMock locker = server.addPlayer();
+        addPermissionToPlayer("eoncommands.clock", locker);
+        locker.performCommand("clock");
+        locker.performCommand("clock");
+        Assertions.assertFalse(isChatLocked());
     }
 }

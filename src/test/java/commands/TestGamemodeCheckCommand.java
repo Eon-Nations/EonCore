@@ -1,7 +1,7 @@
 package commands;
 
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
-import me.squid.eoncore.utils.EonPrefix;
+import me.squid.eoncore.messaging.EonPrefix;
 import mockbukkit.TestUtility;
 import org.bukkit.GameMode;
 import org.junit.Ignore;
@@ -30,7 +30,7 @@ public class TestGamemodeCheckCommand extends TestUtility {
     }
 
     @Test
-    @Ignore
+    @Ignore("Permissions are weird with MockPaper. Should be fixed soon.")
     @DisplayName("Config missing message is sent if the config isn't proper")
     public void testConfig() {
         PlayerMock player = server.addPlayer("Jim");
