@@ -1,23 +1,22 @@
 package me.squid.eoncore.commands;
 
+import me.squid.eoncore.EonCommand;
 import me.squid.eoncore.EonCore;
-import me.squid.eoncore.utils.Utils;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+import me.squid.eoncore.messaging.ConfigMessenger;
+import me.squid.eoncore.messaging.EonPrefix;
+import me.squid.eoncore.messaging.Messaging;
+import org.bukkit.entity.Player;
 
-public class DiscordCommand implements CommandExecutor {
-
-    EonCore plugin;
+@RegisterCommand
+public class DiscordCommand extends EonCommand {
 
     public DiscordCommand(EonCore plugin) {
-        this.plugin = plugin;
-        plugin.getCommand("discord").setExecutor(this);
+        super("discord", plugin);
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        sender.sendMessage(Utils.getPrefix("nations") + plugin.getConfig().getString("Discord-Message"));
-        return true;
+    protected void execute(Player player, String[] args) {
+        ConfigMessenger messenger = Messaging.setupConfigMessenger(core.getConfig(), EonPrefix.NATIONS);
+        messenger.sendMessage(player, "Discord-Message");
     }
 }

@@ -32,8 +32,8 @@ public class ClockCommand extends EonCommand {
         Optional<String> message = Optional.ofNullable(core.getConfig().getString(path));
         String clearMessage = message.orElse(DEFAULT_MESSAGE);
         MiniMessage miniMessage = MiniMessage.miniMessage();
-        Component finalMessage = miniMessage.deserialize(clearMessage);
-        server.broadcast(finalMessage);
+        Component formattedMessage = miniMessage.deserialize(clearMessage);
+        server.broadcast(formattedMessage);
     }
 
     private String path(boolean state) {

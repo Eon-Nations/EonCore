@@ -2,6 +2,8 @@ package me.squid.eoncore.commands;
 
 import me.squid.eoncore.EonCommand;
 import me.squid.eoncore.EonCore;
+import me.squid.eoncore.messaging.ConfigMessenger;
+import me.squid.eoncore.messaging.EonPrefix;
 import me.squid.eoncore.messaging.Messaging;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -31,10 +33,8 @@ public class ClearInventoryCommand extends EonCommand {
     }
 
     private Consumer<Player> clearInventory(FileConfiguration config) {
-        String clearMessage = config.getString("Clear-Self-Inventory");
-        return player -> {
-            player.getInventory().clear();
-            Messaging.sendNationsMessage(player, clearMessage);
-        };
+        ConfigMessenger messenger = Messaging.setupConfigMessenger(config, EonPrefix.MODERATION);
+        Consumer<Player> clearInventory = player -> player.getInventory().clear();
+        return clearInventory.andThen(player -> messenger.sendMessage(player, "Clear-Self-Inventory"));
     }
 }

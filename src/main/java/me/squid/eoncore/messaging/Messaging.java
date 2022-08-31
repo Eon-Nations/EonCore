@@ -38,6 +38,11 @@ public class Messaging {
         coolString.ifPresent(sendMessage(EonPrefix.NATIONS, player));
     }
 
+    public static Messenger messenger(EonPrefix prefix) {
+        Component renderedPrefix = prefixMap.get(prefix);
+        return (target, message) -> target.sendMessage(renderedPrefix.append(message));
+    }
+
     public static ConfigMessenger setupConfigMessenger(FileConfiguration config, EonPrefix prefix) {
         return (target, path) -> {
             String format = config.getString(path)

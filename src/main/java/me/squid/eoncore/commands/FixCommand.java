@@ -1,14 +1,16 @@
 package me.squid.eoncore.commands;
 
+import me.squid.eoncore.EonCommand;
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.managers.Cooldown;
 import me.squid.eoncore.managers.CooldownManager;
+import me.squid.eoncore.messaging.ConfigMessenger;
+import me.squid.eoncore.messaging.EonPrefix;
 import me.squid.eoncore.messaging.Messaging;
+import me.squid.eoncore.messaging.Messenger;
 import me.squid.eoncore.utils.Utils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -18,46 +20,44 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class FixCommand implements CommandExecutor {
-
-    EonCore plugin;
+@RegisterCommand
+public class FixCommand extends EonCommand {
     // 10 Minutes converted to second converted to milliseconds
     static final long COOLDOWN_LENGTH = 10L * 60L * 1000L;
     final CooldownManager cooldownManager = new CooldownManager();
 
     public FixCommand(EonCore plugin) {
-        this.plugin = plugin;
-        plugin.getCommand("fix").setExecutor(this);
-        plugin.getCommand("fix").setTabCompleter(getTabComplete());
+        super("fix", plugin);
+        core.getCommand("fix").setTabCompleter(getTabComplete());
     }
 
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
-        if (sender instanceof Player p) {
-            if (cooldownManager.hasCooldown(p.getUniqueId())) {
-                Cooldown cooldown = cooldownManager.getCooldown(p.getUniqueId());
-                String timeRemaining = Utils.getFormattedTimeString(cooldown.getTimeRemaining());
-                Messaging.sendNationsMessage(p, "You can /fix in " + timeRemaining);
-                return false;
-            }
-
-            if (args.length == 1) {
-                String hand = args[0];
-                if (hand.equals("hand")) {
-                    fixItemInHand(p);
-                } else if (hand.equals("all")) {
-                    fixAllItems(p);
-                }
-            } else p.sendMessage(Utils.chat(Utils.getPrefix("nations") + "&7Usage: /fix hand/all"));
+    protected void execute(Player player, String[] args) {
+        Messenger messenger = Messaging.messenger(EonPrefix.NATIONS);
+        ConfigMessenger configMessenger = Messaging.setupConfigMessenger(core.getConfig(), EonPrefix.NATIONS);
+        if (cooldownManager.hasCooldown(player.getUniqueId())) {
+            Cooldown cooldown = cooldownManager.getCooldown(player.getUniqueId());
+            String timeRemaining = Utils.getFormattedTimeString(cooldown.getTimeRemaining());
+            String formatString = core.getConfig().getString("Fix-Cooldown")
+                            .replace("<time>", timeRemaining);
+            Component cooldownMessage = Messaging.fromFormatString(formatString);
+            messenger.send(player, cooldownMessage);
+            return;
         }
-        return true;
+        if (args.length == 1) {
+            String hand = args[0];
+            if (hand.equals("hand")) {
+                fixItemInHand(player, configMessenger);
+            } else if (hand.equals("all")) {
+                fixAllItems(player, configMessenger);
+            }
+        } else player.sendMessage(Utils.chat(Utils.getPrefix("nations") + "&7Usage: /fix hand/all"));
     }
 
-    private void fixAllItems(Player player) {
+    private void fixAllItems(Player player, ConfigMessenger configMessenger) {
         if (!player.hasPermission("eoncommands.fix.all")) {
-            Messaging.sendNationsMessage(player, "You do not have permission to fix all items");
+            configMessenger.sendMessage(player, "No-Perm-All-Fix");
             return;
         }
         ItemStack[] items = player.getInventory().getContents();
@@ -66,16 +66,20 @@ public class FixCommand implements CommandExecutor {
                 .filter(item -> !item.getType().equals(Material.AIR))
                 .map(this::applyFix)
                 .count();
-        Messaging.sendNationsMessage(player, amountRepaired + " items in inventory repaired");
+        String formatString = core.getConfig().getString("Success-All-Fix")
+                        .replace("<amount>", Long.toString(amountRepaired));
+        Component successMessage = Messaging.fromFormatString(formatString);
+        Messenger messenger = Messaging.messenger(EonPrefix.NATIONS);
+        messenger.send(player, successMessage);
         addCooldownToPlayer(player);
     }
 
-    private void fixItemInHand(Player player) {
+    private void fixItemInHand(Player player, ConfigMessenger messenger) {
         ItemStack item = player.getInventory().getItemInMainHand();
         if (!applyFix(item)) {
-            Messaging.sendNationsMessage(player, "No item in hand found");
+            messenger.sendMessage(player, "No-Item-Fix");
         } else {
-            Messaging.sendNationsMessage(player, "Item repaired");
+            messenger.sendMessage(player, "Success-Fix");
             addCooldownToPlayer(player);
         }
     }

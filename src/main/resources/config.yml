@@ -5,6 +5,18 @@ Welcome-Message: "<blue>Welcome <player> to Eon Survival!! <player> has logged i
 Join-Message: "<gray>[<green><bold>+</green></bold>]</gray> &b<player>"
 Leave-Message: "<gray>[<red><bold>-</red></bold>]</gray> <blue><player>"
 
+# Back Message
+No-Back: "There is no location to teleport back to"
+Death-Back-Message: "Do /back to go back to your death location"
+Back-Message: "Teleporting back to your death location"
+
+# Fix Messages
+No-Perm-All-Fix: "You do not have permission to fix all items at once"
+Cooldown-Fix: "You can /fix again in <time>"
+No-Item-Fix: "No item in hand found"
+Success-Fix: "Item repaired!"
+Success-All-Fix: "<amount> items in inventory repaired"
+
 # Clock Messages
 Clock-Lock: "<hover:show_text:'For more information, do /discord and join for further updates'><red>Chat is locked. Please wait while we resolve the conflict. Thank you for your patience!</red></hover>"
 Clock-Unlock: "<green>Chat is unlocked. You may continue to chat normally. Thank you for your patience!</green>"
@@ -66,7 +78,7 @@ Top-Message: "&bTeleported to the Top!"
 # Teleport Messages
 Teleport-Message: "&bSuccessfully teleported to <player>"
 Tphere-Message: "&bSuccessfully teleported <target> to your location"
-Cooldown-Teleport-Message: "&7Teleporting in <seconds> seconds..."
+Cooldown-Teleport-Message: "Teleporting in <seconds> seconds..."
 Tpa-Player-Message: "&7Teleport request sent"
 Tpa-Target-Message: "Teleport request received from <player>\n>> To accept, do /tpaccept\n>> To deny, do /tpdeny"
 Teleport-Deny-Message: "Teleport request has been denied"
@@ -78,9 +90,6 @@ Delay-Seconds: 3
 No-Pending-Requests: "&7You have no pending requests to accept at this time"
 Pending-Request: "&7You already have a pending request to that player"
 
-# Back Command Messages
-Death-Back-Message: "Do /back to go back to your death location"
-Back-Message: "Teleporting back to your death location"
 
 # Spawn Messages
 Spawn-Message: "Teleported to spawn"

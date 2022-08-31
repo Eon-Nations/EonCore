@@ -1,36 +1,34 @@
 package me.squid.eoncore.commands;
 
+import me.squid.eoncore.EonCommand;
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.managers.Cooldown;
 import me.squid.eoncore.managers.CooldownManager;
-import me.squid.eoncore.utils.FunctionalBukkit;
+import me.squid.eoncore.messaging.ConfigMessenger;
+import me.squid.eoncore.messaging.EonPrefix;
 import me.squid.eoncore.messaging.Messaging;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+import me.squid.eoncore.utils.FunctionalBukkit;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
 
-public class FeedCommand implements CommandExecutor {
-
-    EonCore plugin;
+@RegisterCommand
+public class FeedCommand extends EonCommand {
     CooldownManager cooldownManager;
     static final String OTHERS_IMMUNE_NODE = "eoncommands.feed.others";
     static final String IMMUNE_COOLDOWN_NODE = "eoncommands.feed.cooldown.immune";
 
     public FeedCommand(EonCore plugin) {
-        this.plugin = plugin;
+        super("feed", plugin);
         cooldownManager = new CooldownManager();
-        plugin.getCommand("feed").setExecutor(this);
     }
 
-    private void feedPlayer(Player player) {
+    private void feedPlayer(Player player, ConfigMessenger messenger) {
         final int MAX_FOOD = 20;
         final int MAX_SATURATION = 14;
         player.setFoodLevel(MAX_FOOD);
         player.setSaturation(MAX_SATURATION);
-        Messaging.sendNationsMessage(player, plugin.getConfig().getString("Feed-Message"));
+        messenger.sendMessage(player, "Feed-Message");
     }
 
     private void applyCooldown(Player player) {
@@ -44,20 +42,19 @@ public class FeedCommand implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        Player p = (Player) sender;
+    protected void execute(Player player, String[] args) {
+        ConfigMessenger messenger = Messaging.setupConfigMessenger(core.getConfig(), EonPrefix.NATIONS);
         if (args.length == 0) {
-            if (cooldownManager.hasCooldown(p.getUniqueId())) {
-                Messaging.sendNationsMessage(p, plugin.getConfig().getString("Feed-Cooldown-message"));
-                return false;
+            if (cooldownManager.hasCooldown(player.getUniqueId())) {
+                messenger.sendMessage(player, "Feed-Cooldown-Message");
+            } else {
+                feedPlayer(player, messenger);
+                applyCooldown(player);
             }
-            feedPlayer(p);
-            applyCooldown(p);
-        } else if (args.length == 1 && p.hasPermission(OTHERS_IMMUNE_NODE)) {
+        } else if (args.length == 1 && player.hasPermission(OTHERS_IMMUNE_NODE)) {
             Optional<Player> maybeTarget = FunctionalBukkit.getPlayerFromName(args[0]);
-            maybeTarget.ifPresentOrElse(this::feedPlayer, () -> Messaging.sendNullMessage(p));
-            return true;
+            maybeTarget.ifPresentOrElse(target -> feedPlayer(target, messenger),
+                    () -> Messaging.sendNullMessage(player));
         }
-        return false;
     }
 }

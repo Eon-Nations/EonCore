@@ -2,7 +2,8 @@ package me.squid.eoncore.commands;
 
 import me.squid.eoncore.EonCommand;
 import me.squid.eoncore.EonCore;
-import me.squid.eoncore.events.BackToDeathLocationEvent;
+import me.squid.eoncore.messaging.ConfigMessenger;
+import me.squid.eoncore.messaging.EonPrefix;
 import me.squid.eoncore.messaging.Messaging;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -13,6 +14,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
 import java.util.HashMap;
+import java.util.Optional;
 
 @RegisterCommand
 public class BackCommand extends EonCommand implements Listener {
@@ -24,9 +26,10 @@ public class BackCommand extends EonCommand implements Listener {
     }
 
     public void execute(Player player, String[] args) {
-        boolean hasCooldown = !player.hasPermission("eoncommands.back.cooldown.bypass");
-        BackToDeathLocationEvent deathLocation = new BackToDeathLocationEvent(player, hasCooldown);
-        Bukkit.getPluginManager().callEvent(deathLocation);
+        ConfigMessenger messenger = Messaging.setupConfigMessenger(core.getConfig(), EonPrefix.NATIONS);
+        Optional<Location> toTeleport = Optional.ofNullable(backLocations.remove(player));
+        toTeleport.ifPresentOrElse(location -> teleport.delayedTeleport(player, location),
+                () -> messenger.sendMessage(player, "No-Back"));
     }
 
     @EventHandler
@@ -42,31 +45,7 @@ public class BackCommand extends EonCommand implements Listener {
 
     @EventHandler
     public void onRespawn(PlayerRespawnEvent e) {
-        Messaging.sendNationsMessage(e.getPlayer(), core.getConfig().getString("Death-Back-Message"));
-    }
-
-    @EventHandler
-    public void onBackCommand(BackToDeathLocationEvent e) {
-        Player p = e.player();
-        Location toTeleport = backLocations.remove(p);
-        if (toTeleport == null) {
-            Messaging.sendNationsMessage(p, "There is no back location to teleport to");
-            return;
-        }
-        if (e.hasCooldown()) {
-            Messaging.sendNationsMessage(p, core.getConfig().getString("Cooldown-Teleport-Message")
-                    .replace("<seconds>", Long.toString(core.getConfig().getLong("Delay-Seconds"))));
-            Bukkit.getScheduler().runTaskLater(core, doTeleportDelay(p, toTeleport), core.getConfig().getLong("Delay-Seconds") * 20);
-        } else {
-            p.teleport(toTeleport);
-            Messaging.sendNationsMessage(p, core.getConfig().getString("Teleport-Successful"));
-        }
-    }
-
-    private Runnable doTeleportDelay(Player p, Location toTeleport) {
-        return () -> {
-            p.teleport(toTeleport);
-            Messaging.sendNationsMessage(p, core.getConfig().getString("Teleport-Successful"));
-        };
+        ConfigMessenger messenger = Messaging.setupConfigMessenger(core.getConfig(), EonPrefix.NATIONS);
+        messenger.sendMessage(e.getPlayer(), "Death-Back-Message");
     }
 }

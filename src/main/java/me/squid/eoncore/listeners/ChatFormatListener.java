@@ -19,6 +19,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 import java.util.HashMap;
+import java.util.Optional;
 
 public class ChatFormatListener implements Listener {
 
@@ -81,9 +82,13 @@ public class ChatFormatListener implements Listener {
         User user = lp.getUserManager().getUser(p.getUniqueId());
         ImmutableContextSet contextSet = lp.getContextManager().getContext(user).orElseGet(lp.getContextManager()::getStaticContext);
         CachedMetaData cachedMetaData = user.getCachedData().getMetaData(QueryOptions.contextual(contextSet));
-        String prefix = cachedMetaData.getPrefix();
-        if (prefix.equals("default")) prefix = "member";
-        return StringUtils.capitalize(prefix);
+        Optional<String> prefix = Optional.ofNullable(cachedMetaData.getPrefix());
+        final String DEFAULT_NAME = "member";
+        return prefix.stream()
+                .map(group -> group.equals("default") ? DEFAULT_NAME : group)
+                .map(StringUtils::capitalize)
+                .findFirst()
+                .orElse(DEFAULT_NAME);
     }
 
     private void initializeGroupColors() {
