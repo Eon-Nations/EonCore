@@ -5,6 +5,7 @@ import me.squid.eoncore.EonCore;
 import me.squid.eoncore.messaging.ConfigMessenger;
 import me.squid.eoncore.messaging.EonPrefix;
 import me.squid.eoncore.messaging.Messaging;
+import me.squid.eoncore.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -47,5 +48,6 @@ public class BackCommand extends EonCommand implements Listener {
     public void onRespawn(PlayerRespawnEvent e) {
         ConfigMessenger messenger = Messaging.setupConfigMessenger(core.getConfig(), EonPrefix.NATIONS);
         messenger.sendMessage(e.getPlayer(), "Death-Back-Message");
+        e.getPlayer().teleportAsync(Utils.getSpawnLocation());
     }
 }
