@@ -24,19 +24,30 @@ public class PortalListener implements Listener {
     public void onEndPortalJump(PlayerTeleportEvent e) {
         Player p = e.getPlayer();
         if (e.getCause().equals(PlayerTeleportEvent.TeleportCause.END_PORTAL) &&
-        p.getWorld().getName().equals("spawn_void")) {
+        isInSpawn(p)) {
             e.setCancelled(true);
             Bukkit.getScheduler().runTaskAsynchronously(plugin, () ->
                     Bukkit.getPluginManager().callEvent(new WildTeleportEvent(p, Bukkit.getWorld("world"), true)));
         }
     }
 
+    private boolean isInSpawn(Player p) {
+        return p.getWorld().getName().contains("spawn");
+    }
+
+    @EventHandler
+    public void onNetherPortalEnter(PlayerTeleportEvent e) {
+        Player p = e.getPlayer();
+        if (e.getCause().equals(PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) && isInSpawn(p)) {
+            e.setCancelled(true);
+            Bukkit.dispatchCommand(p, "ma join");
+        }
+    }
+
     @EventHandler
     public void onRedstoneBlockClick(PlayerInteractEvent e) {
-        if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-            if (e.getClickedBlock().getType().equals(Material.REDSTONE_BLOCK)) {
-                e.getPlayer().sendMessage("That's a redstone block");
-            }
+        if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && e.getClickedBlock().getType().equals(Material.REDSTONE_BLOCK)) {
+            e.getPlayer().sendMessage("That's a redstone block");
         }
     }
 }

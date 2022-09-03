@@ -15,7 +15,10 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 public class WarpsListener implements Listener {
 
     EonCore plugin;
-    Location utilities, crates, market, endPortal, chilis, mine;
+    Location utilities;
+    Location crates;
+    Location endPortal;
+    Location chilis;
     MobArenaGUI mobArenaGUI = new MobArenaGUI();
 
     public WarpsListener(EonCore plugin) {
@@ -32,31 +35,27 @@ public class WarpsListener implements Listener {
         if (e.getView().getTitle().equals(Utils.chat("&5&lEon Warps"))) {
             String name = e.getCurrentItem().getItemMeta().getDisplayName();
             switch (e.getCurrentItem().getType()) {
-                case ANVIL:
+                case ANVIL -> {
                     p.closeInventory();
                     teleportPlayerToWarp(p, utilities, name);
-                    break;
-                case CHEST:
+                }
+                case CHEST -> {
                     p.closeInventory();
                     teleportPlayerToWarp(p, crates, name);
-                    break;
-                case END_PORTAL_FRAME:
+                }
+                case END_PORTAL_FRAME -> {
                     p.closeInventory();
                     teleportPlayerToWarp(p, endPortal, name);
-                    /*
-                    p.sendMessage(Utils.getPrefix("nations")
-                            .append(Component.text("End Portal will unlock once the end portal in the overworld is discovered.")
-                                    .color(TextColor.color(160, 160, 160))));
-                     */
-                    break;
-                case ZOMBIE_HEAD:
+                }
+                case ZOMBIE_HEAD -> {
                     p.closeInventory();
-                    p.openInventory(mobArenaGUI.MainGUI());
-                    break;
-                case BREAD:
+                    Bukkit.dispatchCommand(p, "ma join");
+                }
+                case BREAD -> {
                     p.closeInventory();
                     teleportPlayerToWarp(p, chilis, name);
-                    break;
+                }
+                default -> p.closeInventory();
             }
             p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1, 1);
             e.setCancelled(true);
