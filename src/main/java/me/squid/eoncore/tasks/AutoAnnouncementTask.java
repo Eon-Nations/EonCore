@@ -1,12 +1,18 @@
 package me.squid.eoncore.tasks;
 
 import me.squid.eoncore.EonCore;
+import me.squid.eoncore.messaging.Broadcaster;
+import me.squid.eoncore.messaging.EonPrefix;
+import me.squid.eoncore.messaging.Messaging;
+import me.squid.eoncore.messaging.Messenger;
 import me.squid.eoncore.utils.Utils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.List;
 import java.util.Random;
 
 public class AutoAnnouncementTask extends BukkitRunnable {
@@ -20,7 +26,10 @@ public class AutoAnnouncementTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        int message = random.nextInt(plugin.getConfig().getStringList("Messages").size());
-        Bukkit.broadcastMessage(Utils.chat("&6&lEon Info &r&7&l>> " + ChatColor.AQUA + plugin.getConfig().getStringList("Messages").get(message)));
+        List<String> messages = plugin.getConfig().getStringList("Messages");
+        int messageIndex = random.nextInt(messages.size());
+        Component message = Messaging.fromFormatString(messages.get(messageIndex));
+        Broadcaster broadcaster = Messaging.broadcaster(EonPrefix.INFO);
+        broadcaster.broadcast(message);
     }
 }

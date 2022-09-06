@@ -5,9 +5,9 @@ import me.squid.eoncore.listeners.*;
 import me.squid.eoncore.managers.InventoryManager;
 import me.squid.eoncore.managers.MutedManager;
 import me.squid.eoncore.tasks.AutoAnnouncementTask;
+import me.squid.eoncore.tasks.RestartTask;
 import me.squid.eoncore.utils.Utils;
 import me.squid.eoncore.utils.VoidChunkGenerator;
-import net.kyori.adventure.text.Component;
 import net.luckperms.api.LuckPerms;
 import org.bukkit.*;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -16,13 +16,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 
 import java.io.File;
-import java.time.Duration;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 
 public class EonCore extends JavaPlugin {
@@ -104,36 +98,7 @@ public class EonCore extends JavaPlugin {
 
     public void runTasks() {
         new AutoAnnouncementTask(this).runTaskTimerAsynchronously(this, 0, getConfig().getLong("Announcement-Delay") * 20L);
-        runRestartTask();
-    }
-
-    public void runRestartTask() {
-        Server server = Bukkit.getServer();
-        Runnable messageTask = () -> server.sendMessage(getRestartingMessage());
-        Runnable restartTask = () -> {
-            server.sendMessage(getWarningMessage());
-            Bukkit.getScheduler().runTaskLater(this, Bukkit::shutdown, 40L);
-        };
-
-        runScheduledTask(messageTask, true);
-        runScheduledTask(restartTask, false);
-    }
-
-    private void runScheduledTask(Runnable runnable, boolean messageTask) {
-        ZonedDateTime now = ZonedDateTime.now(ZoneId.of("UTC"));
-        ZonedDateTime restartTime = now.withHour(5).withMinute(0).withSecond(0);
-
-        if (now.compareTo(restartTime) > 0)
-            restartTime = restartTime.plusDays(1);
-
-        if (messageTask)
-            restartTime = restartTime.minusMinutes(5);
-
-        Duration duration = Duration.between(now, restartTime);
-        long delay = duration.getSeconds();
-
-        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        scheduler.schedule(runnable, delay, TimeUnit.SECONDS);
+        RestartTask.runRestartTask(this);
     }
 
     public void disableRecipes() {
@@ -175,13 +140,5 @@ public class EonCore extends JavaPlugin {
     public static LuckPerms getPerms() {
         RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
         return provider != null ? provider.getProvider() : null;
-    }
-
-    private Component getWarningMessage() {
-        return Component.text(Utils.getPrefix("nations") + Utils.chat("Restarting Server in 5 minutes!"));
-    }
-
-    private Component getRestartingMessage() {
-        return Component.text(Utils.getPrefix("nations") + Utils.chat("Restarting server!"));
     }
 }

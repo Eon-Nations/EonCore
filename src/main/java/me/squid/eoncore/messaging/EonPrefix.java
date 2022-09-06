@@ -14,7 +14,8 @@ import static me.squid.eoncore.utils.Utils.translateHex;
 
 public enum EonPrefix {
     NATIONS,
-    MODERATION;
+    MODERATION,
+    INFO;
 
     public static Map<EonPrefix, Component> mapping() {
         String prefixesString = prefixesString();

@@ -3,6 +3,8 @@ package me.squid.eoncore.messaging;
 import me.squid.eoncore.utils.Utils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Bukkit;
+import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -41,6 +43,12 @@ public class Messaging {
     public static Messenger messenger(EonPrefix prefix) {
         Component renderedPrefix = prefixMap.get(prefix);
         return (target, message) -> target.sendMessage(renderedPrefix.append(message));
+    }
+
+    public static Broadcaster broadcaster(EonPrefix prefix) {
+        Server server = Bukkit.getServer();
+        Component renderedPrefix = prefixMap.get(prefix);
+        return message -> server.broadcast(renderedPrefix.append(message));
     }
 
     public static ConfigMessenger setupConfigMessenger(FileConfiguration config, EonPrefix prefix) {
