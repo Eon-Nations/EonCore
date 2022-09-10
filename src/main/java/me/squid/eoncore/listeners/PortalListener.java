@@ -37,8 +37,9 @@ public class PortalListener implements Listener {
         Player p = e.getPlayer();
         if (e.getCause().equals(PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) && isInSpawn(p)) {
             e.setCancelled(true);
-            p.teleportAsync(Utils.getSpawnLocation());
-            Bukkit.dispatchCommand(p, "ma join");
+            p.teleport(Utils.getSpawnLocation());
+            // Leaving a couple ticks of space for Mob Arena to register that the previous location is spawn and not the portal
+            Bukkit.getScheduler().runTaskLater(plugin, () -> Bukkit.dispatchCommand(p, "ma join"), 2);
         }
     }
 }

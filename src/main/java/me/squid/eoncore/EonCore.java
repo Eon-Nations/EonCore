@@ -6,18 +6,15 @@ import me.squid.eoncore.managers.InventoryManager;
 import me.squid.eoncore.managers.MutedManager;
 import me.squid.eoncore.tasks.AutoAnnouncementTask;
 import me.squid.eoncore.tasks.RestartTask;
-import me.squid.eoncore.utils.Utils;
-import me.squid.eoncore.utils.VoidChunkGenerator;
+import me.squid.eoncore.utils.WorldLoader;
 import net.luckperms.api.LuckPerms;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 
 import java.io.File;
-import java.util.List;
-import java.util.function.BiConsumer;
 
 public class EonCore extends JavaPlugin {
     public EonCore() {
@@ -30,14 +27,12 @@ public class EonCore extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        loadWorlds();
         saveDefaultConfig();
+        WorldLoader.initializeWorlds();
         EonCommand.registerAllCommands(this);
         registerCommands();
         registerListeners();
-        disableRecipes();
         runTasks();
-        setupGameRules();
         registerModeration();
     }
 
@@ -99,42 +94,6 @@ public class EonCore extends JavaPlugin {
     public void runTasks() {
         new AutoAnnouncementTask(this).runTaskTimerAsynchronously(this, 0, getConfig().getLong("Announcement-Delay") * 20L);
         RestartTask.runRestartTask(this);
-    }
-
-    public void disableRecipes() {
-        List<Material> bannedMats = List.of(Material.HOPPER);
-        bannedMats.forEach(Utils::removeRecipe);
-    }
-
-    private void loadWorlds() {
-        try {
-            new WorldCreator("spawn_void").generator(new VoidChunkGenerator()).createWorld();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void setupGameRules() {
-        List<GameRule<Boolean>> gameRulesToSet = List.of(
-                GameRule.ANNOUNCE_ADVANCEMENTS,
-                GameRule.SHOW_DEATH_MESSAGES,
-                GameRule.COMMAND_BLOCK_OUTPUT,
-                GameRule.SPECTATORS_GENERATE_CHUNKS);
-        List<World> worlds = Bukkit.getWorlds();
-        BiConsumer<List<GameRule<Boolean>>, World> setGameRule =
-                (gameRules, world) -> gameRules.forEach(gameRule -> world.setGameRule(gameRule, false));
-        worlds.forEach(world -> setGameRule.accept(gameRulesToSet, world));
-        setSpawnGameRules(setGameRule);
-    }
-
-    private void setSpawnGameRules(BiConsumer<List<GameRule<Boolean>>, World> setGameRule) {
-        List<GameRule<Boolean>> spawnRules = List.of(
-                GameRule.DO_FIRE_TICK,
-                GameRule.DO_WEATHER_CYCLE,
-                GameRule.DO_DAYLIGHT_CYCLE,
-                GameRule.DO_MOB_SPAWNING);
-        World spawn = Bukkit.getWorld("spawn_void");
-        setGameRule.accept(spawnRules, spawn);
     }
 
     public static LuckPerms getPerms() {
