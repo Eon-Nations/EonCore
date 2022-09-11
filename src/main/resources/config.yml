@@ -52,10 +52,6 @@ PWeather-Set: "Set weather to <weather>"
 # Discord Message
 Discord-Message: "<click:open_url:'https://discord.gg/yGmwHN9Bqj'>https://discord.gg/yGmwHN9Bqj</click>"
 
-# Vanish Messages
-Vanish-Message: "&aVanished from sight"
-Unvanish-Message: "&aYou can now be seen by other players"
-
 # Night Vision Messages
 NV-Message: "Granted Night Vision"
 NV-Off: "Night Vision removed"
@@ -69,8 +65,8 @@ Hat-On: "Stylish hat"
 Hat-Full: "You already got a hat on"
 
 # Fly Messages
-Fly-On: "&7[&b&lEon Fly&r&7] &bFly On"
-Fly-Off: "&7[&b&lEon Fly&r&7] &bFly Off"
+Fly-On: "Fly On"
+Fly-Off: "Fly Off"
 Target-Fly: "Target has been toggled for flying"
 
 # Command Spy Messages
@@ -87,13 +83,13 @@ PTime-Set: "Time set to <time>"
 Rename-Message: "<gray>Item name changed</gray>"
 
 # Top Message
-Top-Message: "&bTeleported to the Top!"
+Top-Message: "Teleported to the Top!"
 
 # Teleport Messages
-Teleport-Message: "&bSuccessfully teleported to <player>"
-Tphere-Message: "&bSuccessfully teleported <target> to your location"
+Teleport-Message: "Successfully teleported to <player>"
+Tphere-Message: "Successfully teleported <target> to your location"
 Cooldown-Teleport-Message: "Teleporting in <seconds> seconds..."
-Tpa-Player-Message: "&7Teleport request sent"
+Tpa-Player-Message: "Teleport request sent"
 Tpa-Target-Message: "Teleport request received from <player>\n>> To accept, do /tpaccept\n>> To deny, do /tpdeny"
 Teleport-Deny-Message: "Teleport request has been denied"
 Teleport-Successful: "Teleport successful"
@@ -101,9 +97,8 @@ Unsafe-Tp-Target-Message: "Teleportation unsuccessful. Please try again"
 
 Delay-Seconds: 3
 
-No-Pending-Requests: "&7You have no pending requests to accept at this time"
-Pending-Request: "&7You already have a pending request to that player"
-
+No-Pending-Requests: "You have no pending requests to accept at this time"
+Pending-Request: "You already have a pending request to that player"
 
 # Spawn Messages
 Spawn-Message: "Teleported to spawn"
@@ -128,7 +123,7 @@ Warp-Message: "&bTeleporting to <warp>"
 
 # Revive Messages
 Success-Revive-Message: "&bYou have successfully been revived"
+Target-Success-Revive-Message: "You have been successfully revived. Congrats!"
 
 # Other Messages
 Reload-Message: "&bSuccessfully reloaded"
-Null-Message: "&bThat player is offline!"

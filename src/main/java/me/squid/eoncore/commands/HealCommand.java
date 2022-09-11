@@ -20,7 +20,7 @@ public class HealCommand extends EonCommand {
     static final long HEAL_COOLDOWN_MINUTES = 60L;
 
     public HealCommand(EonCore plugin) {
-        super("hat", plugin);
+        super("heal", plugin);
     }
 
     @Override

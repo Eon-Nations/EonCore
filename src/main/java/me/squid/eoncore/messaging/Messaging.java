@@ -44,7 +44,7 @@ public class Messaging {
             String format = config.getString(path)
                     .replace("<player>", target.getName());
             Component messagePrefix = prefixMap.get(prefix);
-            Component suffix = Component.text(format);
+            Component suffix = fromFormatString(format);
             target.sendMessage(messagePrefix.append(suffix));
         };
     }
