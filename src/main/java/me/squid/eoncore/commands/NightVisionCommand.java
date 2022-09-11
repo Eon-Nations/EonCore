@@ -1,44 +1,41 @@
 package me.squid.eoncore.commands;
 
+import me.squid.eoncore.EonCommand;
 import me.squid.eoncore.EonCore;
-import me.squid.eoncore.utils.FunctionalBukkit;
+import me.squid.eoncore.messaging.ConfigMessenger;
+import me.squid.eoncore.messaging.EonPrefix;
 import me.squid.eoncore.messaging.Messaging;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+import me.squid.eoncore.utils.FunctionalBukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class NightVisionCommand implements CommandExecutor {
-    EonCore plugin;
+@RegisterCommand
+public class NightVisionCommand extends EonCommand {
     static final String OTHERS_IMMUNE_NODE = "eoncommands.nightvision.others";
 
     public NightVisionCommand(EonCore plugin) {
-        this.plugin = plugin;
-        plugin.getCommand("nightvision").setExecutor(this);
+        super("nightvision", plugin);
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
-        if (sender instanceof Player p) {
-            if (args.length == 0) {
-                toggleNightVision(p);
-            } else if (args.length == 1 && sender.hasPermission(OTHERS_IMMUNE_NODE)) {
-                FunctionalBukkit.getPlayerOrSendMessage(p, this::toggleNightVision, args[0]);
-            }
+    protected void execute(Player player, String[] args) {
+        if (args.length == 0) {
+            toggleNightVision(player);
+        } else if (args.length == 1 && player.hasPermission(OTHERS_IMMUNE_NODE)) {
+            FunctionalBukkit.getPlayerOrSendMessage(player, this::toggleNightVision, args[0]);
         }
-        return true;
     }
 
     private void toggleNightVision(Player player) {
+        ConfigMessenger messenger = Messaging.setupConfigMessenger(core.getConfig(), EonPrefix.MODERATION);
         if (player.hasPotionEffect(PotionEffectType.NIGHT_VISION)) {
             player.removePotionEffect(PotionEffectType.NIGHT_VISION);
-            Messaging.sendNationsMessage(player, plugin.getConfig().getString("NV-Off"));
+            messenger.sendMessage(player, "NV-Off");
         } else {
             PotionEffect nightVision = new PotionEffect(PotionEffectType.NIGHT_VISION, Short.MAX_VALUE, 1, false, false);
             player.addPotionEffect(nightVision);
-            Messaging.sendNationsMessage(player, plugin.getConfig().getString("NV-Message"));
+            messenger.sendMessage(player, "NV-Message");
         }
     }
 }

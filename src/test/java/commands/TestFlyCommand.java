@@ -6,6 +6,7 @@ import mockbukkit.TestUtility;
 import org.bukkit.Location;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 
 public class TestFlyCommand extends TestUtility {
@@ -60,6 +61,6 @@ public class TestFlyCommand extends TestUtility {
         addPermissionToPlayer("eoncommands.fly", player);
         addPermissionToPlayer("eoncommands.fly.others", player);
         player.performCommand("fly Timmy");
-        player.assertSaid(Messaging.bukkitNullMessage());
+        Assertions.assertTrue(player.nextMessage().contains("offline"));
     }
 }

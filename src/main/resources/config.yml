@@ -31,7 +31,7 @@ Spectator-Message: "Spectator Time!"
 
 # Heal/Feed Message
 Heal-Message: "Healed!"
-Heal-Other: "<player> has been healed!"
+Heal-Cooldown: "You can /heal again in <time>"
 
 Feed-Message: "You have been fed"
 Feed-Other: "<target> has been fed"
@@ -42,8 +42,15 @@ Clear-Self-Inventory: "Your inventory has been cleared"
 Target-Clear-Inventory: "Your inventory has been cleared"
 Clear-Other-Inventory: "<target> inventory has been cleared"
 
+# Clear Chat Message
+Clear-Chat-Immune: "You are immune to chat clear"
+
+# PWeather Messages
+PWeather-Reset: "Reset weather to server's weather"
+PWeather-Set: "Set weather to <weather>"
+
 # Discord Message
-Discord-Message: "&7[&6Discord&7] >> &r&b&nhttps://discord.gg/rDBm9wE"
+Discord-Message: "<click:open_url:'https://discord.gg/yGmwHN9Bqj'>https://discord.gg/yGmwHN9Bqj</click>"
 
 # Vanish Messages
 Vanish-Message: "&aVanished from sight"
@@ -55,11 +62,11 @@ NV-Off: "Night Vision removed"
 Target-NV-Message: "<target> now has infinite night vision"
 
 # Gamemode Check Messages
-GamemodeCheck-Message: "<target> is in <gamemode>"
+GamemodeCheck-Message: "<green><player> is in <gamemode></green>"
 
-# Pickup Command
-Pickup-Off: "<target> can no longer pickup items"
-Pickup-On: "<target> can now pickup items"
+# Hat Messages
+Hat-On: "Stylish hat"
+Hat-Full: "You already got a hat on"
 
 # Fly Messages
 Fly-On: "&7[&b&lEon Fly&r&7] &bFly On"
@@ -70,7 +77,14 @@ Target-Fly: "Target has been toggled for flying"
 CommandSpy-On: "<green>Command Spy On"
 CommandSpy-Off: "<green>Command Spy Off"
 # Leaving the Prefix here since it's useful
-CommandSpy-Message: "<gray>[<gold><bold>CommandSpy</bold></gold>] <blue><player></blue>: <command>"
+CommandSpy-Message: "<blue><player></blue>: <command>"
+
+# PTime Messages
+PTime-Reset: "Time reset to server cycle"
+PTime-Set: "Time set to <time>"
+
+# Rename Message
+Rename-Message: "<gray>Item name changed</gray>"
 
 # Top Message
 Top-Message: "&bTeleported to the Top!"
@@ -117,4 +131,4 @@ Success-Revive-Message: "&bYou have successfully been revived"
 
 # Other Messages
 Reload-Message: "&bSuccessfully reloaded"
-Target-Null: "&bThat player is offline!"
+Null-Message: "&bThat player is offline!"

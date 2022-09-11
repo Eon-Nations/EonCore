@@ -10,12 +10,11 @@ import java.io.InputStream;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static me.squid.eoncore.utils.Utils.translateHex;
-
 public enum EonPrefix {
     NATIONS,
     MODERATION,
-    INFO;
+    INFO,
+    COMMANDSPY;
 
     public static Map<EonPrefix, Component> mapping() {
         String prefixesString = prefixesString();
@@ -41,23 +40,5 @@ public enum EonPrefix {
         } catch (IOException e) {
             return e.getMessage();
         }
-    }
-
-    public static String getPrefix(EonPrefix prefix) {
-        String translated = "Invalid";
-        switch (prefix) {
-            case NATIONS -> translated = translateHex("#7f7f7f[#66b2ffEon Nations#7f7f7f] ");
-            case MODERATION -> translated = translateHex("#7f7f7f[#66b2ffEon Moderation#7f7f7f] ");
-        }
-        return translated;
-    }
-
-    public static String bukkitPrefix(EonPrefix prefix) {
-        String translated = "";
-        switch (prefix) {
-            case NATIONS -> translated = "§8[§9Eon Nations§8] ";
-            case MODERATION -> translated = "§8[§9Eon Moderation§8] ";
-        }
-        return translated;
     }
 }

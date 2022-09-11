@@ -6,6 +6,7 @@ import mockbukkit.TestUtility;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 
 public class TestKickCommand extends TestUtility {
@@ -16,7 +17,7 @@ public class TestKickCommand extends TestUtility {
         PlayerMock player = server.addPlayer();
         addPermissionToPlayer("eoncommands.kick", player);
         player.performCommand("kick");
-        player.assertSaid(Messaging.getNationsMessage("Usage: /kick <player> <message>"));
+        Assertions.assertTrue(player.nextMessage().contains("Usage"));
     }
 
     @Test
@@ -36,6 +37,6 @@ public class TestKickCommand extends TestUtility {
         PlayerMock player = server.addPlayer();
         addPermissionToPlayer("eoncommands.kick", player);
         player.performCommand("kick Invalid Nice one jimbo");
-        player.assertSaid(Messaging.bukkitNullMessage());
+        Assertions.assertEquals(1, server.getPlayerList().getOnlinePlayers().size());
     }
 }

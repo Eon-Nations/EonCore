@@ -1,42 +1,32 @@
 package me.squid.eoncore.commands;
 
+import me.squid.eoncore.EonCommand;
 import me.squid.eoncore.EonCore;
-import me.squid.eoncore.utils.FunctionalBukkit;
+import me.squid.eoncore.messaging.ConfigMessenger;
+import me.squid.eoncore.messaging.EonPrefix;
 import me.squid.eoncore.messaging.Messaging;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+import me.squid.eoncore.utils.FunctionalBukkit;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.Optional;
-
-public class FlyCommand implements CommandExecutor {
-    EonCore plugin;
-    private final ArrayList<Player> flyingPlayers = new ArrayList<>();
+@RegisterCommand
+public class FlyCommand extends EonCommand {
     static final String OTHERS_PERM_NODE = "eoncommands.fly.others";
-    static final String IMMUNE_PERM_NODE = "eoncommands.fly.others.immune";
 
     public FlyCommand(EonCore plugin) {
-        this.plugin = plugin;
-        plugin.getCommand("fly").setExecutor(this);
+        super("fly", plugin);
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        Player p = (Player) sender;
+    protected void execute(Player player, String[] args) {
         if (args.length == 0) {
-            toggleFly(p, false);
-        } else if (args.length == 1 && p.hasPermission(OTHERS_PERM_NODE)) {
-            Optional<Player> maybeTarget = FunctionalBukkit.getPlayerFromName(args[0]);
-            maybeTarget.ifPresentOrElse(target -> toggleFly(target, p.hasPermission(IMMUNE_PERM_NODE)), () -> Messaging.sendNullMessage(p));
+            toggleFly(player);
+        } else if (args.length == 1 && player.hasPermission(OTHERS_PERM_NODE)) {
+            FunctionalBukkit.getPlayerOrSendMessage(player, this::toggleFly, args[0]);
         }
-        return true;
     }
 
-    private void toggleFly(Player player, boolean immune) {
-        if (immune) return;
-        if (flyingPlayers.contains(player))
+    private void toggleFly(Player player) {
+        if (player.getAllowFlight())
             turnOffFly(player);
         else turnOnFly(player);
     }
@@ -44,13 +34,13 @@ public class FlyCommand implements CommandExecutor {
     private void turnOnFly(Player player) {
         if (player.getWorld().getName().equals("spawn_void")) return;
         player.setAllowFlight(true);
-        Messaging.sendNationsMessage(player, plugin.getConfig().getString("Fly-On"));
-        flyingPlayers.add(player);
+        ConfigMessenger messenger = Messaging.setupConfigMessenger(core.getConfig(), EonPrefix.NATIONS);
+        messenger.sendMessage(player, "Fly-On");
     }
 
     private void turnOffFly(Player player) {
         player.setAllowFlight(false);
-        Messaging.sendNationsMessage(player, plugin.getConfig().getString("Fly-Off"));
-        flyingPlayers.remove(player);
+        ConfigMessenger messenger = Messaging.setupConfigMessenger(core.getConfig(), EonPrefix.NATIONS);
+        messenger.sendMessage(player, "Fly-Off");
     }
 }

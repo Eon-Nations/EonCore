@@ -1,38 +1,36 @@
 package me.squid.eoncore.commands;
 
+import me.squid.eoncore.EonCommand;
 import me.squid.eoncore.EonCore;
-import me.squid.eoncore.utils.FunctionalBukkit;
+import me.squid.eoncore.messaging.EonPrefix;
 import me.squid.eoncore.messaging.Messaging;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+import me.squid.eoncore.messaging.Messenger;
+import me.squid.eoncore.utils.FunctionalBukkit;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
 import java.util.Optional;
 
-public class InvseeCommand implements CommandExecutor {
-
-    EonCore plugin;
+@RegisterCommand
+public class InvseeCommand extends EonCommand {
     static final String IMMUNE_NODE = "eoncommands.invsee.immune";
 
     public InvseeCommand(EonCore plugin) {
-        this.plugin = plugin;
-        plugin.getCommand("invsee").setExecutor(this);
+        super("invsee", plugin);
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player p) {
-            if (args.length == 0) {
-                Messaging.sendNationsMessage(p, "Usage: /invsee <player>");
-            } else if (args.length == 1) {
-                Optional<Player> maybeTarget = FunctionalBukkit.getPlayerFromName(args[0])
-                        .filter(target -> !target.hasPermission(IMMUNE_NODE));
-                maybeTarget.ifPresentOrElse(target -> openInventory(p, target), () -> Messaging.sendNullMessage(p));
-            }
+    protected void execute(Player player, String[] args) {
+        if (args.length == 0) {
+            Component usageMessage = Component.text("Usage: /invsee <player>");
+            Messenger messenger = Messaging.messenger(EonPrefix.NATIONS);
+            messenger.send(player, usageMessage);
+        } else if (args.length == 1) {
+            Optional<Player> maybeTarget = FunctionalBukkit.getPlayerFromName(args[0])
+                    .filter(target -> !target.hasPermission(IMMUNE_NODE));
+            maybeTarget.ifPresentOrElse(target -> openInventory(player, target), () -> Messaging.sendNullMessage(player));
         }
-        return true;
     }
 
     private void openInventory(Player receiver, Player target) {

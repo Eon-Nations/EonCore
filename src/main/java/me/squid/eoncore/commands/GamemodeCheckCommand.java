@@ -1,43 +1,38 @@
 package me.squid.eoncore.commands;
 
+import me.squid.eoncore.EonCommand;
 import me.squid.eoncore.EonCore;
-import me.squid.eoncore.utils.FunctionalBukkit;
+import me.squid.eoncore.messaging.EonPrefix;
 import me.squid.eoncore.messaging.Messaging;
+import me.squid.eoncore.messaging.Messenger;
+import me.squid.eoncore.utils.FunctionalBukkit;
+import net.kyori.adventure.text.Component;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Optional;
-
-public class GamemodeCheckCommand implements CommandExecutor {
-    EonCore plugin;
+@RegisterCommand
+public class GamemodeCheckCommand extends EonCommand {
 
     public GamemodeCheckCommand(EonCore plugin) {
-        this.plugin = plugin;
-        plugin.getCommand("gamemodecheck").setExecutor(this);
+        super("gamemodecheck", plugin);
     }
 
-    private void sendGamemodeMessage(CommandSender sender, Player target) {
-        Optional<String> maybeGamemodeMessage = Optional.ofNullable(plugin.getConfig().getString("GamemodeCheck-Message"));
-        if (maybeGamemodeMessage.isEmpty()) {
-            Messaging.sendNationsMessage(sender, "Config message missing. Let the devs know");
-            return;
-        }
-        String gamemodeMessage = maybeGamemodeMessage.get()
-            .replace("<target>", target.getName())
-            .replace("<gamemode>", StringUtils.capitalize(target.getGameMode().toString().toLowerCase()));
-        Messaging.sendNationsMessage(sender, gamemodeMessage);
+    private void sendGamemodeMessage(Player sender, Player target) {
+        String gamemodeMessage = core.getConfig().getString("GamemodeCheck-Message")
+                .replace("<player>", target.getName())
+                .replace("<gamemode>", StringUtils.capitalize(target.getGameMode().toString().toLowerCase()));
+        Component message = Messaging.fromFormatString(gamemodeMessage);
+        Messenger messenger = Messaging.messenger(EonPrefix.MODERATION);
+        messenger.send(sender, message);
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    protected void execute(Player player, String[] args) {
         if (args.length == 1) {
-            Optional<Player> maybeTarget = FunctionalBukkit.getPlayerFromName(args[0]);
-            maybeTarget.ifPresentOrElse(target -> sendGamemodeMessage(sender, target),
-                    () -> Messaging.sendNullMessage(sender));
-        } else Messaging.sendNationsMessage(sender, "Usage: /gmcheck <player>");
-        return true;
+            FunctionalBukkit.getPlayerOrSendMessage(player, target -> sendGamemodeMessage(player, target), args[0]);
+        } else {
+            Messenger messenger = Messaging.messenger(EonPrefix.MODERATION);
+            messenger.send(player, Component.text("Usage: /gmcheck <player>"));
+        }
     }
 }

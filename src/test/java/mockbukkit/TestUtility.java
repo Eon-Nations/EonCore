@@ -24,7 +24,6 @@ public class TestUtility {
     }
 
     protected void addPermissionToPlayer(String permission, PlayerMock player) {
-        EonCore plugin = MockBukkit.load(EonCore.class);
         PermissionAttachment attachment = player.addAttachment(plugin);
         attachment.setPermission(permission, true);
     }

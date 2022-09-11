@@ -2,6 +2,7 @@ package me.squid.eoncore.commands;
 
 import me.squid.eoncore.EonCommand;
 import me.squid.eoncore.EonCore;
+import me.squid.eoncore.messaging.ConfigMessenger;
 import me.squid.eoncore.messaging.EonPrefix;
 import me.squid.eoncore.messaging.Messaging;
 import me.squid.eoncore.messaging.Messenger;
@@ -36,10 +37,15 @@ public class PTimeCommand extends EonCommand {
     private void setPlayerTime(Player player, int time) {
         if (time == 0) {
             player.resetPlayerTime();
-            Messaging.sendNationsMessage(player, "Time reset to server cycle");
+            ConfigMessenger messenger = Messaging.setupConfigMessenger(core.getConfig(), EonPrefix.NATIONS);
+            messenger.sendMessage(player, "PTime-Reset");
         } else {
             player.setPlayerTime(time, false);
-            Messaging.sendNationsMessage(player, "Time set to " + time);
+            String rawSetString = core.getConfig().getString("PTime-Set")
+                            .replace("<time>", Integer.toString(time));
+            Component message = Messaging.fromFormatString(rawSetString);
+            Messenger messenger = Messaging.messenger(EonPrefix.NATIONS);
+            messenger.send(player, message);
         }
     }
 

@@ -2,6 +2,8 @@ package me.squid.eoncore.commands;
 
 import me.squid.eoncore.EonCommand;
 import me.squid.eoncore.EonCore;
+import me.squid.eoncore.messaging.ConfigMessenger;
+import me.squid.eoncore.messaging.EonPrefix;
 import me.squid.eoncore.messaging.Messaging;
 import me.squid.eoncore.utils.Utils;
 import org.bukkit.Bukkit;
@@ -24,12 +26,13 @@ public class ClearChatCommand extends EonCommand {
                 .forEach(ClearChatCommand::sendEmptyMessage);
         Bukkit.getOnlinePlayers().stream()
                 .filter(normalPlayer.negate())
-                .forEach(ClearChatCommand::sendImmuneMessage);
+                .forEach(this::sendImmuneMessage);
         Bukkit.getOnlinePlayers().forEach(online -> sendClearMessage(online, player.getName()));
     }
 
-    private static void sendImmuneMessage(Player player) {
-        Messaging.sendNationsMessage(player, "You are immune to chat clear");
+    private void sendImmuneMessage(Player player) {
+        ConfigMessenger messenger = Messaging.setupConfigMessenger(core.getConfig(), EonPrefix.MODERATION);
+        messenger.sendMessage(player, "Clear-Chat-Immune");
     }
 
     private static void sendEmptyMessage(Player player) {

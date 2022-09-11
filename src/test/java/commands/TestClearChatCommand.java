@@ -5,6 +5,7 @@ import me.squid.eoncore.messaging.EonPrefix;
 import me.squid.eoncore.utils.Utils;
 import mockbukkit.TestUtility;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 
 public class TestClearChatCommand extends TestUtility {
@@ -15,7 +16,7 @@ public class TestClearChatCommand extends TestUtility {
         PlayerMock player = server.addPlayer();
         player.setOp(true);
         player.performCommand("clearchat");
-        player.assertSaid(Utils.chat(EonPrefix.bukkitPrefix(EonPrefix.NATIONS) + "You are immune to chat clear"));
+        Assertions.assertTrue(player.nextMessage().contains("immune"));
     }
 
     @Test

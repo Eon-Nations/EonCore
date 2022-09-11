@@ -38,7 +38,7 @@ public class TestBackCommand extends TestUtility {
         PlayerMock player = server.addPlayer("Bob");
         killPlayer(player);
         player.respawn();
-        player.assertSaid(EonPrefix.bukkitPrefix(EonPrefix.NATIONS) + Utils.chat(plugin.getConfig().getString("Death-Back-Message")));
+        Assertions.assertTrue(player.nextMessage().contains("/back"));
     }
 
     @Test
@@ -47,10 +47,9 @@ public class TestBackCommand extends TestUtility {
         PlayerMock player = server.addPlayer();
         killPlayer(player);
         player.respawn();
-        player.assertSaid(EonPrefix.bukkitPrefix(EonPrefix.NATIONS) + Utils.chat(plugin.getConfig().getString("Death-Back-Message")));
         player.performCommand("back");
-        player.assertSaid(EonPrefix.bukkitPrefix(EonPrefix.NATIONS) + Utils.chat(plugin.getConfig().getString("Cooldown-Teleport-Message")
-                .replace("<seconds>", Long.toString(plugin.getConfig().getLong("Delay-Seconds")))));
+        player.nextMessage();
+        Assertions.assertTrue(player.nextMessage().contains("Teleporting in"));
     }
 
     private void killOPPlayer(PlayerMock player) {
@@ -66,7 +65,6 @@ public class TestBackCommand extends TestUtility {
         PlayerMock player = server.addPlayer();
         addPermissionToPlayer("eoncommands.teleport.immune", player);
         killOPPlayer(player);
-        player.assertSaid(EonPrefix.bukkitPrefix(EonPrefix.NATIONS) + Utils.chat(plugin.getConfig().getString("Death-Back-Message")));
         player.performCommand("back");
         player.assertTeleported(otherWorld.getSpawnLocation(), 20);
     }

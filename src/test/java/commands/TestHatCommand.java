@@ -7,18 +7,21 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 
 public class TestHatCommand extends TestUtility {
 
     @Test
-    @DisplayName("Message is sent if player already has a helmet")
+    @DisplayName("The current hat is not replaced if /hat is done again")
     public void testHelmet() {
         PlayerMock player = server.addPlayer();
         addPermissionToPlayer("eoncommands.hat", player);
+        ItemStack invalidHat = new ItemStack(Material.DIAMOND_AXE, 1);
         player.getInventory().setHelmet(new ItemStack(Material.DIRT, 1));
+        player.getInventory().setItemInMainHand(invalidHat);
         player.performCommand("hat");
-        player.assertSaid(Messaging.getNationsMessage("Take off your helmet to put on the hat"));
+        Assertions.assertEquals(Material.DIRT, player.getInventory().getHelmet().getType());
     }
 
     @Test

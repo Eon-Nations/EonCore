@@ -1,30 +1,24 @@
 package me.squid.eoncore.commands;
 
+import me.squid.eoncore.EonCommand;
 import me.squid.eoncore.EonCore;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 
-public class GrindstoneCommand implements CommandExecutor {
-
-    EonCore plugin;
+@RegisterCommand
+public class GrindstoneCommand extends EonCommand {
 
     public GrindstoneCommand(EonCore plugin) {
-        this.plugin = plugin;
+        super("grindstone", plugin);
         plugin.getCommand("grindstone").setExecutor(this);
     }
 
 
     @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-        if (commandSender instanceof Player p) {
-            Inventory inv = Bukkit.createInventory(null, InventoryType.GRINDSTONE);
-            p.openInventory(inv);
-        }
-        return true;
+    protected void execute(Player player, String[] args) {
+        Inventory inv = Bukkit.createInventory(null, InventoryType.GRINDSTONE);
+        player.openInventory(inv);
     }
 }
