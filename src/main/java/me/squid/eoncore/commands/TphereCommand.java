@@ -1,43 +1,37 @@
 package me.squid.eoncore.commands;
 
+import me.squid.eoncore.EonCommand;
 import me.squid.eoncore.EonCore;
-import me.squid.eoncore.utils.Utils;
-import org.bukkit.Bukkit;
+import me.squid.eoncore.messaging.EonPrefix;
+import me.squid.eoncore.messaging.Messaging;
+import me.squid.eoncore.messaging.Messenger;
 import org.bukkit.Sound;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Objects;
+import static me.squid.eoncore.messaging.Messaging.fromFormatString;
+import static me.squid.eoncore.utils.FunctionalBukkit.getPlayerOrSendMessage;
 
-public class TphereCommand implements CommandExecutor {
-
-    EonCore plugin;
+@RegisterCommand
+public class TphereCommand extends EonCommand {
 
     public TphereCommand(EonCore plugin) {
-        this.plugin = plugin;
-        Objects.requireNonNull(plugin.getCommand("tphere")).setExecutor(this);
+        super("tphere", plugin);
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player p){
-            if (args.length == 1) {
-                Player target = Bukkit.getPlayer(args[0]);
-                if (target != null) {
-                    target.teleport(p.getLocation());
-                    target.playSound(target.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
-                    p.playSound(target.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
-                    p.sendMessage(Utils.chat(Utils.getPrefix("nations") + plugin.getConfig().getString("Tphere-Message"))
-                    .replace("<target>", target.getDisplayName()));
-                } else {
-                    p.sendMessage(Utils.chat(plugin.getConfig().getString("Target-Null")));
-                }
-            } else {
-                p.sendMessage(Utils.chat("&7[&5&lEon Survival&r&7] Usage: /tphere <player>"));
-            }
+    protected void execute(Player player, String[] args) {
+        if (args.length == 1) {
+            getPlayerOrSendMessage(player, target -> teleportHere(player, target), args[0]);
+        } else {
+            String rawUsage = "<gray>Usage: /tphere <player></gray>";
+            Messenger messenger = Messaging.messenger(EonPrefix.NATIONS);
+            messenger.send(player, fromFormatString(rawUsage));
         }
-        return true;
+    }
+
+    private void teleportHere(Player player, Player target) {
+        target.teleportAsync(player.getLocation());
+        target.playSound(target.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
+        player.playSound(target.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
     }
 }

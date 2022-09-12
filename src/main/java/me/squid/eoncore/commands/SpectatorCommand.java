@@ -1,50 +1,34 @@
 package me.squid.eoncore.commands;
 
+import me.squid.eoncore.EonCommand;
 import me.squid.eoncore.EonCore;
-import me.squid.eoncore.utils.Utils;
-import org.bukkit.Bukkit;
+import me.squid.eoncore.messaging.ConfigMessenger;
+import me.squid.eoncore.messaging.EonPrefix;
+import me.squid.eoncore.messaging.Messaging;
 import org.bukkit.GameMode;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Objects;
+import static me.squid.eoncore.utils.FunctionalBukkit.getPlayerOrSendMessage;
 
-public class SpectatorCommand implements CommandExecutor {
-
-    EonCore plugin;
+public class SpectatorCommand extends EonCommand {
+    static final String OTHERS_NODE = "eoncommands.gmsp.others";
 
     public SpectatorCommand(EonCore plugin) {
-        this.plugin = plugin;
-        Objects.requireNonNull(plugin.getCommand("gmsp")).setExecutor(this);
+        super("gmsp", plugin);
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player) {
-            Player p = (Player) sender;
-            if (args.length == 0) {
-                p.setGameMode(GameMode.SPECTATOR);
-                p.sendMessage(Utils.chat(plugin.getConfig().getString("Spectator-Message")));
-            } else if (args.length == 1 && p.hasPermission(getOthersPermNode())) {
-                Player target = Bukkit.getPlayer(args[0]);
-                if (target != null) {
-                    target.setGameMode(GameMode.SPECTATOR);
-                    target.sendMessage(Utils.chat(plugin.getConfig().getString("Spectator-Message")));
-                    p.sendMessage(Utils.chat(Objects.requireNonNull(plugin.getConfig().getString("Spectator-Other"))
-                            .replace("<target>", target.getName())));
-                }
-            }
+    protected void execute(Player player, String[] args) {
+        if (args.length == 0) {
+            spectator(player);
+        } else if (args.length == 1 && player.hasPermission(OTHERS_NODE)) {
+            getPlayerOrSendMessage(player, this::spectator, args[0]);
         }
-        return true;
     }
 
-    public String getPermissionNode() {
-        return "eoncommands.gmsp";
-    }
-
-    public String getOthersPermNode() {
-        return "eoncommands.gmsp.others";
+    private void spectator(Player player) {
+        ConfigMessenger messenger = Messaging.setupConfigMessenger(core.getConfig(), EonPrefix.MODERATION);
+        player.setGameMode(GameMode.SPECTATOR);
+        messenger.sendMessage(player, "Spectator-Message");
     }
 }

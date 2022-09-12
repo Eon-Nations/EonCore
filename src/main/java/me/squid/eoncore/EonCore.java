@@ -1,8 +1,7 @@
 package me.squid.eoncore;
 
-import me.squid.eoncore.commands.*;
+import me.squid.eoncore.commands.BanMuteCommand;
 import me.squid.eoncore.listeners.*;
-import me.squid.eoncore.managers.InventoryManager;
 import me.squid.eoncore.managers.MutedManager;
 import me.squid.eoncore.tasks.AutoAnnouncementTask;
 import me.squid.eoncore.tasks.RestartTask;
@@ -30,7 +29,6 @@ public class EonCore extends JavaPlugin {
         saveDefaultConfig();
         WorldLoader.initializeWorlds();
         EonCommand.registerAllCommands(this);
-        registerCommands();
         registerListeners();
         runTasks();
         registerModeration();
@@ -39,31 +37,6 @@ public class EonCore extends JavaPlugin {
     @Override
     public void onDisable() {
         Bukkit.getScheduler().cancelTasks(this);
-    }
-
-    public void registerCommands(){
-        new SurvivalCommand(this);
-        new SpectatorCommand(this);
-        new TopCommand(this);
-        new RulesCommand(this);
-        new TphereCommand(this);
-        new TeleportCommand(this);
-        new SpawnCommand(this);
-        new WildTpCommand(this);
-        new TpaCommand(this);
-        new TpaAcceptCommand(this);
-        new TpDenyCommand(this);
-        new WarpsCommand(this);
-        new WorkbenchCommand(this);
-        new TpposCommand(this);
-        new StaffChatCommand(this);
-        new RenameCommand(this);
-        new VoteRanksCommand(this);
-        new HelpCommand(this);
-        new SudoCommand(this);
-        new WorldCommand(this);
-        new UptimeCommand(this);
-        new InventoryManager();
     }
 
     public void registerListeners() {

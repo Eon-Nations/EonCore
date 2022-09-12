@@ -1,52 +1,35 @@
 package me.squid.eoncore.commands;
 
+import me.squid.eoncore.EonCommand;
 import me.squid.eoncore.EonCore;
-import me.squid.eoncore.utils.Utils;
-import org.bukkit.Bukkit;
+import me.squid.eoncore.messaging.ConfigMessenger;
+import me.squid.eoncore.messaging.EonPrefix;
+import me.squid.eoncore.messaging.Messaging;
 import org.bukkit.GameMode;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Objects;
+import static me.squid.eoncore.utils.FunctionalBukkit.getPlayerOrSendMessage;
 
-public class SurvivalCommand implements CommandExecutor{
-
-    EonCore plugin;
+@RegisterCommand
+public class SurvivalCommand extends EonCommand {
+    static final String OTHERS_NODE = "eoncommands.gms.others";
 
     public SurvivalCommand(EonCore plugin) {
-        this.plugin = plugin;
-        plugin.getCommand("gms").setExecutor(this);
+        super("gms", plugin);
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
-        if (sender instanceof Player p){
-            if (args.length == 0) {
-                p.setGameMode(GameMode.SURVIVAL);
-                p.sendMessage(Utils.getPrefix("nations") + Utils.chat(plugin.getConfig().getString("Survival-Message")));
-            } else if (args.length == 1 && p.hasPermission(getOthersPermNode())) {
-                Player target = Bukkit.getPlayer(args[0]);
-                if (target != null) {
-                    target.setGameMode(GameMode.SURVIVAL);
-                    target.sendMessage(Utils.getPrefix("nations")
-                            + Utils.chat(plugin.getConfig().getString("Survival-Message")));
-                    p.sendMessage(Utils.getPrefix("nations") + Utils.chat(plugin.getConfig().getString("Survival-Other")
-                            .replace("<target>", target.getName())));
-                }
-            }
+    protected void execute(Player player, String[] args) {
+        if (args.length == 0) {
+            setSurvival(player);
+        } else if (args.length == 1 && player.hasPermission(OTHERS_NODE)) {
+            getPlayerOrSendMessage(player, this::setSurvival, args[0]);
         }
-
-        return true;
     }
 
-    public String getPermissionNode(){
-        return "eoncommands.gms";
-    }
-
-    public String getOthersPermNode(){
-        return "eoncommands.gms.others";
+    private void setSurvival(Player player) {
+        player.setGameMode(GameMode.SURVIVAL);
+        ConfigMessenger messenger = Messaging.setupConfigMessenger(core.getConfig(), EonPrefix.MODERATION);
+        messenger.sendMessage(player, "Survival-Message");
     }
 }

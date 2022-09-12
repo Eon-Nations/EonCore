@@ -1,50 +1,26 @@
 package me.squid.eoncore.commands;
 
+import me.squid.eoncore.EonCommand;
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.utils.Utils;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Sound;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Objects;
+import static me.squid.eoncore.utils.FunctionalBukkit.getPlayerOrSendMessage;
 
-public class SpawnCommand implements CommandExecutor {
-
-    EonCore plugin;
+@RegisterCommand
+public class SpawnCommand extends EonCommand {
+    static final String OTHERS_PERM = "eoncommands.spawn.others";
 
     public SpawnCommand(EonCore plugin) {
-        this.plugin = plugin;
-        Objects.requireNonNull(plugin.getCommand("spawn")).setExecutor(this);
+        super("spawn", plugin);
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
-        if (args.length == 0 && sender instanceof Player p) {
-            if (p.hasPermission("eoncommands.spawn.cooldown.immune")) p.teleport(Utils.getSpawnLocation());
-            else {
-                p.sendMessage(Utils.chat(Utils.getPrefix("nations") + "&7Teleporting in 3 seconds..."));
-                Bukkit.getScheduler().runTaskLater(plugin, teleportSpawn(p, Utils.getSpawnLocation()), 60L);
-            }
-        } else if (args.length == 1) {
-            Player target = Bukkit.getPlayer(args[0]);
-            if (target != null && sender.hasPermission("eoncommands.spawn.others")) {
-                target.teleport(Utils.getSpawnLocation());
-                target.playSound(target.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
-                target.sendMessage(Utils.chat(Utils.getPrefix("nations") + plugin.getConfig().getString("Spawn-Message")));
-            } else sender.sendMessage(Utils.chat(Utils.getPrefix("nations") + plugin.getConfig().getString("Target-Null")));
+    protected void execute(Player player, String[] args) {
+        if (args.length == 0) {
+            teleport.delayedTeleport(player, Utils.getSpawnLocation());
+        } else if (args.length == 1 && player.hasPermission(OTHERS_PERM)) {
+            getPlayerOrSendMessage(player, target -> teleport.delayedTeleport(target, Utils.getSpawnLocation()), args[0]);
         }
-        return true;
-    }
-
-    private Runnable teleportSpawn(Player p, Location spawn) {
-        return () -> {
-            p.teleport(spawn);
-            p.sendMessage(Utils.chat(Utils.getPrefix("nations") + plugin.getConfig().getString("Spawn-Message")));
-        };
     }
 }

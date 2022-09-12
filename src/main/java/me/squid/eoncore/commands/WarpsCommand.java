@@ -1,33 +1,22 @@
 package me.squid.eoncore.commands;
 
+import me.squid.eoncore.EonCommand;
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.menus.WarpsGUI;
 import org.bukkit.Sound;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Objects;
-
-public class WarpsCommand implements CommandExecutor {
-
-    EonCore plugin;
+@RegisterCommand
+public class WarpsCommand extends EonCommand {
     WarpsGUI warpsGUI = new WarpsGUI();
 
     public WarpsCommand(EonCore plugin) {
-        this.plugin = plugin;
-        Objects.requireNonNull(plugin.getCommand("warps")).setExecutor(this);
+        super("warps", plugin);
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
-        if (sender instanceof Player) {
-            Player p = (Player) sender;
-            p.openInventory(warpsGUI.SelectWarps());
-            p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1, 1);
-        }
-        return true;
+    protected void execute(Player player, String[] args) {
+        player.openInventory(warpsGUI.SelectWarps());
+        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1, 1);
     }
 }

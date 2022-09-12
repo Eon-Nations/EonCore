@@ -146,3 +146,6 @@ commands:
   uptime:
     description: Gets the server uptime in a friendly manner
     permission: eoncommands.uptime
+  eonreload:
+    description: Reloads the config
+    permission: eoncommands.eonreload

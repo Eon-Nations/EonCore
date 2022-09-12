@@ -1,39 +1,44 @@
 package me.squid.eoncore.commands;
 
+import me.squid.eoncore.EonCommand;
 import me.squid.eoncore.EonCore;
-import me.squid.eoncore.utils.Utils;
+import me.squid.eoncore.messaging.ConfigMessenger;
+import me.squid.eoncore.messaging.EonPrefix;
+import me.squid.eoncore.messaging.Messaging;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Objects;
+import java.util.Map;
+import java.util.UUID;
 
-public class TpDenyCommand implements CommandExecutor {
-
-    EonCore plugin;
-
-    final String prefix = "&7[&5&lEon Survival&7]&r ";
+@RegisterCommand
+public class TpDenyCommand extends EonCommand {
 
     public TpDenyCommand(EonCore plugin) {
-        this.plugin = plugin;
-        Objects.requireNonNull(plugin.getCommand("tpdeny")).setExecutor(this);
+        super("tpdeny", plugin);
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    protected void execute(Player player, String[] args) {
+        Map<UUID, UUID> requests = TpaCommand.requests();
+        var players = requests.entrySet().stream()
+                .filter(entry -> entry.getValue().equals(player.getUniqueId()))
+                .findFirst();
+        players.ifPresentOrElse(entry -> cancelTp(player, entry.getValue()),
+                () -> sendNoPendingRequests(player));
+    }
 
-        if (sender instanceof Player) {
-            Player p = (Player) sender;
-            if (TpaCommand.getRequests().containsKey(p.getUniqueId())) {
-                Player requester = Bukkit.getPlayer(TpaCommand.getRequests().get(p.getUniqueId()));
-                p.sendMessage(Utils.chat(plugin.getConfig().getString("Teleport-Deny-Message")));
-                requester.sendMessage(Utils.chat(prefix + plugin.getConfig().getString("Teleport-Deny-Message")));
-                TpaCommand.getRequests().remove(p.getUniqueId());
-            } else p.sendMessage(Utils.chat(prefix + plugin.getConfig().getString("No-Pending-Requests")));
-        }
+    private void cancelTp(Player player, UUID denied) {
+        ConfigMessenger messenger = Messaging.setupConfigMessenger(core.getConfig(), EonPrefix.NATIONS);
+        Map<UUID, UUID> requests = TpaCommand.requests();
+        requests.remove(denied);
+        messenger.sendMessage(player, "Teleport-Deny-Message");
+        Player theDenied = Bukkit.getPlayer(denied);
+        messenger.sendMessage(theDenied, "Teleport-Deny-Message");
+    }
 
-        return true;
+    private void sendNoPendingRequests(Player player) {
+        ConfigMessenger messenger = Messaging.setupConfigMessenger(core.getConfig(), EonPrefix.NATIONS);
+        messenger.sendMessage(player, "No-Pending-Requests");
     }
 }
