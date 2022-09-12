@@ -38,7 +38,6 @@ public class EonCore extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        saveConfig();
         Bukkit.getScheduler().cancelTasks(this);
     }
 

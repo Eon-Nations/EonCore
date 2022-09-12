@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 import static me.squid.eoncore.utils.FunctionalBukkit.getPlayerOrSendMessage;
 
@@ -29,15 +30,22 @@ public class ReviveCommand extends EonCommand implements Listener {
 
     @Override
     protected void execute(Player player, String[] args) {
-        getPlayerOrSendMessage(player, target -> revivePlayer(player, target), args[0]);
+        if (args.length == 1) {
+            getPlayerOrSendMessage(player, target -> revivePlayer(player, target), args[0]);
+        } else {
+            ConfigMessenger messenger = Messaging.setupConfigMessenger(core.getConfig(), EonPrefix.MODERATION);
+            messenger.sendMessage(player, "Revive-Usage");
+        }
     }
 
     private void revivePlayer(Player reviver, Player target) {
-        List<ItemStack> targetItems = items.remove(target);
-        targetItems.forEach(target.getInventory()::addItem);
         ConfigMessenger messenger = Messaging.setupConfigMessenger(core.getConfig(), EonPrefix.MODERATION);
-        messenger.sendMessage(target, "Target-Success-Revive-Message");
-        messenger.sendMessage(reviver, "Success-Revive-Message");
+        Optional<List<ItemStack>> targetItems = Optional.ofNullable(items.remove(target));
+        List<ItemStack> allItems = targetItems.orElse(List.of());
+        allItems.forEach(target.getInventory()::addItem);
+        String path = allItems.isEmpty() ? "Revive-Failure" : "Success-Revive-Message";
+        messenger.sendMessage(target, path);
+        messenger.sendMessage(reviver, path);
     }
 
     @EventHandler
