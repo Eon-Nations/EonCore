@@ -37,7 +37,7 @@ public class TpaCommand extends EonCommand {
 
     private void makeRequest(Player player, Player target) {
         ConfigMessenger messenger = Messaging.setupConfigMessenger(core.getConfig(), EonPrefix.NATIONS);
-        UUID initialTarget = requests.get(target.getUniqueId());
+        UUID initialTarget = requests.getOrDefault(player.getUniqueId(), target.getUniqueId());
         if (initialTarget.equals(player.getUniqueId())) {
             messenger.sendMessage(player, "Pending-Request");
         } else {

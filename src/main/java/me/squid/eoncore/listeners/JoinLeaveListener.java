@@ -2,6 +2,8 @@ package me.squid.eoncore.listeners;
 
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.utils.Utils;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -13,8 +15,11 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-public class JoinLeaveListener implements Listener {
+import static java.time.Duration.ofSeconds;
+import static me.squid.eoncore.messaging.Messaging.fromFormatString;
+import static me.squid.eoncore.utils.Utils.createKitItem;
 
+public class JoinLeaveListener implements Listener {
     EonCore plugin;
 
     public JoinLeaveListener(EonCore plugin) {
@@ -25,15 +30,11 @@ public class JoinLeaveListener implements Listener {
     @EventHandler
     public void sendJoinMessage(PlayerJoinEvent e) {
         Player p = e.getPlayer();
-        if (p.hasPlayedBefore()) {
-            sendPlayerTitle(p);
-            e.setJoinMessage(getJoinMessage(p));
-            if (p.isOp()) {
-                p.setSleepingIgnored(true);
-            }
-        } else {
-            e.setJoinMessage(getJoinMessage(p));
-            p.teleport(Utils.getSpawnLocation());
+        e.joinMessage(joinMessage(p));
+        sendPlayerTitle(p);
+        setSleepingIgnored(p);
+        if (!p.hasPlayedBefore()) {
+            p.teleportAsync(Utils.getSpawnLocation());
             givePlayerStarterKit(p);
         }
     }
@@ -41,29 +42,43 @@ public class JoinLeaveListener implements Listener {
     @EventHandler
     public void sendLeaveMessage(PlayerQuitEvent e) {
         Player p = e.getPlayer();
-        e.setQuitMessage(Utils.chat(plugin.getConfig().getString("Leave-Message")
-        .replace("<player>", p.getName())));
+        e.quitMessage(leaveMessage(p));
+    }
+
+    private void setSleepingIgnored(Player player) {
+        if (player.isOp()) {
+            player.setSleepingIgnored(true);
+        }
     }
 
     private void sendPlayerTitle(Player p) {
-        String subTitle = p.hasPlayedBefore() ? Utils.chat("&bWelcome back!") : Utils.chat("&bWelcome " + p.getName());
-        p.sendTitle(Utils.chat("&5&lEon Nations"), subTitle, 20, 40, 20);
+        String rawTitle = "<purple>Eon Nations</purple>";
+        String rawSubTitle = p.hasPlayedBefore() ? "<blue>Welcome back!</blue>" :
+                "<blue>Welcome " + p.getName() + "!</blue>";
+        Title.Times titleTiming = Title.Times.times(ofSeconds(1), ofSeconds(2), ofSeconds(1));
+        Title title = Title.title(fromFormatString(rawTitle), fromFormatString(rawSubTitle), titleTiming);
+        p.showTitle(title);
     }
 
-    private String getJoinMessage(Player p) {
-        if (p.hasPlayedBefore()) {
-            return Utils.chat(plugin.getConfig().getString("Join-Message")
-                    .replace("<player>", p.getName()));
-        } else return Utils.chat(plugin.getConfig().getString("Welcome-Message")
-                    .replace("<player>", p.getName()));
+    private Component joinMessage(Player p) {
+        String configPath = p.hasPlayedBefore() ? "Join-Message" : "Welcome-Message";
+        String rawMessage = plugin.getConfig().getString(configPath)
+                .replace("<player>", p.getName());
+        return fromFormatString(rawMessage);
+    }
+
+    private Component leaveMessage(Player player) {
+        String rawMessage = plugin.getConfig().getString("Leave-Message")
+                .replace("<player>", player.getName());
+        return fromFormatString(rawMessage);
     }
 
     private static void givePlayerStarterKit(Player p) {
         List<ItemStack> itemsToGive = List.of(
-            Utils.createKitItem(Material.WOODEN_SWORD, "&7Stick"),
-            Utils.createKitItem(Material.WOODEN_PICKAXE, "&7Pick"),
-            Utils.createKitItem(Material.WOODEN_AXE, "&7Wood"),
-            Utils.createKitItem(Material.WOODEN_SHOVEL, "&7Spoon"),
+            createKitItem(Material.WOODEN_SWORD, "&7Stick"),
+            createKitItem(Material.WOODEN_PICKAXE, "&7Pick"),
+            createKitItem(Material.WOODEN_AXE, "&7Wood"),
+            createKitItem(Material.WOODEN_SHOVEL, "&7Spoon"),
             new ItemStack(Material.COOKED_BEEF, 8)
         );
         itemsToGive.forEach(p.getInventory()::addItem);
