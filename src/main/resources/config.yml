@@ -38,6 +38,7 @@ Heal-Cooldown: "You can /heal again in <time>"
 
 Feed-Message: "You have been fed"
 Feed-Cooldown-Message: "You are on cooldown for /feed"
+Feed-Other: "Feed other message"
 
 # Clear Inventory Message
 Clear-Self-Inventory: "Your inventory has been cleared"
@@ -56,6 +57,7 @@ Discord-Message: "<click:open_url:'https://discord.gg/yGmwHN9Bqj'>https://discor
 # Night Vision Messages
 NV-Message: "Granted Night Vision"
 NV-Off: "Night Vision removed"
+Target-NV-Message: "Target message"
 
 # Gamemode Check Messages
 GamemodeCheck-Message: "<green><player> is in <gamemode></green>"
