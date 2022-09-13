@@ -24,6 +24,8 @@ public class NightVisionCommand extends EonCommand {
             toggleNightVision(player);
         } else if (args.length == 1 && player.hasPermission(OTHERS_IMMUNE_NODE)) {
             FunctionalBukkit.getPlayerOrSendMessage(player, this::toggleNightVision, args[0]);
+            ConfigMessenger messenger = Messaging.setupConfigMessenger(core.getConfig(), EonPrefix.MODERATION);
+            messenger.sendMessage(player, "Target-NV-Message");
         }
     }
 

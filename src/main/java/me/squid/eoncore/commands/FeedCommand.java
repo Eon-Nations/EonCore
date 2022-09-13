@@ -68,6 +68,7 @@ public class FeedCommand extends EonCommand {
             Optional<Player> maybeTarget = FunctionalBukkit.getPlayerFromName(args[0]);
             maybeTarget.ifPresentOrElse(target -> feedPlayer(target, messenger),
                     () -> Messaging.sendNullMessage(player));
+            messenger.sendMessage(player, "Feed-Other");
         }
     }
 }
