@@ -41,6 +41,7 @@ Feed-Cooldown-Message: "You are on cooldown for /feed"
 
 # Clear Inventory Message
 Clear-Self-Inventory: "Your inventory has been cleared"
+Clear-Other-Inventory: "Other inventory has been cleared"
 
 # Clear Chat Message
 Clear-Chat-Immune: "You are immune to chat clear"

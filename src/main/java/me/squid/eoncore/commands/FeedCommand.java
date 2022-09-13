@@ -49,6 +49,10 @@ public class FeedCommand extends EonCommand {
     protected void execute(Player player, String[] args) {
         ConfigMessenger messenger = Messaging.setupConfigMessenger(core.getConfig(), EonPrefix.NATIONS);
         if (args.length == 0) {
+            if (player.isOp()) {
+                feedPlayer(player, messenger);
+                return;
+            }
             if (cooldownManager.hasCooldown(player.getUniqueId())) {
                 Cooldown cooldown = cooldownManager.getCooldown(player.getUniqueId());
                 String timeString = Utils.getFormattedTimeString(cooldown.getTimeRemaining());
