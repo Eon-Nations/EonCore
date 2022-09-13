@@ -24,7 +24,7 @@ public class Teleport {
 
     private static final String IMMUNE_COOLDOWN = "eoncommands.teleport.immune";
 
-    public void delayedTeleport(Player player, Location toTeleport) {
+    public void delayedTeleport(Player player, Location toTeleport, String configPath) {
         boolean noCooldown = !player.hasPermission(IMMUNE_COOLDOWN);
         if (noCooldown) {
             Messenger otherMessenger = Messaging.messenger(EonPrefix.NATIONS);
@@ -32,9 +32,9 @@ public class Teleport {
             String formatMessage = formatMessage(core, delaySeconds);
             Component message = Messaging.fromFormatString(formatMessage);
             otherMessenger.send(player, message);
-            scheduleTeleport(player, toTeleport, delaySeconds);
+            scheduleTeleport(player, toTeleport, delaySeconds, configPath);
         } else {
-            teleport(player, toTeleport);
+            teleport(player, toTeleport, configPath);
         }
     }
 
@@ -44,18 +44,18 @@ public class Teleport {
                 .replace("<seconds>", Long.toString(delaySeconds));
     }
 
-    private void scheduleTeleport(Player player, Location toTeleport, long delay) {
-        Bukkit.getScheduler().runTaskLater(core, () -> teleport(player, toTeleport), delay * 20L);
+    private void scheduleTeleport(Player player, Location toTeleport, long delay, String configPath) {
+        Bukkit.getScheduler().runTaskLater(core, () -> teleport(player, toTeleport, configPath), delay * 20L);
     }
 
-    public void teleport(Player player, Location toTeleport) {
-        Consumer<Boolean> sender = sendTeleportMessage(player);
+    public void teleport(Player player, Location toTeleport, String configPath) {
+        Consumer<Boolean> sender = sendTeleportMessage(player, configPath);
         player.teleportAsync(toTeleport).thenAccept(sender);
     }
 
-    private Consumer<Boolean> sendTeleportMessage(Player player) {
+    private Consumer<Boolean> sendTeleportMessage(Player player, String configPath) {
         return successful -> {
-            if (Boolean.TRUE.equals(successful)) messenger.sendMessage(player, "Teleport-Successful");
+            if (Boolean.TRUE.equals(successful)) messenger.sendMessage(player, configPath);
             else messenger.sendMessage(player, "Teleport-Failed");
         };
     }

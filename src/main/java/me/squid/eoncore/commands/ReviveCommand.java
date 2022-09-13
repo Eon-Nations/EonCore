@@ -44,8 +44,12 @@ public class ReviveCommand extends EonCommand implements Listener {
         List<ItemStack> allItems = targetItems.orElse(List.of());
         allItems.forEach(target.getInventory()::addItem);
         String path = allItems.isEmpty() ? "Revive-Failure" : "Success-Revive-Message";
-        messenger.sendMessage(target, path);
-        messenger.sendMessage(reviver, path);
+        if (target.equals(reviver)) {
+            messenger.sendMessage(reviver, path);
+        } else {
+            messenger.sendMessage(target, path);
+            messenger.sendMessage(reviver, path);
+        }
     }
 
     @EventHandler

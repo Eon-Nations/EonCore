@@ -14,6 +14,7 @@ import static me.squid.eoncore.utils.FunctionalBukkit.getPlayerFromName;
 
 @RegisterCommand
 public class TeleportCommand extends EonCommand {
+    static final String MESSAGE_PATH = "Teleport-Successful";
 
     public TeleportCommand(EonCore plugin) {
         super("teleport", plugin);
@@ -28,7 +29,7 @@ public class TeleportCommand extends EonCommand {
             messenger.send(player, message);
         } else if (args.length == 1) {
             Optional<Player> target = getPlayerFromName(args[0]);
-            target.ifPresent(toTeleport -> teleport.delayedTeleport(player, toTeleport.getLocation()));
+            target.ifPresent(toTeleport -> teleport.delayedTeleport(player, toTeleport.getLocation(), MESSAGE_PATH));
         }
     }
 }

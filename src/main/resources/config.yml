@@ -2,7 +2,7 @@
 
 # Join/Leave Message
 Welcome-Message: "<blue>Welcome <player> to Eon Survival!! <player> has logged in for the first time!</blue>"
-Join-Message: "<gray>[<green><bold>+</green></bold>]</gray> &b<player>"
+Join-Message: "<gray>[<green><bold>+</green></bold>]</gray> <blue><player>"
 Leave-Message: "<gray>[<red><bold>-</red></bold>]</gray> <blue><player>"
 
 # Chat Format

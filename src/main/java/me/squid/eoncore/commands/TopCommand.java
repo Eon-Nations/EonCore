@@ -15,6 +15,6 @@ public class TopCommand extends EonCommand {
     @Override
     protected void execute(Player player, String[] args) {
         Location top = player.getWorld().getHighestBlockAt(player.getLocation()).getLocation().add(0, 1, 0);
-        teleport.delayedTeleport(player, top);
+        teleport.delayedTeleport(player, top, "Top-Message");
     }
 }

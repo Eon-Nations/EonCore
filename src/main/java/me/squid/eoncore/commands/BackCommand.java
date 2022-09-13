@@ -29,7 +29,7 @@ public class BackCommand extends EonCommand implements Listener {
     public void execute(Player player, String[] args) {
         ConfigMessenger messenger = Messaging.setupConfigMessenger(core.getConfig(), EonPrefix.NATIONS);
         Optional<Location> toTeleport = Optional.ofNullable(backLocations.remove(player));
-        toTeleport.ifPresentOrElse(location -> teleport.delayedTeleport(player, location),
+        toTeleport.ifPresentOrElse(location -> teleport.delayedTeleport(player, location, "Back-Message"),
                 () -> messenger.sendMessage(player, "No-Back"));
     }
 

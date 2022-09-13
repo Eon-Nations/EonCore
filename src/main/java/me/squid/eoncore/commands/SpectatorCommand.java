@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import static me.squid.eoncore.utils.FunctionalBukkit.getPlayerOrSendMessage;
 
+@RegisterCommand
 public class SpectatorCommand extends EonCommand {
     static final String OTHERS_NODE = "eoncommands.gmsp.others";
 

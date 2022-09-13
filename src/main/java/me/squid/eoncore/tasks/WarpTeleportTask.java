@@ -1,13 +1,16 @@
 package me.squid.eoncore.tasks;
 
 import me.squid.eoncore.EonCore;
-import me.squid.eoncore.utils.Utils;
+import me.squid.eoncore.messaging.EonPrefix;
+import me.squid.eoncore.messaging.Messaging;
+import me.squid.eoncore.messaging.Messenger;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import static me.squid.eoncore.messaging.Messaging.fromFormatString;
 
 public class WarpTeleportTask extends BukkitRunnable {
 
@@ -27,8 +30,9 @@ public class WarpTeleportTask extends BukkitRunnable {
     public void run() {
         Bukkit.getScheduler().runTask(plugin, () -> p.teleport(toWarp));
         p.playSound(p.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
-        //noinspection ConstantConditions
-        p.sendMessage(Utils.chat(Utils.getPrefix("nations") + plugin.getConfig().getString("Warp-Message")
-                .replace("<warp>", ChatColor.stripColor(name))));
+        String rawFormat = plugin.getConfig().getString("Warp-Message")
+                .replace("<warp>", name);
+        Messenger messenger = Messaging.messenger(EonPrefix.NATIONS);
+        messenger.send(p, fromFormatString(rawFormat));
     }
 }

@@ -23,31 +23,31 @@ public class FlyCommand extends EonCommand {
 
     @Override
     protected void execute(Player player, String[] args) {
+        ConfigMessenger messenger = Messaging.setupConfigMessenger(core.getConfig(), EonPrefix.NATIONS);
         if (args.length == 0) {
-            toggleFly(player);
+            toggleFly(player, messenger);
         } else if (args.length == 1 && player.hasPermission(OTHERS_PERM_NODE)) {
-            FunctionalBukkit.getPlayerOrSendMessage(player, this::toggleFly, args[0]);
+            FunctionalBukkit.getPlayerOrSendMessage(player, target -> toggleFly(target, messenger), args[0]);
+            messenger.sendMessage(player, "Target-Fly");
         }
     }
 
-    private void toggleFly(Player player) {
+    private void toggleFly(Player player, ConfigMessenger messenger) {
         if (playersFlying.contains(player.getUniqueId()))
-            turnOffFly(player);
-        else turnOnFly(player);
+            turnOffFly(player, messenger);
+        else turnOnFly(player, messenger);
     }
 
-    private void turnOnFly(Player player) {
+    private void turnOnFly(Player player, ConfigMessenger messenger) {
         if (player.getWorld().getName().equals("spawn_void")) return;
         player.setAllowFlight(true);
         playersFlying.add(player.getUniqueId());
-        ConfigMessenger messenger = Messaging.setupConfigMessenger(core.getConfig(), EonPrefix.NATIONS);
         messenger.sendMessage(player, "Fly-On");
     }
 
-    private void turnOffFly(Player player) {
+    private void turnOffFly(Player player, ConfigMessenger messenger) {
         player.setAllowFlight(false);
         playersFlying.remove(player.getUniqueId());
-        ConfigMessenger messenger = Messaging.setupConfigMessenger(core.getConfig(), EonPrefix.NATIONS);
         messenger.sendMessage(player, "Fly-Off");
     }
 }

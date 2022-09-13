@@ -24,7 +24,7 @@ public class TpposCommand extends EonCommand {
             double y = Double.parseDouble(args[1]);
             double z = Double.parseDouble(args[2]);
             Location location = new Location(player.getWorld(), x, y, z);
-            teleport.delayedTeleport(player, location);
+            teleport.delayedTeleport(player, location, "Teleport-Successful");
         } else {
             String rawUsage = "<gray>Usage: /tppos x y z</gray>";
             Messenger messenger = Messaging.messenger(EonPrefix.NATIONS);

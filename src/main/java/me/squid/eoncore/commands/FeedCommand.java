@@ -7,10 +7,14 @@ import me.squid.eoncore.managers.CooldownManager;
 import me.squid.eoncore.messaging.ConfigMessenger;
 import me.squid.eoncore.messaging.EonPrefix;
 import me.squid.eoncore.messaging.Messaging;
+import me.squid.eoncore.messaging.Messenger;
 import me.squid.eoncore.utils.FunctionalBukkit;
+import me.squid.eoncore.utils.Utils;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
+
+import static me.squid.eoncore.messaging.Messaging.fromFormatString;
 
 @RegisterCommand
 public class FeedCommand extends EonCommand {
@@ -46,7 +50,12 @@ public class FeedCommand extends EonCommand {
         ConfigMessenger messenger = Messaging.setupConfigMessenger(core.getConfig(), EonPrefix.NATIONS);
         if (args.length == 0) {
             if (cooldownManager.hasCooldown(player.getUniqueId())) {
-                messenger.sendMessage(player, "Feed-Cooldown-Message");
+                Cooldown cooldown = cooldownManager.getCooldown(player.getUniqueId());
+                String timeString = Utils.getFormattedTimeString(cooldown.getTimeRemaining());
+                String rawMessage = core.getConfig().getString("Feed-Cooldown-Message")
+                        .replace("<time>", timeString);
+                Messenger customMessenger = Messaging.messenger(EonPrefix.NATIONS);
+                customMessenger.send(player, fromFormatString(rawMessage));
             } else {
                 feedPlayer(player, messenger);
                 applyCooldown(player);

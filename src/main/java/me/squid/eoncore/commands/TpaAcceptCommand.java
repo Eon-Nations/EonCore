@@ -34,6 +34,6 @@ public class TpaAcceptCommand extends EonCommand {
     }
 
     private void teleportPlayer(Player player, Player target) {
-        teleport.delayedTeleport(player, target.getLocation());
+        teleport.delayedTeleport(player, target.getLocation(), "Teleport-Successful");
     }
 }

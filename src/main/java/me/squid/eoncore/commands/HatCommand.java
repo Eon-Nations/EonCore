@@ -5,7 +5,9 @@ import me.squid.eoncore.EonCore;
 import me.squid.eoncore.messaging.ConfigMessenger;
 import me.squid.eoncore.messaging.EonPrefix;
 import me.squid.eoncore.messaging.Messaging;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 @RegisterCommand
 public class HatCommand extends EonCommand {
@@ -19,9 +21,14 @@ public class HatCommand extends EonCommand {
     protected void execute(Player player, String[] args) {
         ConfigMessenger messenger = Messaging.setupConfigMessenger(core.getConfig(), EonPrefix.NATIONS);
         if (player.getInventory().getHelmet() == null) {
-            player.getInventory().setHelmet(player.getInventory().getItemInMainHand());
-            player.getInventory().remove(player.getInventory().getItemInMainHand());
-            messenger.sendMessage(player, "Hat-On");
+            ItemStack hat = player.getInventory().getItemInMainHand();
+            if (hat.getType().equals(Material.AIR)) {
+                messenger.sendMessage(player, "Hat-Hand");
+            } else {
+                player.getInventory().setHelmet(player.getInventory().getItemInMainHand());
+                player.getInventory().remove(player.getInventory().getItemInMainHand());
+                messenger.sendMessage(player, "Hat-On");
+            }
         } else {
             messenger.sendMessage(player, "Hat-Full");
         }
