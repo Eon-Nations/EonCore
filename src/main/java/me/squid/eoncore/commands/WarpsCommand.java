@@ -2,13 +2,13 @@ package me.squid.eoncore.commands;
 
 import me.squid.eoncore.EonCommand;
 import me.squid.eoncore.EonCore;
-import me.squid.eoncore.menus.WarpsGUI;
+import me.squid.eoncore.managers.InventoryManager;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
 @RegisterCommand
 public class WarpsCommand extends EonCommand {
-    WarpsGUI warpsGUI = new WarpsGUI();
 
     public WarpsCommand(EonCore plugin) {
         super("warps", plugin);
@@ -16,7 +16,8 @@ public class WarpsCommand extends EonCommand {
 
     @Override
     protected void execute(Player player, String[] args) {
-        player.openInventory(warpsGUI.SelectWarps());
+        Inventory inventory = InventoryManager.staleInventory("warps");
+        player.openInventory(inventory);
         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1, 1);
     }
 }

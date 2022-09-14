@@ -1,9 +1,12 @@
 package me.squid.eoncore.menus;
 
+import me.squid.eoncore.messaging.Messaging;
+import me.squid.eoncore.utils.ServerHolder;
 import me.squid.eoncore.utils.Utils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -15,7 +18,13 @@ public class MenuBuilder {
     private Inventory inventory;
 
     public MenuBuilder createMenu(String name, int size) {
-        inventory = Bukkit.createInventory(null, size, Component.text(name));
+        ServerHolder holder = new ServerHolder();
+        try {
+            inventory = Bukkit.createInventory(holder, size, Messaging.fromFormatString(name));
+        } catch (Exception e) {
+            // This is for the testing suite (Component titles are not implemented yet)
+            inventory = Bukkit.createInventory(holder, InventoryType.CHEST, name);
+        }
         return this;
     }
 
@@ -23,11 +32,9 @@ public class MenuBuilder {
         ItemStack item = new ItemStack(material, 1);
         ItemMeta meta = item.getItemMeta();
         List<Component> finalLore = Arrays.stream(lore)
-                .map(Utils::translateHex)
-                .map(Component::text)
-                .map(Component::asComponent)
+                .map(Messaging::fromFormatString)
                 .toList();
-        meta.displayName(Component.text(Utils.translateHex(name)));
+        meta.displayName(Messaging.fromFormatString(name));
         meta.lore(finalLore);
         item.setItemMeta(meta);
         inventory.setItem(invSlot - 1, item);

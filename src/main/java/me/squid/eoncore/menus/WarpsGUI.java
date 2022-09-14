@@ -1,23 +1,59 @@
 package me.squid.eoncore.menus;
 
-import me.squid.eoncore.utils.Utils;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
+import org.bukkit.*;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
-public class WarpsGUI {
+import java.util.Map;
 
-    public Inventory SelectWarps() {
-        Inventory inv = Bukkit.createInventory(null, 27, Utils.chat("&5&lEon Warps"));
+public class WarpsGUI implements StaleInventory {
 
-        Utils.createItem(inv, Material.BREAD, 1, 12, "&aChilis");
-        Utils.createItem(inv, Material.ANVIL, 1, 13, "&bUtilities");
-        Utils.createItem(inv, Material.CHEST, 1, 14, "&bCrates");
-        Utils.createItem(inv, Material.END_PORTAL_FRAME, 1, 15, "&aEnd Portal");
-        Utils.createItem(inv, Material.ZOMBIE_HEAD, 1, 16, "&aMob Arena");
-        Utils.makeDummySlots(inv);
+    Map<String, Location> warps = initializeWarps();
 
-        return inv;
+    private String formatWithGreen(String format) {
+        return "<green>" + format + "</green>";
     }
 
+    @Override
+    public Inventory buildInventory() {
+        return new MenuBuilder().createMenu("<purple>Eon Warps</purple", 27)
+                .addItem(Material.BREAD, 12, formatWithGreen("Chilis"))
+                .addItem(Material.ANVIL, 13, formatWithGreen("Utilities"))
+                .addItem(Material.CHEST, 14, formatWithGreen("Crates"))
+                .addItem(Material.END_PORTAL_FRAME, 15, formatWithGreen("End Portal"))
+                .addItem(Material.ZOMBIE_HEAD, 16, formatWithGreen("Mob Arena"))
+                .makeDummySlots()
+                .completeInventory();
+    }
+
+    @Override
+    public void clickEvent(Player clicker, ItemStack currentItem) {
+        clicker.closeInventory();
+        clicker.playSound(clicker.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1, 1);
+        String warpName = warpLocation(currentItem.getType());
+        Location warpLocation = warps.getOrDefault(warpName, clicker.getLocation());
+        clicker.teleportAsync(warpLocation);
+    }
+
+    private String warpLocation(Material type) {
+        return switch (type) {
+            case BREAD -> "chilis";
+            case ANVIL -> "utilities";
+            case CHEST -> "crates";
+            case END_PORTAL_FRAME -> "endPortal";
+            case ZOMBIE_HEAD -> "mobArena";
+            default -> "spawn";
+        };
+    }
+
+    public Map<String, Location> initializeWarps() {
+        World world = Bukkit.getWorld("spawn_void");
+        return Map.of(
+                "utilities", new Location(world, 64.5, 99, 25.5, 180, 0),
+                "crates", new Location(world, -22.5 ,87, -14.5, -130, 0),
+                "endPortal", new Location(world, -1381.5, -27, -1131.5, 0, 180),
+                "chilis", new Location(world, -54.5, 86, -3.5, 90, 0)
+        );
+    }
 }

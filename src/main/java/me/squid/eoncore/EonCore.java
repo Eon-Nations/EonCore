@@ -2,6 +2,7 @@ package me.squid.eoncore;
 
 import me.squid.eoncore.commands.BanMuteCommand;
 import me.squid.eoncore.listeners.*;
+import me.squid.eoncore.managers.InventoryManager;
 import me.squid.eoncore.managers.MutedManager;
 import me.squid.eoncore.tasks.AutoAnnouncementTask;
 import me.squid.eoncore.tasks.RestartTask;
@@ -43,9 +44,9 @@ public class EonCore extends JavaPlugin {
         new JoinLeaveListener(this);
         new GenericMenusListener(this);
         new WildTpListener(this);
-        new WarpsListener(this);
         new PhantomSpawnListener(this);
         new PortalListener(this);
+        InventoryManager.registerInventories(this);
     }
 
     public void registerModeration() {
