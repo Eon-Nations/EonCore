@@ -59,6 +59,9 @@ public class InventoryManager implements Listener {
 
     private Consumer<Inventory> cancelEvent(InventoryClickEvent e) {
         Player clicker = (Player) e.getWhoClicked();
+        if (e.getClickedInventory().equals(clicker.getInventory())) {
+            clicker.sendMessage("This should be happening");
+        }
         ItemStack clickedItem = e.getCurrentItem();
         e.setCancelled(true);
         return inventory -> clickEvent(clicker, clickedItem, inventory);

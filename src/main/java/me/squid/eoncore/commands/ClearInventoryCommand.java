@@ -23,17 +23,17 @@ public class ClearInventoryCommand extends EonCommand {
     @Override
     protected void execute(Player player, String[] args) {
         FileConfiguration config = core.getConfig();
-        Consumer<Player> inventoryClear = clearInventory(player, config);
+        ConfigMessenger messenger = Messaging.setupConfigMessenger(config, EonPrefix.MODERATION);
+        Consumer<Player> inventoryClear = clearInventory(messenger);
         if (args.length == 0) {
             inventoryClear.accept(player);
         } else if (args.length == 1 && player.hasPermission(OTHERS_NODE)) {
             getPlayerOrSendMessage(player, inventoryClear, args[0]);
+            messenger.sendMessage(player, "Clear-Other-Inventory");
         }
     }
 
-    private Consumer<Player> clearInventory(Player sender, FileConfiguration config) {
-        ConfigMessenger messenger = Messaging.setupConfigMessenger(config, EonPrefix.MODERATION);
-        messenger.sendMessage(sender, "Clear-Other-Inventory");
+    private Consumer<Player> clearInventory(ConfigMessenger messenger) {
         Consumer<Player> clearInventory = player -> player.getInventory().clear();
         return clearInventory.andThen(player -> messenger.sendMessage(player, "Clear-Self-Inventory"));
     }
