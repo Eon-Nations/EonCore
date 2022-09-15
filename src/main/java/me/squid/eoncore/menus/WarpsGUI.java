@@ -17,7 +17,7 @@ public class WarpsGUI implements StaleInventory {
 
     @Override
     public Inventory buildInventory() {
-        return new MenuBuilder().createMenu("<purple>Eon Warps</purple", 27)
+        return new MenuBuilder().createMenu("<purple>Eon Warps</purple>", 27)
                 .addItem(Material.BREAD, 12, formatWithGreen("Chilis"))
                 .addItem(Material.ANVIL, 13, formatWithGreen("Utilities"))
                 .addItem(Material.CHEST, 14, formatWithGreen("Crates"))
@@ -29,11 +29,16 @@ public class WarpsGUI implements StaleInventory {
 
     @Override
     public void clickEvent(Player clicker, ItemStack currentItem) {
-        clicker.closeInventory();
         clicker.playSound(clicker.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1, 1);
         String warpName = warpLocation(currentItem.getType());
-        Location warpLocation = warps.getOrDefault(warpName, clicker.getLocation());
-        clicker.teleportAsync(warpLocation);
+        if (warpName.equals("mobArena")) {
+            Bukkit.dispatchCommand(clicker, "ma join");
+            return;
+        }
+        if (!warpName.equals("other")) {
+            Location warpLocation = warps.getOrDefault(warpName, clicker.getLocation());
+            clicker.teleportAsync(warpLocation);
+        }
     }
 
     private String warpLocation(Material type) {
@@ -43,7 +48,7 @@ public class WarpsGUI implements StaleInventory {
             case CHEST -> "crates";
             case END_PORTAL_FRAME -> "endPortal";
             case ZOMBIE_HEAD -> "mobArena";
-            default -> "spawn";
+            default -> "other";
         };
     }
 

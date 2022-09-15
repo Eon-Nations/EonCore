@@ -8,6 +8,7 @@ import me.squid.eoncore.menus.StaleInventory;
 import me.squid.eoncore.menus.WarpsGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -15,7 +16,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Map;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class InventoryManager implements Listener {
@@ -32,16 +32,21 @@ public class InventoryManager implements Listener {
 
     @EventHandler
     public void onInventoryClickEvent(InventoryClickEvent e) {
-        inventoryMap.keySet().stream()
-                    .filter(inventoryMap::containsKey)
-                    .findFirst()
-                    .ifPresent(cancelEvent(e));
+        if (inventoryMap.containsKey(e.getClickedInventory())) {
+            Player clicker = (Player) e.getWhoClicked();
+            ItemStack clickedItem = e.getCurrentItem();
+            StaleInventory inventory = inventoryMap.get(e.getClickedInventory());
+            inventory.clickEvent(clicker, clickedItem);
+            e.setResult(Event.Result.DENY);
+        }
     }
 
     public static Inventory staleInventory(String name) {
-        var flippedMap = inventoryMap().inverse();
         StaleInventory staleInventory = registeredInventories.get(name);
-        return flippedMap.get(staleInventory);
+        return inventoryMap.entrySet().stream()
+                .filter(entry -> entry.getValue().equals(staleInventory))
+                .map(Map.Entry::getKey)
+                .findFirst().orElseThrow();
     }
 
     private static BiMap<Inventory, StaleInventory> inventoryMap() {
@@ -55,17 +60,5 @@ public class InventoryManager implements Listener {
         WarpsGUI warpsGUI = new WarpsGUI();
         return Map.of("help", helpGUI,
                 "warps", warpsGUI);
-    }
-
-    private Consumer<Inventory> cancelEvent(InventoryClickEvent e) {
-        Player clicker = (Player) e.getWhoClicked();
-        ItemStack clickedItem = e.getCurrentItem();
-        e.setCancelled(true);
-        return inventory -> clickEvent(clicker, clickedItem, inventory);
-    }
-
-    private void clickEvent(Player clicker, ItemStack clickedItem, Inventory inventory) {
-        StaleInventory staleInventory = inventoryMap.get(inventory);
-        staleInventory.clickEvent(clicker, clickedItem);
     }
 }

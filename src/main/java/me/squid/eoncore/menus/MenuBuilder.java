@@ -6,7 +6,6 @@ import me.squid.eoncore.utils.Utils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -23,7 +22,7 @@ public class MenuBuilder {
             inventory = Bukkit.createInventory(holder, size, Messaging.fromFormatString(name));
         } catch (Exception e) {
             // This is for the testing suite (Component titles are not implemented yet)
-            inventory = Bukkit.createInventory(holder, InventoryType.CHEST, name);
+            inventory = Bukkit.createInventory(holder, size, name);
         }
         return this;
     }
