@@ -52,7 +52,7 @@ public class JoinLeaveListener implements Listener {
     }
 
     private void sendPlayerTitle(Player p) {
-        String rawTitle = "<purple>Eon Nations</purple>";
+        String rawTitle = "<#66b2ff>Eon Nations</#66b2ff>";
         String rawSubTitle = p.hasPlayedBefore() ? "<blue>Welcome back!</blue>" :
                 "<blue>Welcome " + p.getName() + "!</blue>";
         Title.Times titleTiming = Title.Times.times(ofSeconds(1), ofSeconds(2), ofSeconds(1));

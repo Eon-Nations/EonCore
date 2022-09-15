@@ -33,7 +33,8 @@ public class WorldLoader {
                 GameRule.SHOW_DEATH_MESSAGES,
                 GameRule.COMMAND_BLOCK_OUTPUT,
                 GameRule.SPECTATORS_GENERATE_CHUNKS,
-                GameRule.DO_IMMEDIATE_RESPAWN);
+                GameRule.DO_IMMEDIATE_RESPAWN,
+                GameRule.DO_INSOMNIA);
         List<World> worlds = Bukkit.getWorlds();
         worlds.forEach(setGameRule(gameRulesToSet));
         setSpawnGameRules();

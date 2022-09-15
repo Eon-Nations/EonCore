@@ -42,9 +42,7 @@ public class EonCore extends JavaPlugin {
 
     public void registerListeners() {
         new JoinLeaveListener(this);
-        new GenericMenusListener(this);
         new WildTpListener(this);
-        new PhantomSpawnListener(this);
         new PortalListener(this);
         InventoryManager.registerInventories(this);
     }

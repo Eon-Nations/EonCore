@@ -1,11 +1,17 @@
 package me.squid.eoncore.menus;
 
+import me.squid.eoncore.EonCore;
+import me.squid.eoncore.messaging.EonPrefix;
+import me.squid.eoncore.messaging.Messaging;
+import me.squid.eoncore.messaging.Messenger;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Map;
+
+import static me.squid.eoncore.messaging.Messaging.fromFormatString;
 
 public class WarpsGUI implements StaleInventory {
 
@@ -28,7 +34,7 @@ public class WarpsGUI implements StaleInventory {
     }
 
     @Override
-    public void clickEvent(Player clicker, ItemStack currentItem) {
+    public void clickEvent(Player clicker, ItemStack currentItem, EonCore plugin) {
         clicker.playSound(clicker.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1, 1);
         String warpName = warpLocation(currentItem.getType());
         if (warpName.equals("mobArena")) {
@@ -38,6 +44,10 @@ public class WarpsGUI implements StaleInventory {
         if (!warpName.equals("other")) {
             Location warpLocation = warps.getOrDefault(warpName, clicker.getLocation());
             clicker.teleportAsync(warpLocation);
+            String rawMessage = plugin.getConfig().getString("Warp-Message")
+                    .replace("<warp>", warpName);
+            Messenger messenger = Messaging.messenger(EonPrefix.NATIONS);
+            messenger.send(clicker, fromFormatString(rawMessage));
         }
     }
 

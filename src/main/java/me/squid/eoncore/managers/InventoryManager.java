@@ -21,8 +21,10 @@ import java.util.stream.Collectors;
 public class InventoryManager implements Listener {
     private static final Map<String, StaleInventory> registeredInventories = createMap();
     private static final BiMap<Inventory, StaleInventory> inventoryMap = inventoryMap();
+    EonCore plugin;
 
     private InventoryManager(EonCore plugin) {
+        this.plugin = plugin;
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
@@ -36,7 +38,7 @@ public class InventoryManager implements Listener {
             Player clicker = (Player) e.getWhoClicked();
             ItemStack clickedItem = e.getCurrentItem();
             StaleInventory inventory = inventoryMap.get(e.getClickedInventory());
-            inventory.clickEvent(clicker, clickedItem);
+            inventory.clickEvent(clicker, clickedItem, plugin);
             e.setResult(Event.Result.DENY);
         }
     }
