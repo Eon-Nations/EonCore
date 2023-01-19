@@ -1,8 +1,7 @@
 package commands;
 
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
-import me.squid.eoncore.messaging.EonPrefix;
-import me.squid.eoncore.utils.Utils;
+import me.squid.eoncore.misc.utils.Utils;
 import mockbukkit.TestUtility;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;

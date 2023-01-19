@@ -1,7 +1,7 @@
 package commands;
 
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
-import me.squid.eoncore.utils.Utils;
+import me.squid.eoncore.misc.utils.Utils;
 import mockbukkit.TestUtility;
 import org.junit.Ignore;
 import org.junit.Test;

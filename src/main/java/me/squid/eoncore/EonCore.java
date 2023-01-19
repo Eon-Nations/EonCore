@@ -1,12 +1,15 @@
 package me.squid.eoncore;
 
-import me.squid.eoncore.commands.BanMuteCommand;
-import me.squid.eoncore.listeners.*;
-import me.squid.eoncore.managers.InventoryManager;
-import me.squid.eoncore.managers.MutedManager;
-import me.squid.eoncore.tasks.AutoAnnouncementTask;
-import me.squid.eoncore.tasks.RestartTask;
-import me.squid.eoncore.utils.WorldLoader;
+import me.squid.eoncore.misc.commands.BanMuteCommand;
+import me.squid.eoncore.misc.listeners.ChatFormatListener;
+import me.squid.eoncore.misc.listeners.JoinLeaveListener;
+import me.squid.eoncore.misc.listeners.PortalListener;
+import me.squid.eoncore.misc.listeners.WildTpListener;
+import me.squid.eoncore.misc.managers.InventoryManager;
+import me.squid.eoncore.misc.managers.MutedManager;
+import me.squid.eoncore.misc.tasks.AutoAnnouncementTask;
+import me.squid.eoncore.misc.tasks.RestartTask;
+import me.squid.eoncore.misc.utils.WorldLoader;
 import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginDescriptionFile;

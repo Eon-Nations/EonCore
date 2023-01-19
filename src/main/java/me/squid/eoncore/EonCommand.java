@@ -1,7 +1,7 @@
 package me.squid.eoncore;
 
-import me.squid.eoncore.commands.RegisterCommand;
-import me.squid.eoncore.utils.Teleport;
+import me.squid.eoncore.misc.commands.RegisterCommand;
+import me.squid.eoncore.misc.utils.Teleport;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

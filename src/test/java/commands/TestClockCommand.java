@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 
-import static me.squid.eoncore.listeners.ChatFormatListener.isChatLocked;
+import static me.squid.eoncore.misc.listeners.ChatFormatListener.isChatLocked;
 
 public class TestClockCommand extends TestUtility {
 
