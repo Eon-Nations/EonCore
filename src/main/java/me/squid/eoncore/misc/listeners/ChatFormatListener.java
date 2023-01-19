@@ -5,7 +5,7 @@ import io.papermc.paper.event.player.AsyncChatEvent;
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.misc.managers.Cooldown;
 import me.squid.eoncore.misc.managers.MutedManager;
-import me.squid.eoncore.misc.utils.Utils;
+import me.squid.eoncore.utils.Utils;
 import net.kyori.adventure.text.Component;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.cacheddata.CachedMetaData;

@@ -1,6 +1,6 @@
 package me.squid.eoncore.misc.menus;
 
-import me.squid.eoncore.misc.utils.Utils;
+import me.squid.eoncore.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;

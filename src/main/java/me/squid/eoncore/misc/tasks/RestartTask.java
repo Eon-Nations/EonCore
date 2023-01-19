@@ -1,6 +1,6 @@
 package me.squid.eoncore.misc.tasks;
 
-import me.squid.eoncore.misc.utils.Utils;
+import me.squid.eoncore.utils.Utils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;

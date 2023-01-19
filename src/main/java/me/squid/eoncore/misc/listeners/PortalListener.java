@@ -2,7 +2,7 @@ package me.squid.eoncore.misc.listeners;
 
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.misc.events.WildTeleportEvent;
-import me.squid.eoncore.misc.utils.Utils;
+import me.squid.eoncore.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

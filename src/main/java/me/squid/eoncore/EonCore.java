@@ -1,6 +1,7 @@
 package me.squid.eoncore;
 
-import me.squid.eoncore.misc.commands.BanMuteCommand;
+import me.squid.eoncore.commands.BanMuteCommand;
+import me.squid.eoncore.currency.Eoncurrency;
 import me.squid.eoncore.misc.listeners.ChatFormatListener;
 import me.squid.eoncore.misc.listeners.JoinLeaveListener;
 import me.squid.eoncore.misc.listeners.PortalListener;
@@ -9,11 +10,10 @@ import me.squid.eoncore.misc.managers.InventoryManager;
 import me.squid.eoncore.misc.managers.MutedManager;
 import me.squid.eoncore.misc.tasks.AutoAnnouncementTask;
 import me.squid.eoncore.misc.tasks.RestartTask;
-import me.squid.eoncore.misc.utils.WorldLoader;
+import me.squid.eoncore.utils.WorldLoader;
 import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.*;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 
@@ -32,6 +32,9 @@ public class EonCore extends JavaPlugin {
     public void onEnable() {
         saveDefaultConfig();
         WorldLoader.initializeWorlds();
+        PluginManager pluginManager = getServer().getPluginManager();
+        Eoncurrency currency = new Eoncurrency();
+        pluginManager.enablePlugin(currency);
         EonCommand.registerAllCommands(this);
         registerListeners();
         runTasks();

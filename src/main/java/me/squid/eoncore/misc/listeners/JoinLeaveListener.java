@@ -1,7 +1,8 @@
 package me.squid.eoncore.misc.listeners;
 
+import me.lucko.helper.item.ItemStackBuilder;
 import me.squid.eoncore.EonCore;
-import me.squid.eoncore.misc.utils.Utils;
+import me.squid.eoncore.utils.Utils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
@@ -13,11 +14,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.List;
-
 import static java.time.Duration.ofSeconds;
 import static me.squid.eoncore.messaging.Messaging.fromFormatString;
-import static me.squid.eoncore.misc.utils.Utils.createKitItem;
 
 public class JoinLeaveListener implements Listener {
     EonCore plugin;
@@ -74,13 +72,15 @@ public class JoinLeaveListener implements Listener {
     }
 
     private static void givePlayerStarterKit(Player p) {
-        List<ItemStack> itemsToGive = List.of(
-            createKitItem(Material.WOODEN_SWORD, "&7Stick"),
-            createKitItem(Material.WOODEN_PICKAXE, "&7Pick"),
-            createKitItem(Material.WOODEN_AXE, "&7Wood"),
-            createKitItem(Material.WOODEN_SHOVEL, "&7Spoon"),
-            new ItemStack(Material.COOKED_BEEF, 8)
-        );
-        itemsToGive.forEach(p.getInventory()::addItem);
+        ItemStack sword = ItemStackBuilder.of(Material.WOODEN_SWORD)
+                .name("Stick").build();
+        ItemStack pick = ItemStackBuilder.of(Material.WOODEN_PICKAXE)
+                .name("Pick").build();
+        ItemStack shovel = ItemStackBuilder.of(Material.WOODEN_SHOVEL)
+                .name("Spoon").build();
+        ItemStack axe = ItemStackBuilder.of(Material.WOODEN_AXE)
+                .name("Wood").build();
+        ItemStack steak = new ItemStack(Material.COOKED_BEEF, 8);
+        p.getInventory().addItem(sword, pick, shovel, axe, steak);
     }
 }

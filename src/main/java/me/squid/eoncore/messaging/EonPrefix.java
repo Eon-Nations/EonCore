@@ -14,6 +14,7 @@ public enum EonPrefix {
     NATIONS,
     MODERATION,
     INFO,
+    CURRENCY,
     COMMANDSPY;
 
     public static Map<EonPrefix, Component> mapping() {
