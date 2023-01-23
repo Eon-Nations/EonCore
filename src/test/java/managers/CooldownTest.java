@@ -1,6 +1,6 @@
 package managers;
 
-import me.squid.eoncore.managers.Cooldown;
+import me.squid.eoncore.misc.managers.Cooldown;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

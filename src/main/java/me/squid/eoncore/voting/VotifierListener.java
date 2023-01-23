@@ -1,6 +1,5 @@
 package me.squid.eoncore.voting;
 
-import com.vexsoftware.votifier.model.Vote;
 import com.vexsoftware.votifier.model.VotifierEvent;
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.utils.FunctionalBukkit;

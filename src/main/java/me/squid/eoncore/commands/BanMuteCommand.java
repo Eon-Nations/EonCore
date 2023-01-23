@@ -1,8 +1,8 @@
 package me.squid.eoncore.commands;
 
 import me.squid.eoncore.EonCore;
-import me.squid.eoncore.managers.Cooldown;
-import me.squid.eoncore.managers.MutedManager;
+import me.squid.eoncore.misc.managers.Cooldown;
+import me.squid.eoncore.misc.managers.MutedManager;
 import me.squid.eoncore.utils.Utils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.BanList;

@@ -1,7 +1,7 @@
 package commands;
 
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
-import me.squid.eoncore.managers.InventoryManager;
+import me.squid.eoncore.misc.managers.InventoryManager;
 import mockbukkit.TestUtility;
 import org.bukkit.Sound;
 import org.bukkit.event.inventory.InventoryType;

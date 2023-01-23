@@ -109,14 +109,6 @@ public class Utils {
         return !(blackList.contains(below.getType()))  || block.getType().isSolid() || above.getType().isSolid();
     }
 
-    public static ItemStack createKitItem(Material material, String displayName) {
-        ItemStack item = new ItemStack(material, 1);
-        ItemMeta meta = item.getItemMeta();
-        meta.displayName(Component.text(Utils.chat(displayName)));
-        item.setItemMeta(meta);
-        return item;
-    }
-
     public static void makeDummySlots(Inventory inv) {
         ItemStack item = new ItemStack(Material.BLACK_STAINED_GLASS_PANE, 1);
         ItemMeta meta = item.getItemMeta();

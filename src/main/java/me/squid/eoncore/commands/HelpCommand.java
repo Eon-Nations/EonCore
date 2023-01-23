@@ -2,7 +2,7 @@ package me.squid.eoncore.commands;
 
 import me.squid.eoncore.EonCommand;
 import me.squid.eoncore.EonCore;
-import me.squid.eoncore.managers.InventoryManager;
+import me.squid.eoncore.misc.managers.InventoryManager;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;

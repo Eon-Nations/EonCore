@@ -2,8 +2,8 @@ package me.squid.eoncore.commands;
 
 import me.squid.eoncore.EonCommand;
 import me.squid.eoncore.EonCore;
-import me.squid.eoncore.managers.Cooldown;
-import me.squid.eoncore.managers.CooldownManager;
+import me.squid.eoncore.misc.managers.Cooldown;
+import me.squid.eoncore.misc.managers.CooldownManager;
 import me.squid.eoncore.messaging.ConfigMessenger;
 import me.squid.eoncore.messaging.EonPrefix;
 import me.squid.eoncore.messaging.Messaging;
