@@ -5,13 +5,11 @@ import me.lucko.helper.command.Command;
 import me.lucko.helper.command.CommandInterruptException;
 import me.lucko.helper.command.argument.ArgumentParser;
 import me.lucko.helper.command.context.CommandContext;
-import me.squid.eoncore.currency.Eoncurrency;
+import me.squid.eoncore.EonCore;
 import me.squid.eoncore.messaging.ConfigMessenger;
 import me.squid.eoncore.messaging.EonPrefix;
 import me.squid.eoncore.messaging.Messaging;
 import me.squid.eoncore.utils.FunctionalBukkit;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
@@ -20,9 +18,8 @@ import org.bukkit.entity.Player;
 import java.util.Map;
 import java.util.Optional;
 
-import static me.squid.eoncore.messaging.Messaging.fromFormatString;
-
 public class PayCommand {
+    private PayCommand() { }
 
     public enum PayStatus {
         SUCCESS,
@@ -30,15 +27,14 @@ public class PayCommand {
         INVALID
     }
 
-    public static void registerPayCommand(Eoncurrency plugin) {
+    public static Command registerPayCommand(EonCore plugin) {
         String usageMessage = Optional.ofNullable(plugin.getConfig().getString("usage-pay"))
                 .orElse("<player> <amount>");
-        Command payCommand = Commands.create().assertPlayer()
+        return Commands.create().assertPlayer()
                 .assertUsage(usageMessage)
                 .assertArgument(0, arg -> Bukkit.getPlayer(arg) != null)
                 .assertArgument(1, PayCommand::isValidDouble)
                 .handler(context -> handler(context, plugin));
-        payCommand.registerAndBind(plugin, "pay");
     }
 
     private static boolean isValidDouble(String arg) {
@@ -50,7 +46,7 @@ public class PayCommand {
         }
     }
 
-    private static void handler(CommandContext<Player> context, Eoncurrency plugin) throws CommandInterruptException {
+    private static void handler(CommandContext<Player> context, EonCore plugin) throws CommandInterruptException {
         Player target = context.arg(0).parseOrFail(ArgumentParser.of(FunctionalBukkit::getPlayerFromName));
         double amount = context.arg(1).parseOrFail(ArgumentParser.of(arg -> Optional.of(Double.parseDouble(arg))));
         PayStatus status = payPlayer(plugin, context.sender(), target, amount);
@@ -65,13 +61,13 @@ public class PayCommand {
         }
     }
 
-    private static void sendMessage(Eoncurrency plugin, Player player, String formattedAmount, String path) {
+    private static void sendMessage(EonCore plugin, Player player, String formattedAmount, String path) {
         ConfigMessenger messenger = Messaging.setupConfigMessenger(plugin.getConfig(), EonPrefix.CURRENCY,
                 Map.of("<player>", player.getName(), "<amount>", formattedAmount));
         messenger.sendMessage(player, path);
     }
 
-    public static PayStatus payPlayer(Eoncurrency plugin, Player sender, Player target, double amount) {
+    public static PayStatus payPlayer(EonCore plugin, Player sender, Player target, double amount) {
         Economy eco = plugin.getService(Economy.class);
         if (amount <= 0) return PayStatus.INVALID;
         EconomyResponse withdrawResponse = eco.withdrawPlayer(sender, amount);

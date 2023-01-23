@@ -1,11 +1,18 @@
 package me.squid.eoncore.currency.managers;
 
+import me.lucko.helper.Events;
+import me.lucko.helper.event.filter.EventFilters;
+import me.squid.eoncore.EonCore;
+import me.squid.eoncore.database.DatabasePlayer;
+import me.squid.eoncore.database.RedisClient;
+import me.squid.eoncore.database.SetFunction;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerJoinEvent;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.exceptions.JedisException;
@@ -19,14 +26,19 @@ import java.util.UUID;
 
 public class EconManager implements Economy {
 
-    JedisPool pool;
+    RedisClient client;
+    SetFunction setFunc;
     private static final int DEC_PLACES = 2;
-    public static final String BALANCE = "#balance";
-    private final HashMap<UUID, Double> backupMap = new HashMap<>();
+    public static final String BALANCE = ":balance";
     private static final EconomyResponse NOT_SUPPORTED = new EconomyResponse(0.0, 0.0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, "Banks not supported");
 
-    public EconManager(JedisPool pool) {
-        this.pool = pool;
+    public EconManager(EonCore plugin, RedisClient client) {
+        this.client = client;
+        this.setFunc = SetFunction.makeCommonSet(client, BALANCE);
+        var event = Events.subscribe(PlayerJoinEvent.class)
+                .filter(e -> !e.getPlayer().hasPlayedBefore())
+                .handler(e -> createPlayerAccount(e.getPlayer()));
+        event.bindWith(plugin);
     }
 
     @Override
@@ -76,11 +88,7 @@ public class EconManager implements Economy {
 
     @Override
     public boolean hasAccount(OfflinePlayer p) {
-        try (Jedis jedis = pool.getResource()) {
-            return !jedis.get(p.getUniqueId() + BALANCE).equals("nil");
-        } catch (JedisException e) {
-            return false;
-        }
+        return p.hasPlayedBefore();
     }
 
     @Override
@@ -101,18 +109,9 @@ public class EconManager implements Economy {
 
     @Override
     public double getBalance(OfflinePlayer p) {
-        try (Jedis jedis = pool.getResource()) {
-            return getBalance(p, jedis);
-        } catch (JedisException e) {
-            return 0.0;
-        }
-    }
-
-    public double getBalance(OfflinePlayer p, Jedis jedis) {
         try {
-            String balance = jedis.get(p.getUniqueId() + BALANCE);
-            return balance != null ? Double.parseDouble(balance) : 0.0;
-        } catch (NumberFormatException | JedisException e) {
+            return client.getKey(p.getUniqueId(), BALANCE, Double::parseDouble);
+        } catch (NullPointerException e) {
             return 0.0;
         }
     }
@@ -164,19 +163,12 @@ public class EconManager implements Economy {
 
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer p, double amount) {
-        try (Jedis jedis = pool.getResource()) {
-            return withdrawPlayer(p, amount, jedis);
-        }
-    }
-
-    public EconomyResponse withdrawPlayer(OfflinePlayer p, double amount, Jedis jedis) {
-        String rawBalance = jedis.get(p.getUniqueId() + BALANCE);
-        double balance = Double.parseDouble(rawBalance);
+        double balance = getBalance(p);
         double newBalance = balance - amount;
         if (newBalance < 0) {
             return new EconomyResponse(amount, balance, ResponseType.FAILURE, "Insufficient funds");
         } else {
-            jedis.set(p.getName() + BALANCE, format(newBalance));
+            setFunc.setPlayer(p.getUniqueId(), newBalance, String::valueOf);
             return new EconomyResponse(amount, newBalance, ResponseType.SUCCESS, "");
         }
     }
@@ -207,14 +199,10 @@ public class EconManager implements Economy {
 
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer p, double amount) {
-        try (Jedis jedis = pool.getResource()) {
-            double balance = getBalance(p, jedis);
-            jedis.set(p.getUniqueId() + BALANCE, format(balance + amount));
-            return new EconomyResponse(amount, balance + amount, ResponseType.SUCCESS, "");
-        } catch (NumberFormatException e) {
-            if (createPlayerAccount(p)) return depositPlayer(p, amount);
-            else return new EconomyResponse(amount, 0.0, ResponseType.FAILURE, "Corrupt record");
-        }
+        double balance = getBalance(p);
+        double newBalance = amount + balance;
+        setFunc.setPlayer(p.getUniqueId(), newBalance, String::valueOf);
+        return new EconomyResponse(amount, balance + amount, ResponseType.SUCCESS, "");
     }
 
     @Override
@@ -297,19 +285,12 @@ public class EconManager implements Economy {
 
     @Override
     public boolean createPlayerAccount(OfflinePlayer p) {
-        try (Jedis jedis = pool.getResource()) {
-            try {
-                String balance = jedis.get(p.getUniqueId() + BALANCE);
-                // Throw away value to see if the parsing the double was successful
-                Double.parseDouble(balance);
-                return false;
-            } catch (NumberFormatException e) {
-                jedis.set(p.getName() + BALANCE, "0.0");
-                return true;
-            } catch (JedisException e) {
-                return false;
-            }
+        double balance = getBalance(p);
+        if (balance == 0) {
+            setFunc.setPlayer(p.getUniqueId(), 0.0, String::valueOf);
+            return true;
         }
+        return false;
     }
 
     @Override

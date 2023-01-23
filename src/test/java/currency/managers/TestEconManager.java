@@ -1,16 +1,21 @@
 package currency.managers;
 
+import be.seeseemelk.mockbukkit.MockBukkit;
+import be.seeseemelk.mockbukkit.ServerMock;
+import be.seeseemelk.mockbukkit.entity.PlayerMock;
+import me.squid.eoncore.EonCore;
 import me.squid.eoncore.currency.managers.EconManager;
+import me.squid.eoncore.database.RedisClient;
 import net.milkbowl.vault.economy.EconomyResponse;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 import redis.clients.jedis.exceptions.JedisException;
+
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -18,20 +23,16 @@ import static org.mockito.Mockito.*;
 
 class TestEconManager {
     EconManager manager;
-    Jedis jedis;
-
-    private static OfflinePlayer player() {
-        OfflinePlayer player = mock(OfflinePlayer.class);
-        when(player.getName()).thenReturn("Name");
-        return player;
-    }
+    EonCore plugin;
+    ServerMock server;
+    RedisClient client;
 
     @BeforeEach
     void setupEach() {
-        JedisPool pool = mock(JedisPool.class);
-        jedis = mock(Jedis.class);
-        when(pool.getResource()).thenReturn(jedis);
-        manager = new EconManager(pool);
+        server = MockBukkit.mock();
+        plugin = MockBukkit.load(EonCore.class);
+        client = mock(RedisClient.class);
+        manager = new EconManager(plugin, client);
     }
 
     @Test
@@ -73,50 +74,41 @@ class TestEconManager {
     @Test
     @DisplayName("If a player exists, return true")
     void testSuccessfulLookup() {
-        when(jedis.get(anyString())).thenReturn("40.59");
-        OfflinePlayer player = player();
+        PlayerMock player = server.addPlayer();
+        when(client.getKey(any(), any(), any())).thenReturn(10.0);
         assertTrue(manager.hasAccount(player));
     }
 
     @Test
     @DisplayName("If a player does not exist, return false")
     void testPlayerNotExist() {
-        when(jedis.get(anyString())).thenReturn("nil");
-        OfflinePlayer player = player();
+        OfflinePlayer player = mock(OfflinePlayer.class);
+        when(player.hasPlayedBefore()).thenReturn(false);
         assertFalse(manager.hasAccount(player));
     }
 
     @Test
     @DisplayName("Expected value is returned given a normal value")
     void testNormalGetBalance() {
-        when(jedis.get(anyString())).thenReturn("40506.45");
-        OfflinePlayer player = player();
+        PlayerMock player = server.addPlayer();
+        when(client.getKey(any(), any(), any())).thenReturn(40506.45);
         double balance = manager.getBalance(player);
         assertEquals(40506.45, balance);
     }
 
     @Test
-    @DisplayName("If a balance is corrupted, return 0")
+    @DisplayName("If an error occurs, return 0")
     void testCorruptBalance() {
-        when(jedis.get(anyString())).thenReturn("CorruptBalance");
-        OfflinePlayer player = player();
+        PlayerMock player = server.addPlayer();
+        when(client.getKey(any(), any(), any())).thenThrow(new NullPointerException());
         double balance = manager.getBalance(player);
         assertEquals(0, balance);
     }
 
     @Test
-    @DisplayName("If a connection is invalid, return 0")
-    void testInvalidJedisConnection() {
-        doThrow(new JedisConnectionException("Connection error")).when(jedis).get(anyString());
-        OfflinePlayer player = player();
-        assertEquals(0, manager.getBalance(player));
-    }
-
-    @Test
     @DisplayName("If a player does not exist, return 0")
     void testNotExist() {
-        when(jedis.get(anyString())).thenReturn("nil");
-        OfflinePlayer player = player();
+        OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.randomUUID());
         double balance = manager.getBalance(player);
         assertEquals(0, balance);
     }
@@ -124,8 +116,8 @@ class TestEconManager {
     @Test
     @DisplayName("If a player has insufficient funds, then return false")
     void testInsufficientFunds() {
-        when(jedis.get(anyString())).thenReturn("1.0");
-        OfflinePlayer player = player();
+        PlayerMock player = server.addPlayer();
+        when(client.getKey(any(), any(), any())).thenReturn(1.0);
         double needed = 2.0;
         assertFalse(manager.has(player, needed));
     }
@@ -133,8 +125,8 @@ class TestEconManager {
     @Test
     @DisplayName("If a player has the exact amount, then return true")
     void testExactFunds() {
-        when(jedis.get(anyString())).thenReturn("2.0");
-        OfflinePlayer player = player();
+        PlayerMock player = server.addPlayer();
+        when(client.getKey(any(), any(), any())).thenReturn(2.0);
         double needed = 2.0;
         assertTrue(manager.has(player, needed));
     }
@@ -142,8 +134,8 @@ class TestEconManager {
     @Test
     @DisplayName("If a player has more than the amount, then return true")
     void testMoreFunds() {
-        when(jedis.get(anyString())).thenReturn("10.0");
-        OfflinePlayer player = player();
+        PlayerMock player = server.addPlayer();
+        when(client.getKey(any(), any(), any())).thenReturn(10.0);
         double needed = 2.0;
         assertTrue(manager.has(player, needed));
     }
@@ -151,19 +143,20 @@ class TestEconManager {
     @Test
     @DisplayName("Withdrawing to the negatives is an invalid transaction")
     void testInsufficientWithdrawal() {
-        when(jedis.get(anyString())).thenReturn("20.0");
-        OfflinePlayer player = player();
+        PlayerMock player = server.addPlayer();
+        when(client.getKey(any(), any(), any())).thenReturn(20.0);
         double withdrawAmount = 30.0;
         EconomyResponse response = manager.withdrawPlayer(player, withdrawAmount);
         assertEquals(EconomyResponse.ResponseType.FAILURE, response.type);
         assertEquals(20.0, response.balance);
     }
 
+
     @Test
     @DisplayName("Withdrawing with an exact amount takes balance to 0")
     void testExactWithdrawal() {
-        when(jedis.get(anyString())).thenReturn("100.0");
-        OfflinePlayer player = player();
+        PlayerMock player = server.addPlayer();
+        when(client.getKey(any(), any(), any())).thenReturn(100.0);
         double withdrawAmount = 100.0;
         EconomyResponse response = manager.withdrawPlayer(player, withdrawAmount);
         assertEquals(EconomyResponse.ResponseType.SUCCESS, response.type);
@@ -173,8 +166,8 @@ class TestEconManager {
     @Test
     @DisplayName("Withdrawing with plenty of funds is successful")
     void testSuccessfulWithdrawal() {
-        when(jedis.get(anyString())).thenReturn("100.0");
-        OfflinePlayer player = player();
+        PlayerMock player = server.addPlayer();
+        when(client.getKey(any(), any(), any())).thenReturn(100.0);
         double amount = 50.0;
         EconomyResponse response = manager.withdrawPlayer(player, amount);
         assertEquals(EconomyResponse.ResponseType.SUCCESS, response.type);
@@ -184,9 +177,11 @@ class TestEconManager {
     @Test
     @DisplayName("Depositing into an empty account creates a new one")
     void testNoAccountDeposit() {
-        when(jedis.get(anyString())).thenReturn("nil");
-        when(jedis.set(anyString(), anyString())).then(mock -> when(jedis.get(anyString())).thenReturn("0.0").getMock().toString());
-        OfflinePlayer player = player();
+        UUID uuid = UUID.randomUUID();
+        OfflinePlayer player = mock(OfflinePlayer.class);
+        when(player.hasPlayedBefore()).thenReturn(false);
+        when(player.getUniqueId()).thenReturn(uuid);
+        when(client.getKey(any(), any(), any())).thenThrow(new NullPointerException());
         double amount = 10.0;
         EconomyResponse response = manager.depositPlayer(player, amount);
         assertEquals(EconomyResponse.ResponseType.SUCCESS, response.type);
@@ -196,31 +191,31 @@ class TestEconManager {
     @Test
     @DisplayName("Depositing into an existing account adds to the current balance")
     void testWithAccountDeposit() {
-        when(jedis.get(anyString())).thenReturn("10.0");
-        OfflinePlayer player = player();
+        PlayerMock player = server.addPlayer();
+        when(client.getKey(any(UUID.class), any(), any())).thenReturn(10.0);
         double amount = 20.0;
         EconomyResponse response = manager.depositPlayer(player, amount);
         assertEquals(EconomyResponse.ResponseType.SUCCESS, response.type);
         assertEquals(30.0, response.balance);
-        verify(jedis, times(1)).set(anyString(), anyString());
+        verify(client, times(1)).setValue(any(), any(), eq(30.0), any());
     }
 
     @Test
     @DisplayName("Creating an already existing player account changes nothing")
     void testExistingPlayer() {
-        when(jedis.get(anyString())).thenReturn("100.0");
-        OfflinePlayer player = player();
+        PlayerMock player = server.addPlayer();
+        when(client.getKey(any(), any(), any())).thenReturn(10.0);
         boolean actual = manager.createPlayerAccount(player);
         assertFalse(actual);
-        verify(jedis, times(0)).set(anyString(), anyString());
+        verify(client, times(0)).setValue(eq(player.getUniqueId()), any(), any(), any());
     }
 
     @Test
     @DisplayName("Create a player account when they don't exist")
     void testCreateNewAccount() {
-        when(jedis.get(anyString())).thenReturn("nil");
-        when(jedis.set(anyString(), anyString())).then(mock -> when(jedis.get(anyString())).thenReturn("0.0").getMock().toString());
-        OfflinePlayer player = player();
+        UUID uuid = UUID.randomUUID();
+        OfflinePlayer player = mock(OfflinePlayer.class);
+        when(player.getUniqueId()).thenReturn(uuid);
         boolean actual = manager.createPlayerAccount(player);
         assertTrue(actual);
         assertEquals(0.0, manager.getBalance(player));
@@ -229,21 +224,15 @@ class TestEconManager {
     @Test
     @DisplayName("Create a player account when the value is corrupt")
     void testCreateAccountCorrupt() {
-        when(jedis.get(anyString())).thenReturn("Corrupt");
-        when(jedis.set(anyString(), anyString())).then(mock -> when(jedis.get(anyString())).thenReturn("0.0").getMock().toString());
-        OfflinePlayer player = player();
+        PlayerMock player = server.addPlayer();
+        when(client.getKey(any(), any(), any())).thenThrow(NullPointerException.class);
         boolean actual = manager.createPlayerAccount(player);
         assertTrue(actual);
         assertEquals(0.0, manager.getBalance(player));
     }
 
-    @Test
-    @DisplayName("Exception thrown is handled and returns false")
-    void testExceptionCreateAccount() {
-        when(jedis.get(anyString())).thenThrow(new JedisException("Connection error"));
-        OfflinePlayer player = player();
-        boolean actual = manager.createPlayerAccount(player);
-        assertFalse(actual);
-        assertEquals(0.0, manager.getBalance(player));
+    @AfterEach
+    void tearDown() {
+        MockBukkit.unmock();
     }
 }

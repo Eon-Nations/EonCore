@@ -1,11 +1,11 @@
-package menus;
+package currency.menus;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import be.seeseemelk.mockbukkit.profile.PlayerProfileMock;
 import com.destroystokyo.paper.profile.PlayerProfile;
-import me.squid.eoncore.currency.Eoncurrency;
+import me.squid.eoncore.EonCore;
 import me.squid.eoncore.currency.menus.BalanceMenu;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.OfflinePlayer;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 
 class TestBalanceMenu {
     private ServerMock server;
-    private Eoncurrency plugin;
+    private EonCore plugin;
     private Economy economy;
 
     static class ProfilePlayer extends PlayerMock {
@@ -46,7 +46,7 @@ class TestBalanceMenu {
     @BeforeEach
     void setup() {
         this.server = MockBukkit.mock();
-        this.plugin = MockBukkit.load(Eoncurrency.class);
+        this.plugin = MockBukkit.load(EonCore.class);
         this.economy = mock(Economy.class);
         when(economy.getBalance(any(OfflinePlayer.class))).thenReturn(0.0);
     }

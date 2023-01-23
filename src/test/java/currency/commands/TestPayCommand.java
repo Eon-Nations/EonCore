@@ -3,12 +3,11 @@ package currency.commands;
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
-import me.squid.eoncore.currency.Eoncurrency;
+import me.squid.eoncore.EonCore;
 import me.squid.eoncore.currency.managers.LocalEconManager;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.ServicePriority;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -19,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TestPayCommand {
     ServerMock server;
-    Eoncurrency plugin;
+    EonCore plugin;
     Economy economy;
     PlayerMock payer;
     PlayerMock payee;
@@ -27,10 +26,10 @@ class TestPayCommand {
     @BeforeEach
     void setup() {
         server = MockBukkit.mock();
-        plugin = MockBukkit.load(Eoncurrency.class);
+        plugin = MockBukkit.load(EonCore.class);
         Bukkit.getServicesManager().unregister(Economy.class);
         LocalEconManager econ = new LocalEconManager();
-        Bukkit.getServicesManager().register(Economy.class, econ, plugin, ServicePriority.Normal);
+        plugin.provideService(Economy.class, econ);
         economy = econ;
         payer = server.addPlayer("Payer");
         payee = server.addPlayer("Payee");
