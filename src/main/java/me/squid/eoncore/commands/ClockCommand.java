@@ -10,8 +10,8 @@ import org.bukkit.entity.Player;
 
 import java.util.Optional;
 
-import static me.squid.eoncore.listeners.ChatFormatListener.isChatLocked;
-import static me.squid.eoncore.listeners.ChatFormatListener.toggleChatLock;
+import static me.squid.eoncore.misc.listeners.ChatFormatListener.isChatLocked;
+import static me.squid.eoncore.misc.listeners.ChatFormatListener.toggleChatLock;
 
 @RegisterCommand
 public class ClockCommand extends EonCommand {

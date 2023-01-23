@@ -49,6 +49,18 @@ public class Messaging {
         };
     }
 
+    public static ConfigMessenger setupConfigMessenger(FileConfiguration config, EonPrefix prefix, Map<String, String> mappings) {
+        return (target, path) -> {
+            String format = config.getString(path);
+            for (Map.Entry<String, String> entry : mappings.entrySet()) {
+                format = format.replace(entry.getKey(), entry.getValue());
+            }
+            Component messagePrefix = prefixMap.get(prefix);
+            Component suffix = fromFormatString(format);
+            target.sendMessage(messagePrefix.append(suffix));
+        };
+    }
+
     public static void sendNullMessage(Player player) {
         Messenger messenger = messenger(EonPrefix.NATIONS);
         Component message = Component.text(NULL_MESSAGE)
