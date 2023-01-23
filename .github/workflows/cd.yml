@@ -1,5 +1,4 @@
 # This is a basic workflow to help you get started with Actions
-
 name: CD
 
 # Controls when the workflow will run
@@ -34,14 +33,15 @@ jobs:
       - name: Build Project
         run: mvn -B package -f pom.xml
 
-      - name: Retrieve SSH key
-        run: |
-          mkdir ~/.ssh/
-          echo "$MAIN_SERVER_PRIV_KEY" >action-key
-          sudo chmod 600 action-key
-          ssh-keyscan -H mceonsurvival.com > ~/.ssh/known_hosts
-        env:
-            MAIN_SERVER_PRIV_KEY: ${{ secrets.MAIN_SERVER_PRIV_KEY }}    
-      
-      - name: Upload JAR to Server
-        run: scp -i action-key target/EonCore-1.0.jar opc@mceonsurvival.com:~/papermc/plugins
+      - name: deploy file to server
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+        with:
+          username: ${{ secrets.FTP_USER }}
+          server: ${{ secrets.FTP_LINK }}
+          port: 2022
+          password: ${{ secrets.FTP_PASSWORD }}
+          ssh_private_key: ''
+          local_path: 'target/EonCore-1.0.jar'
+          remote_path: '/plugins'
+          sftp_only: true
+          sftpArgs: '-o ConnectTimeout=5'
