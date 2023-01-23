@@ -3,8 +3,8 @@ package commands;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import mockbukkit.TestUtility;
 import org.bukkit.event.inventory.InventoryType;
-import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 public class TestGrindstoneCommand extends TestUtility {
 

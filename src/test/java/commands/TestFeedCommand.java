@@ -1,13 +1,12 @@
 package commands;
 
-import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
-import me.squid.eoncore.EonCore;
 import mockbukkit.TestUtility;
-import org.bukkit.permissions.PermissionAttachment;
-import org.junit.Assert;
-import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestFeedCommand extends TestUtility {
 
@@ -19,8 +18,8 @@ public class TestFeedCommand extends TestUtility {
         player.setFoodLevel(2);
         player.setSaturation(0);
         player.performCommand("feed");
-        Assert.assertEquals(player.getFoodLevel(), 20);
-        Assert.assertTrue(player.getSaturation() > 10);
+        assertEquals(20, player.getFoodLevel());
+        assertTrue(player.getSaturation() > 10);
     }
 
     @Test
@@ -31,7 +30,7 @@ public class TestFeedCommand extends TestUtility {
         player.performCommand("feed");
         player.setFoodLevel(10);
         player.performCommand("feed");
-        Assert.assertTrue(player.getFoodLevel() < 20);
+        assertTrue(player.getFoodLevel() < 20);
     }
 
     @Test
@@ -43,6 +42,6 @@ public class TestFeedCommand extends TestUtility {
         addPermissionToPlayer("eoncommands.feed", mod);
         addPermissionToPlayer("eoncommands.feed.others", mod);
         mod.performCommand("feed Jim");
-        Assert.assertEquals(player.getFoodLevel(), 20);
+        assertEquals(20, player.getFoodLevel());
     }
 }

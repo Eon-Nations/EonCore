@@ -1,13 +1,11 @@
 package commands;
 
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
-import me.squid.eoncore.messaging.EonPrefix;
 import mockbukkit.TestUtility;
 import org.bukkit.GameMode;
-import org.junit.Ignore;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 public class TestGamemodeCheckCommand extends TestUtility {
 

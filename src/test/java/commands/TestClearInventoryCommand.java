@@ -1,23 +1,20 @@
 package commands;
 
-import be.seeseemelk.mockbukkit.MockBukkit;
-import be.seeseemelk.mockbukkit.ServerMock;
 import be.seeseemelk.mockbukkit.UnimplementedOperationException;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
-import me.squid.eoncore.EonCore;
 import mockbukkit.TestUtility;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.function.BiFunction;
 import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestClearInventoryCommand extends TestUtility {
 
@@ -27,7 +24,7 @@ public class TestClearInventoryCommand extends TestUtility {
 
     private void assertInventoryNotEmpty(PlayerMock player) {
         final int inventorySize = player.getInventory().getSize();
-        Assert.assertTrue(inventorySize > 0);
+        assertTrue(inventorySize > 0);
     }
 
     private void assertInventoryEmpty(PlayerMock player) {
@@ -38,7 +35,7 @@ public class TestClearInventoryCommand extends TestUtility {
         Inventory inventory = player.getInventory();
         Stream<ItemStack> items = Arrays.stream(inventory.getContents());
         final int inventorySize = items.reduce(0, addItemAmount, Integer::sum);
-        Assert.assertEquals(0, inventorySize);
+        assertEquals(0, inventorySize);
     }
 
     @Test

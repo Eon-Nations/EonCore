@@ -6,48 +6,48 @@ import mockbukkit.TestUtility;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
-public class TestBackCommand extends TestUtility {
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+class TestBackCommand extends TestUtility {
 
     private void killPlayer(PlayerMock player) {
         WorldMock otherWorld = server.addSimpleWorld("nice");
         player.teleport(new Location(otherWorld, 0, 30, 0));
         player.setHealth(0);
-        Assert.assertTrue(player.isDead());
+        assertTrue(player.isDead());
     }
 
     @Test
     @DisplayName("Get a message and no teleportation happens for /back without any death")
-    public void testNoDeath() {
+    void testNoDeath() {
         PlayerMock player = server.addPlayer("Jim");
         player.performCommand("back");
         String message = player.nextMessage();
-        Assertions.assertTrue(message.contains("no"));
+        assertTrue(message.contains("no"));
     }
 
     @Test
     @DisplayName("Get a message once you respawn about teleporting back to death location")
-    public void testDeath() {
+    void testDeath() {
         PlayerMock player = server.addPlayer("Bob");
         killPlayer(player);
         player.respawn();
-        Assertions.assertTrue(player.nextMessage().contains("/back"));
+        assertTrue(player.nextMessage().contains("/back"));
     }
 
     @Test
     @DisplayName("Without permissions, get a message about a cooldown when teleporting back")
-    public void testNoPerms() {
+    void testNoPerms() {
         PlayerMock player = server.addPlayer();
         killPlayer(player);
         player.respawn();
         player.performCommand("back");
         player.nextMessage();
-        Assertions.assertTrue(player.nextMessage().contains("Teleporting in"));
+        assertTrue(player.nextMessage().contains("Teleporting in"));
     }
 
     private void killOPPlayer(PlayerMock player) {
@@ -57,9 +57,9 @@ public class TestBackCommand extends TestUtility {
     }
 
     @Test
-    @Ignore("MockBukkit hasn't implemented async teleportation yet")
+    @Disabled("MockBukkit hasn't implemented async teleportation yet")
     @DisplayName("With OP, no cooldown is applied and teleported immediately")
-    public void testWithOP() {
+    void testWithOP() {
         PlayerMock player = server.addPlayer();
         addPermissionToPlayer("eoncommands.teleport.immune", player);
         killOPPlayer(player);
@@ -69,10 +69,10 @@ public class TestBackCommand extends TestUtility {
 
     @Test
     @DisplayName("OP Players keep their inventory after death")
-    public void testOPDrops() {
+    void testOPDrops() {
         PlayerMock player = server.addPlayer();
         player.getInventory().addItem(new ItemStack(Material.DIRT, 32));
         killOPPlayer(player);
-        Assert.assertTrue(player.getInventory().getSize() > 0);
+        assertTrue(player.getInventory().getSize() > 0);
     }
 }

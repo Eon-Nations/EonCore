@@ -26,12 +26,13 @@ public class Voting {
         event.bindWith(plugin);
     }
 
-    private static void giveReward(Player p, RedisClient client) {
+    public static void giveReward(Player p, RedisClient client) {
         final int multiple = 5;
         int voteCount = client.getKey(p.getUniqueId(), VOTING_KEY, Integer::parseInt);
         int remainingVotes = multiple - (voteCount % multiple);
         if (voteCount % multiple == 0) {
             client.setValue(p.getUniqueId(), VOTING_KEY, voteCount + 1, String::valueOf);
+            // Give reward here
         }
         Title title = Title.title(Component.text(MAIN_TITLE), Component.text(SUB_TITLE.apply(remainingVotes)));
         p.showTitle(title);

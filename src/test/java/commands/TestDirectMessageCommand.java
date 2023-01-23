@@ -3,18 +3,20 @@ package commands;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import me.squid.eoncore.utils.Utils;
 import mockbukkit.TestUtility;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 public class TestDirectMessageCommand extends TestUtility {
 
-    @Test(expected = NullPointerException.class)
+    @Test()
     @DisplayName("Typing the command with no arguments does not message")
     public void noArgs() {
         PlayerMock player = server.addPlayer();
-        player.performCommand("message");
-        player.assertNoMoreSaid();
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            player.performCommand("message");
+            player.assertNoMoreSaid();
+        });
     }
 
     @Test

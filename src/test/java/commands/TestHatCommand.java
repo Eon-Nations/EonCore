@@ -1,14 +1,12 @@
 package commands;
 
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
-import me.squid.eoncore.messaging.Messaging;
 import mockbukkit.TestUtility;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.junit.Assert;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 public class TestHatCommand extends TestUtility {
 
@@ -32,6 +30,6 @@ public class TestHatCommand extends TestUtility {
         ItemStack hat = new ItemStack(Material.DIAMOND_AXE, 1);
         player.getInventory().setItemInMainHand(hat);
         player.performCommand("hat");
-        Assert.assertEquals(hat, player.getInventory().getHelmet());
+        Assertions.assertEquals(hat, player.getInventory().getHelmet());
     }
 }

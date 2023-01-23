@@ -1,13 +1,14 @@
 package commands;
 
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
-import me.squid.eoncore.messaging.Messaging;
 import mockbukkit.TestUtility;
 import org.bukkit.Location;
-import org.junit.Assert;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestFlyCommand extends TestUtility {
 
@@ -18,7 +19,7 @@ public class TestFlyCommand extends TestUtility {
         player.teleport(new Location(otherWorld, 0, 30, 0));
         player.setOp(true);
         player.performCommand("fly");
-        Assert.assertTrue(player.getAllowFlight());
+       assertTrue(player.getAllowFlight());
     }
 
     @Test
@@ -28,7 +29,7 @@ public class TestFlyCommand extends TestUtility {
         PlayerMock jim = server.addPlayer("Jim");
         addPermissionToPlayer("eoncommands.fly", someone);
         someone.performCommand("fly Jim");
-        Assert.assertFalse(jim.getAllowFlight());
+        assertFalse(jim.getAllowFlight());
     }
 
     @Test
@@ -40,7 +41,7 @@ public class TestFlyCommand extends TestUtility {
         PlayerMock jim = server.addPlayer("Jim");
         jim.teleport(new Location(otherWorld, 0, 30, 0));
         someone.performCommand("fly Jim");
-        Assert.assertTrue(jim.getAllowFlight());
+        assertTrue(jim.getAllowFlight());
     }
 
     @Test
@@ -51,7 +52,7 @@ public class TestFlyCommand extends TestUtility {
         flyingPlayer.teleport(new Location(otherWorld, 0, 30, 0));
         flyingPlayer.performCommand("fly");
         flyingPlayer.performCommand("fly");
-        Assert.assertFalse(flyingPlayer.getAllowFlight());
+        assertFalse(flyingPlayer.getAllowFlight());
     }
 
     @Test
@@ -61,6 +62,6 @@ public class TestFlyCommand extends TestUtility {
         addPermissionToPlayer("eoncommands.fly", player);
         addPermissionToPlayer("eoncommands.fly.others", player);
         player.performCommand("fly Timmy");
-        Assertions.assertTrue(player.nextMessage().contains("offline"));
+        assertTrue(player.nextMessage().contains("offline"));
     }
 }

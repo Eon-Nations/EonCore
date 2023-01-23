@@ -1,13 +1,13 @@
 package commands;
 
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
-import me.squid.eoncore.messaging.Messaging;
 import mockbukkit.TestUtility;
 import org.bukkit.event.inventory.InventoryType;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestInvseeCommand extends TestUtility {
 
@@ -17,7 +17,7 @@ public class TestInvseeCommand extends TestUtility {
         PlayerMock player = server.addPlayer();
         addPermissionToPlayer("eoncommands.invsee", player);
         player.performCommand("invsee");
-        Assertions.assertTrue(player.nextMessage().contains("Usage"));
+        assertTrue(player.nextMessage().contains("Usage"));
     }
 
     @Test
@@ -28,7 +28,7 @@ public class TestInvseeCommand extends TestUtility {
         addPermissionToPlayer("eoncommands.invsee", player);
         player.performCommand("invsee Bill");
         player.assertInventoryView(InventoryType.PLAYER);
-        Assert.assertEquals(target.getInventory(), player.getOpenInventory().getTopInventory());
+        assertEquals(target.getInventory(), player.getOpenInventory().getTopInventory());
     }
 
     @Test
@@ -37,7 +37,7 @@ public class TestInvseeCommand extends TestUtility {
         PlayerMock player = server.addPlayer();
         addPermissionToPlayer("eoncommands.invsee", player);
         player.performCommand("invsee Nice");
-        Assertions.assertTrue(player.nextMessage().contains("offline"));
+        assertTrue(player.nextMessage().contains("offline"));
     }
 
     @Test
@@ -48,6 +48,6 @@ public class TestInvseeCommand extends TestUtility {
         addPermissionToPlayer("eoncommands.invsee", player);
         addPermissionToPlayer("eoncommands.invsee.immune", target);
         player.performCommand("invsee Target");
-        Assertions.assertTrue(player.nextMessage().contains("offline"));
+        assertTrue(player.nextMessage().contains("offline"));
     }
 }

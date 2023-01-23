@@ -1,18 +1,20 @@
 package managers;
 
 import me.squid.eoncore.misc.managers.Cooldown;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
-public class CooldownTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
+class CooldownTest {
 
     private Cooldown testCooldown;
     private UUID uuid;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         long cooldownSeconds = 600;
         uuid = UUID.randomUUID();
@@ -20,14 +22,14 @@ public class CooldownTest {
     }
 
     @Test
-    public void isExpiredTest() {
-        Assert.assertFalse("Normal Cooldown Test", testCooldown.isExpired());
+    void isExpiredTest() {
+        assertFalse(testCooldown.isExpired());
         Cooldown lengthCooldown = new Cooldown(uuid, -1, System.currentTimeMillis());
-        Assert.assertFalse("Permanent Cooldown Test", lengthCooldown.isExpired());
+        assertFalse(lengthCooldown.isExpired());
     }
 
     @Test
-    public void testToString() {
-        Assert.assertEquals("Cooldown toString()", testCooldown.time() + ";" + testCooldown.length(), testCooldown.toString());
+    void testToString() {
+        assertEquals(testCooldown.time() + ";" + testCooldown.length(), testCooldown.toString());
     }
 }

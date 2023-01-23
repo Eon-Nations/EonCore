@@ -19,16 +19,15 @@ import java.util.concurrent.CompletableFuture;
 public class MutedManager implements Listener {
 
     EonCore plugin;
-    LuckPerms luckPerms;
     CooldownManager cooldownManager = new CooldownManager();
 
     public MutedManager(EonCore plugin) {
         this.plugin = plugin;
-        this.luckPerms = plugin.getService(LuckPerms.class);
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     public void savePlayer(UUID uuid) {
+        LuckPerms luckPerms = plugin.getService(LuckPerms.class);
         if (hasMute(uuid)) {
             Cooldown cooldown = cooldownManager.getCooldown(uuid);
             luckPerms.getUserManager().modifyUser(uuid, user -> {
@@ -40,6 +39,7 @@ public class MutedManager implements Listener {
     }
 
     public void loadPlayer(UUID uuid) {
+        LuckPerms luckPerms = plugin.getService(LuckPerms.class);
         if (hasMute(uuid)) {
             luckPerms.getUserManager().loadUser(uuid).thenAcceptAsync(user -> {
                  MetaNode mutedNode = user.getNodes(NodeType.META).stream()
@@ -57,6 +57,7 @@ public class MutedManager implements Listener {
     }
 
     public void removePlayer(UUID uuid) {
+        LuckPerms luckPerms = plugin.getService(LuckPerms.class);
         cooldownManager.remove(uuid);
         luckPerms.getUserManager().modifyUser(uuid,
                 user -> user.data().clear(NodeType.META.predicate(node -> node.getMetaKey().equals("muted"))));
@@ -75,6 +76,7 @@ public class MutedManager implements Listener {
     }
 
     public boolean hasMute(UUID uuid) {
+        LuckPerms luckPerms = plugin.getService(LuckPerms.class);
         OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
         if (player.isOnline()) {
             return cooldownManager.hasCooldown(uuid);

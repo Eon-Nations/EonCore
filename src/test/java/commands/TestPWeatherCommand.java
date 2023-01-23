@@ -3,11 +3,12 @@ package commands;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import mockbukkit.TestUtility;
 import org.bukkit.WeatherType;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestPWeatherCommand extends TestUtility {
     static final String PERMISSION = "eoncommands.pweather";
@@ -19,11 +20,11 @@ public class TestPWeatherCommand extends TestUtility {
         addPermissionToPlayer(PERMISSION, player);
         player.performCommand("pweather nice");
         String messageSent = player.nextMessage();
-        Assert.assertTrue(messageSent.contains("Usage"));
+        assertTrue(messageSent.contains("Usage"));
     }
 
     @Test
-    @Ignore("MockBukkit not implemented yet")
+    @Disabled("MockBukkit not implemented yet")
     @DisplayName("Weather changes with the command change")
     public void testWeather() {
         PlayerMock player = server.addPlayer();

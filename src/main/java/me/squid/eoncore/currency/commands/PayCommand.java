@@ -27,14 +27,15 @@ public class PayCommand {
         INVALID
     }
 
-    public static Command registerPayCommand(EonCore plugin) {
+    public static void registerPayCommand(EonCore plugin) {
         String usageMessage = Optional.ofNullable(plugin.getConfig().getString("usage-pay"))
                 .orElse("<player> <amount>");
-        return Commands.create().assertPlayer()
+        Commands.create().assertPlayer()
                 .assertUsage(usageMessage)
                 .assertArgument(0, arg -> Bukkit.getPlayer(arg) != null)
                 .assertArgument(1, PayCommand::isValidDouble)
-                .handler(context -> handler(context, plugin));
+                .handler(context -> handler(context, plugin))
+                .registerAndBind(plugin, "pay");
     }
 
     private static boolean isValidDouble(String arg) {
