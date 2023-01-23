@@ -24,7 +24,7 @@ public class MutedManager implements Listener {
 
     public MutedManager(EonCore plugin) {
         this.plugin = plugin;
-        this.luckPerms = EonCore.getPerms();
+        this.luckPerms = plugin.getService(LuckPerms.class);
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 

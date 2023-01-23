@@ -18,7 +18,7 @@ import me.squid.eoncore.misc.managers.MutedManager;
 import me.squid.eoncore.misc.tasks.AutoAnnouncementTask;
 import me.squid.eoncore.misc.tasks.RestartTask;
 import me.squid.eoncore.utils.WorldLoader;
-import net.luckperms.api.LuckPerms;
+import me.squid.eoncore.voting.Voting;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -27,7 +27,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
@@ -73,6 +72,7 @@ public class EonCore extends JavaPlugin implements HelperPlugin {
         new WildTpListener(this);
         new PortalListener(this);
         InventoryManager.registerInventories(this);
+        Voting.subscribeToVotifierEvent(this, client);
     }
 
     public void registerModeration() {
@@ -84,11 +84,6 @@ public class EonCore extends JavaPlugin implements HelperPlugin {
     public void runTasks() {
         new AutoAnnouncementTask(this).runTaskTimerAsynchronously(this, 0, getConfig().getLong("Announcement-Delay") * 20L);
         RestartTask.runRestartTask(this);
-    }
-
-    public static LuckPerms getPerms() {
-        RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
-        return provider != null ? provider.getProvider() : null;
     }
 
     @NotNull

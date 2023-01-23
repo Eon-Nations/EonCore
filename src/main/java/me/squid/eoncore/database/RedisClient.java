@@ -15,22 +15,10 @@ public class RedisClient {
         Runtime.getRuntime().addShutdownHook(new Thread(jedisPool::close));
     }
 
-    public String stringKey(UUID uuid, String key) {
-        try (Jedis jedis = jedisPool.getResource()) {
-            return jedis.get(uuid + key);
-        }
-    }
-
     public <T> T getKey(UUID uuid, String key, Function<String, T> transform) {
         try (Jedis jedis = jedisPool.getResource()) {
             String value = jedis.get(uuid + key);
             return transform.apply(value);
-        }
-    }
-
-    public void setString(UUID uuid, String key, String value) {
-        try (Jedis jedis = jedisPool.getResource()) {
-            jedis.set(uuid + key, value);
         }
     }
 
