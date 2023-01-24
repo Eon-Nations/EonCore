@@ -2,9 +2,9 @@ package commands;
 
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import mockbukkit.TestUtility;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import static me.squid.eoncore.misc.listeners.ChatFormatListener.isChatLocked;
 

@@ -27,7 +27,7 @@ class TestPayCommand {
     void setup() {
         server = MockBukkit.mock();
         plugin = MockBukkit.load(EonCore.class);
-        Bukkit.getServicesManager().unregister(Economy.class);
+        server.getServicesManager().unregister(Economy.class);
         LocalEconManager econ = new LocalEconManager();
         plugin.provideService(Economy.class, econ);
         economy = econ;

@@ -12,9 +12,10 @@ public class BalanceCommand {
 
     private BalanceCommand() { }
 
-    public static Command registerBalance(EonCore plugin) {
-        return Commands.create().assertPlayer()
-                .handler(context -> handleBalance(context, plugin));
+    public static void registerBalance(EonCore plugin) {
+        Commands.create().assertPlayer()
+                .handler(context -> handleBalance(context, plugin))
+                .registerAndBind(plugin, "balance");
     }
 
     private static void handleBalance(CommandContext<Player> context, EonCore plugin) {

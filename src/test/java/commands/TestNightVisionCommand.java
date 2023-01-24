@@ -3,9 +3,11 @@ package commands;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import mockbukkit.TestUtility;
 import org.bukkit.potion.PotionEffectType;
-import org.junit.Assert;
-import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestNightVisionCommand extends TestUtility {
     static final String NV_PERMISSION = "eoncommands.nightvision";
@@ -18,7 +20,7 @@ public class TestNightVisionCommand extends TestUtility {
         addPermissionToPlayer(NV_PERMISSION, player);
         PlayerMock jim = server.addPlayer("Jim");
         player.performCommand("nightvision Jim");
-        Assert.assertFalse(jim.hasPotionEffect(PotionEffectType.NIGHT_VISION));
+        assertFalse(jim.hasPotionEffect(PotionEffectType.NIGHT_VISION));
     }
 
     @Test
@@ -27,7 +29,7 @@ public class TestNightVisionCommand extends TestUtility {
         PlayerMock player = server.addPlayer();
         addPermissionToPlayer(NV_PERMISSION, player);
         player.performCommand("nightvision");
-        Assert.assertTrue(player.hasPotionEffect(PotionEffectType.NIGHT_VISION));
+        assertTrue(player.hasPotionEffect(PotionEffectType.NIGHT_VISION));
     }
 
     @Test
@@ -38,6 +40,6 @@ public class TestNightVisionCommand extends TestUtility {
         addPermissionToPlayer(NV_PERMISSION, player);
         addPermissionToPlayer(NV_OTHERS_PERMISSION, player);
         player.performCommand("nightvision Jim");
-        Assert.assertTrue(jim.hasPotionEffect(PotionEffectType.NIGHT_VISION));
+        assertTrue(jim.hasPotionEffect(PotionEffectType.NIGHT_VISION));
     }
 }

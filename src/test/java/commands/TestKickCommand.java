@@ -1,13 +1,13 @@
 package commands;
 
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
-import me.squid.eoncore.messaging.Messaging;
 import mockbukkit.TestUtility;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestKickCommand extends TestUtility {
 
@@ -21,14 +21,14 @@ public class TestKickCommand extends TestUtility {
     }
 
     @Test
-    @Ignore("Ignore due to MockBukkit not having the method implemented")
+    @Disabled("Ignore due to MockBukkit not having the method implemented")
     @DisplayName("Player is successfully removed if kicked")
     public void testKick() {
         PlayerMock owner = server.addPlayer("Owner");
         server.addPlayer("Jim");
         addPermissionToPlayer("eoncommands.kick", owner);
         owner.performCommand("kick Jim Nice one jimbo");
-        Assert.assertEquals(1, server.getPlayerList().getOnlinePlayers().size());
+        assertEquals(1, server.getPlayerList().getOnlinePlayers().size());
     }
 
     @Test
@@ -37,6 +37,6 @@ public class TestKickCommand extends TestUtility {
         PlayerMock player = server.addPlayer();
         addPermissionToPlayer("eoncommands.kick", player);
         player.performCommand("kick Invalid Nice one jimbo");
-        Assertions.assertEquals(1, server.getPlayerList().getOnlinePlayers().size());
+        assertEquals(1, server.getPlayerList().getOnlinePlayers().size());
     }
 }

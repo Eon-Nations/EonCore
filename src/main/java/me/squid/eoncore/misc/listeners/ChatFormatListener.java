@@ -26,7 +26,6 @@ public class ChatFormatListener implements Listener {
     EonCore plugin;
     MutedManager mutedManager;
     ChatRenderer eonRenderer = initializeRenderer();
-    LuckPerms lp = EonCore.getPerms();
     HashMap<String, String> groupColors;
     private static boolean isChatLocked = false;
 
@@ -79,6 +78,7 @@ public class ChatFormatListener implements Listener {
     }
 
     private String getPrefix(Player p) {
+        LuckPerms lp = plugin.getService(LuckPerms.class);
         User user = lp.getUserManager().getUser(p.getUniqueId());
         ImmutableContextSet contextSet = lp.getContextManager().getContext(user).orElseGet(lp.getContextManager()::getStaticContext);
         CachedMetaData cachedMetaData = user.getCachedData().getMetaData(QueryOptions.contextual(contextSet));

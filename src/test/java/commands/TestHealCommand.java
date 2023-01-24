@@ -2,10 +2,12 @@ package commands;
 
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import mockbukkit.TestUtility;
-import org.junit.Assert;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestHealCommand extends TestUtility {
     static final String PERMISSION = "eoncommands.heal";
@@ -18,7 +20,7 @@ public class TestHealCommand extends TestUtility {
         other.setHealth(10);
         addPermissionToPlayer(PERMISSION, player);
         player.performCommand("heal Other");
-        Assert.assertEquals(10, other.getHealth(), 0.0);
+        assertEquals(10, other.getHealth(), 0.0);
     }
 
     @Test
@@ -29,7 +31,7 @@ public class TestHealCommand extends TestUtility {
         player.performCommand("heal");
         player.setHealth(10);
         player.performCommand("heal");
-        Assert.assertTrue(player.getHealth() < 20);
+        assertTrue(player.getHealth() < 20);
     }
 
     @Test
@@ -39,7 +41,7 @@ public class TestHealCommand extends TestUtility {
         addPermissionToPlayer(PERMISSION, player);
         player.setHealth(10);
         player.performCommand("heal");
-        Assertions.assertEquals(20, player.getHealth());
+        assertEquals(20, player.getHealth());
     }
 
 }

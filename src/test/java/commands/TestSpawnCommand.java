@@ -3,14 +3,14 @@ package commands;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import me.squid.eoncore.utils.Utils;
 import mockbukkit.TestUtility;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 public class TestSpawnCommand extends TestUtility {
 
     @Test
-    @Ignore("MockBukkit not implemented yet")
+    @Disabled("MockBukkit not implemented yet")
     @DisplayName("No arguments without perms brings player back to spawn")
     public void testNotOp() {
         PlayerMock player = server.addPlayer();
@@ -20,7 +20,7 @@ public class TestSpawnCommand extends TestUtility {
     }
 
     @Test
-    @Ignore("MockBukkit not implemented yet")
+    @Disabled("MockBukkit not implemented yet")
     @DisplayName("OP Player can successfully go to spawn")
     public void testOPPlayer() {
         PlayerMock player = server.addPlayer();

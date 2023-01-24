@@ -4,9 +4,9 @@ import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import mockbukkit.TestUtility;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 public class TestRenameCommand extends TestUtility {
     static final String PERMISSION = "eoncommands.rename";

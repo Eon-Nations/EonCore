@@ -1,14 +1,12 @@
 package commands;
 
-import be.seeseemelk.mockbukkit.ServerMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import mockbukkit.TestUtility;
 import org.bukkit.event.inventory.InventoryType;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestEnderChestCommand extends TestUtility {
 
@@ -19,7 +17,7 @@ public class TestEnderChestCommand extends TestUtility {
         player.setOp(true);
         player.performCommand("enderchest");
         player.assertInventoryView(InventoryType.ENDER_CHEST);
-        Assert.assertEquals(player.getOpenInventory().getTopInventory(), player.getEnderChest());
+        assertEquals(player.getOpenInventory().getTopInventory(), player.getEnderChest());
     }
 
 }
