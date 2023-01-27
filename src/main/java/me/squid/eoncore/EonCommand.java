@@ -2,15 +2,17 @@ package me.squid.eoncore;
 
 import me.squid.eoncore.commands.RegisterCommand;
 import me.squid.eoncore.utils.Teleport;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.PluginCommand;
+import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 import org.reflections.Reflections;
 
+import javax.swing.text.html.Option;
+import java.util.Arrays;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
 
 public abstract class EonCommand implements CommandExecutor {
     protected JavaPlugin core;
@@ -22,9 +24,30 @@ public abstract class EonCommand implements CommandExecutor {
         registerCommand(name);
     }
 
+    protected EonCommand(EonCore core, String name, String description, String usage, String permission, String... aliases) {
+        this.core = core;
+        this.teleport = new Teleport(core);
+        registerCommand(name, description, usage, permission, aliases);
+    }
+
     private void registerCommand(String name) {
-        PluginCommand pluginCommand = core.getCommand(name);
-        pluginCommand.setExecutor(this);
+        PluginCommand command = core.getCommand(name);
+        command.setExecutor(this);
+    }
+
+    private void registerCommand(String name, String description, String usage, String permission, String... aliases) {
+        Command command = new Command(name) {
+            @Override
+            public boolean execute(@NotNull CommandSender commandSender, @NotNull String label, @NotNull String[] args) {
+                return onCommand(commandSender, this, label, args);
+            }
+        };
+        command.setAliases(Arrays.asList(aliases));
+        command.setDescription(description);
+        Optional.ofNullable(permission).ifPresent(command::setPermission);
+        command.setUsage(usage);
+        CommandMap map = core.getServer().getCommandMap();
+        map.register(name, command);
     }
 
     protected abstract void execute(Player player, String[] args);
@@ -47,11 +70,11 @@ public abstract class EonCommand implements CommandExecutor {
         commands.forEach(command -> registerCommand(command, plugin));
     }
 
-    private static void registerCommand(Class<?> command, EonCore plugin) {
+    private static void registerCommand(Class<?> eonCommand, EonCore plugin) {
         try {
-            command.getDeclaredConstructor(EonCore.class).newInstance(plugin);
+            eonCommand.getDeclaredConstructor(EonCore.class).newInstance(plugin);
         } catch (ReflectiveOperationException e) {
-            plugin.getLogger().severe("Command " + command.getSimpleName() + " has failed to initialize");
+            plugin.getLogger().severe("Command " + eonCommand.getSimpleName() + " has failed to initialize");
         }
     }
 }

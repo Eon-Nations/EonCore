@@ -18,7 +18,6 @@ import me.squid.eoncore.misc.managers.MutedManager;
 import me.squid.eoncore.misc.tasks.AutoAnnouncementTask;
 import me.squid.eoncore.misc.tasks.RestartTask;
 import me.squid.eoncore.utils.WorldLoader;
-import me.squid.eoncore.voting.Voting;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -72,7 +71,6 @@ public class EonCore extends JavaPlugin implements HelperPlugin {
         new WildTpListener(this);
         new PortalListener(this);
         InventoryManager.registerInventories(this);
-        Voting.subscribeToVotifierEvent(this, client);
     }
 
     public void registerModeration() {

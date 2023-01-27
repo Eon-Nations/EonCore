@@ -154,7 +154,3 @@ invalid-target: "<player> does not exist or is offline"
 insufficient-funds: "You do not have enough funds to carry out the transaction"
 
 redis-url: "redis://mceonsurvival.com:6709"
-
-# Voting Config Messages
-voting-title: "Thank you for voting!"
-voting-broadcast: "Thank <player> for voting! "
