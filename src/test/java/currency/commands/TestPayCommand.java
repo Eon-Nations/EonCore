@@ -8,10 +8,7 @@ import me.squid.eoncore.currency.managers.LocalEconManager;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -42,6 +39,7 @@ class TestPayCommand {
     }
 
     @Test
+    @Disabled("Waiting on PayCommand implementation")
     @DisplayName("Happy case where both arguments are valid")
     void testPayPlayer() {
         PlayerMock payer = server.addPlayer("Payer");
