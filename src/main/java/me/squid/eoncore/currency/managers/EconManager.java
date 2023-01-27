@@ -1,7 +1,5 @@
 package me.squid.eoncore.currency.managers;
 
-import me.lucko.helper.Events;
-import me.lucko.helper.event.filter.EventFilters;
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.database.DatabasePlayer;
 import me.squid.eoncore.database.RedisClient;
@@ -35,10 +33,6 @@ public class EconManager implements Economy {
     public EconManager(EonCore plugin, RedisClient client) {
         this.client = client;
         this.setFunc = SetFunction.makeCommonSet(client, BALANCE);
-        var event = Events.subscribe(PlayerJoinEvent.class)
-                .filter(e -> !e.getPlayer().hasPlayedBefore())
-                .handler(e -> createPlayerAccount(e.getPlayer()));
-        event.bindWith(plugin);
     }
 
     @Override

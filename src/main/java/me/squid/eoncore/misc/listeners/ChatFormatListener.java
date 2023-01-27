@@ -7,19 +7,12 @@ import me.squid.eoncore.misc.managers.Cooldown;
 import me.squid.eoncore.misc.managers.MutedManager;
 import me.squid.eoncore.utils.Utils;
 import net.kyori.adventure.text.Component;
-import net.luckperms.api.LuckPerms;
-import net.luckperms.api.cacheddata.CachedMetaData;
-import net.luckperms.api.context.ImmutableContextSet;
-import net.luckperms.api.model.user.User;
-import net.luckperms.api.query.QueryOptions;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 import java.util.HashMap;
-import java.util.Optional;
 
 public class ChatFormatListener implements Listener {
 
@@ -78,17 +71,7 @@ public class ChatFormatListener implements Listener {
     }
 
     private String getPrefix(Player p) {
-        LuckPerms lp = plugin.getService(LuckPerms.class);
-        User user = lp.getUserManager().getUser(p.getUniqueId());
-        ImmutableContextSet contextSet = lp.getContextManager().getContext(user).orElseGet(lp.getContextManager()::getStaticContext);
-        CachedMetaData cachedMetaData = user.getCachedData().getMetaData(QueryOptions.contextual(contextSet));
-        Optional<String> prefix = Optional.ofNullable(cachedMetaData.getPrefix());
-        final String DEFAULT_NAME = "member";
-        return prefix.stream()
-                .map(group -> group.equals("default") ? DEFAULT_NAME : group)
-                .map(StringUtils::capitalize)
-                .findFirst()
-                .orElse(DEFAULT_NAME);
+        return "member";
     }
 
     private void initializeGroupColors() {

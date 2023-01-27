@@ -36,16 +36,13 @@ public abstract class EonCommand implements CommandExecutor {
     }
 
     private void registerCommand(String name, String description, String usage, String permission, String... aliases) {
-        Command command = new Command(name) {
+        Command command = new Command(name , description, usage, Arrays.asList(aliases)) {
             @Override
             public boolean execute(@NotNull CommandSender commandSender, @NotNull String label, @NotNull String[] args) {
                 return onCommand(commandSender, this, label, args);
             }
         };
-        command.setAliases(Arrays.asList(aliases));
-        command.setDescription(description);
         Optional.ofNullable(permission).ifPresent(command::setPermission);
-        command.setUsage(usage);
         CommandMap map = core.getServer().getCommandMap();
         map.register(name, command);
     }

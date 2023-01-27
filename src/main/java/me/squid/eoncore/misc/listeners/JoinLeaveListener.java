@@ -1,6 +1,5 @@
 package me.squid.eoncore.misc.listeners;
 
-import me.lucko.helper.item.ItemStackBuilder;
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.utils.Utils;
 import net.kyori.adventure.text.Component;
@@ -33,7 +32,6 @@ public class JoinLeaveListener implements Listener {
         setSleepingIgnored(p);
         if (!p.hasPlayedBefore()) {
             p.teleportAsync(Utils.getSpawnLocation());
-            givePlayerStarterKit(p);
         }
     }
 
@@ -69,18 +67,5 @@ public class JoinLeaveListener implements Listener {
         String rawMessage = plugin.getConfig().getString("Leave-Message")
                 .replace("<player>", player.getName());
         return fromFormatString(rawMessage);
-    }
-
-    private static void givePlayerStarterKit(Player p) {
-        ItemStack sword = ItemStackBuilder.of(Material.WOODEN_SWORD)
-                .name("Stick").build();
-        ItemStack pick = ItemStackBuilder.of(Material.WOODEN_PICKAXE)
-                .name("Pick").build();
-        ItemStack shovel = ItemStackBuilder.of(Material.WOODEN_SHOVEL)
-                .name("Spoon").build();
-        ItemStack axe = ItemStackBuilder.of(Material.WOODEN_AXE)
-                .name("Wood").build();
-        ItemStack steak = new ItemStack(Material.COOKED_BEEF, 8);
-        p.getInventory().addItem(sword, pick, shovel, axe, steak);
     }
 }
