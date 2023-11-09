@@ -7,18 +7,19 @@ import me.squid.eoncore.messaging.EonPrefix;
 import me.squid.eoncore.messaging.Messaging;
 import me.squid.eoncore.utils.FunctionalBukkit;
 import org.bukkit.entity.Player;
+import org.eonnations.eonpluginapi.api.Command;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-@RegisterCommand
+@Command(name = "fly", usage = "/fly <player>", permission = "eoncommands.fly")
 public class FlyCommand extends EonCommand {
     static final String OTHERS_PERM_NODE = "eoncommands.fly.others";
     private static final Set<UUID> playersFlying = new HashSet<>();
 
     public FlyCommand(EonCore plugin) {
-        super("fly", plugin);
+        super(plugin);
     }
 
     @Override
@@ -39,7 +40,6 @@ public class FlyCommand extends EonCommand {
     }
 
     private void turnOnFly(Player player, ConfigMessenger messenger) {
-        if (player.getWorld().getName().equals("spawn_void")) return;
         player.setAllowFlight(true);
         playersFlying.add(player.getUniqueId());
         messenger.sendMessage(player, "Fly-On");

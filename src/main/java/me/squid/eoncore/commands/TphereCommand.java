@@ -7,15 +7,16 @@ import me.squid.eoncore.messaging.Messaging;
 import me.squid.eoncore.messaging.Messenger;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.eonnations.eonpluginapi.api.Command;
 
 import static me.squid.eoncore.messaging.Messaging.fromFormatString;
 import static me.squid.eoncore.utils.FunctionalBukkit.getPlayerOrSendMessage;
 
-@RegisterCommand
+@Command(name = "tphere", usage = "/tphere <player>", permission = "eoncommands.tphere")
 public class TphereCommand extends EonCommand {
 
     public TphereCommand(EonCore plugin) {
-        super("tphere", plugin);
+        super(plugin);
     }
 
     @Override

@@ -8,12 +8,13 @@ import me.squid.eoncore.messaging.Messaging;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.eonnations.eonpluginapi.api.Command;
 
-@RegisterCommand
+@Command(name = "hat", usage = "/hat", permission = "eoncommands.hat")
 public class HatCommand extends EonCommand {
 
     public HatCommand(EonCore plugin) {
-        super("hat", plugin);
+        super(plugin);
     }
 
 

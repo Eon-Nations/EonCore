@@ -7,15 +7,16 @@ import me.squid.eoncore.messaging.Messaging;
 import me.squid.eoncore.messaging.Messenger;
 import me.squid.eoncore.utils.Utils;
 import org.bukkit.entity.Player;
+import org.eonnations.eonpluginapi.api.Command;
 
 import static me.squid.eoncore.messaging.Messaging.fromFormatString;
 
-@RegisterCommand
+@Command(name = "uptime", usage = "/uptime", permission = "eoncommands.uptime")
 public class UptimeCommand extends EonCommand {
     long startupTime;
 
     public UptimeCommand(EonCore plugin) {
-        super("uptime", plugin);
+        super(plugin);
         this.startupTime = System.currentTimeMillis();
     }
 

@@ -6,14 +6,15 @@ import me.squid.eoncore.messaging.EonPrefix;
 import me.squid.eoncore.messaging.Messaging;
 import me.squid.eoncore.messaging.Messenger;
 import org.bukkit.entity.Player;
+import org.eonnations.eonpluginapi.api.Command;
 
 import static me.squid.eoncore.messaging.Messaging.fromFormatString;
 
-@RegisterCommand
+@Command(name = "corereload", usage = "/corereload", permission = "eoncommands.corereload")
 public class ReloadCommand extends EonCommand {
 
     public ReloadCommand(EonCore plugin) {
-        super("eonreload", plugin);
+        super(plugin);
     }
 
     @Override

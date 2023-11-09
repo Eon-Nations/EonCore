@@ -154,3 +154,9 @@ invalid-target: "<player> does not exist or is offline"
 insufficient-funds: "You do not have enough funds to carry out the transaction"
 
 redis-url: "redis://mceonsurvival.com:6709"
+
+balance-command: "You have $<amount>"
+
+Packages-To-Register:
+  - "me.squid.eoncore.commands"
+  - "me.squid.eoncore.currency.commands"

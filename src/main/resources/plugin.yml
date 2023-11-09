@@ -5,6 +5,9 @@ api-version: 1.17
 authors: [Squid]
 description: Epic description
 commands:
+  balance:
+    description: Get your balance
+    aliases: [bal]
   gmc:
     permission: eoncommands.gmc
     description: Sets gamemode to creative
@@ -30,9 +33,6 @@ commands:
     aliases: [ci]
   discord:
     description: Shows the server discord
-  disposal:
-    description: Dispose of unneccasary items
-    aliases: [trash]
   nightvision:
     permission: eoncommands.nightvision
     description: Grants infinite night vision without particles
@@ -67,13 +67,6 @@ commands:
     description: Teleport to spawn
   wild:
     description: Test Wild Command
-  tpa:
-    description: Request to teleport to a player on the server
-    aliases: [tpask]
-  tpaccept:
-    description: Accepts an incoming teleport request
-  tpdeny:
-    description: Denys an incoming teleport request
   back:
     description: Teleport back to the point of death or previous teleport
   warps:

@@ -8,13 +8,16 @@ import me.squid.eoncore.messaging.Messaging;
 import me.squid.eoncore.utils.FunctionalBukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
+import org.eonnations.eonpluginapi.api.Command;
 
-@RegisterCommand
+@Command(name = "gmc",
+        usage = "/gmc",
+        permission = "eoncommands.gmc")
 public class CreativeCommand extends EonCommand {
     static final String OTHERS_NODE = "eoncommands.gmc.others";
 
     public CreativeCommand(EonCore plugin) {
-        super("gmc", plugin);
+        super(plugin);
     }
 
     private void setPlayerToCreative(Player p) {

@@ -11,19 +11,22 @@ import me.squid.eoncore.messaging.Messenger;
 import me.squid.eoncore.utils.FunctionalBukkit;
 import me.squid.eoncore.utils.Utils;
 import org.bukkit.entity.Player;
+import org.eonnations.eonpluginapi.api.Command;
 
 import java.util.Optional;
 
 import static me.squid.eoncore.messaging.Messaging.fromFormatString;
 
-@RegisterCommand
+@Command(name = "feed",
+        usage = "/feed",
+        permission = "eoncommands.feed")
 public class FeedCommand extends EonCommand {
     CooldownManager cooldownManager;
     static final String OTHERS_IMMUNE_NODE = "eoncommands.feed.others";
     static final String IMMUNE_COOLDOWN_NODE = "eoncommands.feed.cooldown.immune";
 
     public FeedCommand(EonCore plugin) {
-        super("feed", plugin);
+        super(plugin);
         cooldownManager = new CooldownManager();
     }
 

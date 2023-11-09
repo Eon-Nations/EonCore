@@ -6,12 +6,13 @@ import me.squid.eoncore.messaging.ConfigMessenger;
 import me.squid.eoncore.messaging.EonPrefix;
 import me.squid.eoncore.messaging.Messaging;
 import org.bukkit.entity.Player;
+import org.eonnations.eonpluginapi.api.Command;
 
-@RegisterCommand
+@Command(name = "discord", usage = "/discord")
 public class DiscordCommand extends EonCommand {
 
     public DiscordCommand(EonCore plugin) {
-        super("discord", plugin);
+        super(plugin);
     }
 
     @Override

@@ -9,13 +9,15 @@ import me.squid.eoncore.utils.FunctionalBukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.eonnations.eonpluginapi.api.Alias;
+import org.eonnations.eonpluginapi.api.Command;
 
-@RegisterCommand
+@Command(name = "nightvision", usage = "/nightvision <player>", aliases = {@Alias(name = "nv")}, permission = "eoncommands.nightvision")
 public class NightVisionCommand extends EonCommand {
     static final String OTHERS_IMMUNE_NODE = "eoncommands.nightvision.others";
 
     public NightVisionCommand(EonCore plugin) {
-        super("nightvision", plugin);
+        super(plugin);
     }
 
     @Override

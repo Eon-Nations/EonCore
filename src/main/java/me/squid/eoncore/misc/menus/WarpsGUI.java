@@ -13,7 +13,7 @@ import java.util.Map;
 
 import static me.squid.eoncore.messaging.Messaging.fromFormatString;
 
-public class WarpsGUI implements StaleInventory {
+public class  WarpsGUI implements StaleInventory {
 
     Map<String, Location> warps = initializeWarps();
 

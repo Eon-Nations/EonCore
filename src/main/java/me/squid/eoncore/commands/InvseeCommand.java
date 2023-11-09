@@ -9,15 +9,16 @@ import me.squid.eoncore.utils.FunctionalBukkit;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.eonnations.eonpluginapi.api.Command;
 
 import java.util.Optional;
 
-@RegisterCommand
+@Command(name = "invsee", usage = "/invsee <player>", permission = "eoncommands.invsee")
 public class InvseeCommand extends EonCommand {
     static final String IMMUNE_NODE = "eoncommands.invsee.immune";
 
     public InvseeCommand(EonCore plugin) {
-        super("invsee", plugin);
+        super(plugin);
     }
 
     @Override

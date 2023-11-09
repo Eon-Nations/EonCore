@@ -9,12 +9,13 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.eonnations.eonpluginapi.api.Command;
 
-@RegisterCommand
+@Command(name = "rename", usage = "/rename <name>", permission = "eoncommands.rename")
 public class RenameCommand extends EonCommand {
 
     public RenameCommand(EonCore plugin) {
-        super("rename", plugin);
+        super(plugin);
     }
 
 

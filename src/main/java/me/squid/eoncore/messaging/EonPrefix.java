@@ -36,7 +36,7 @@ public enum EonPrefix {
     }
 
     private static String prefixesString() {
-        try( InputStream stream = EonCore.class.getResourceAsStream("/prefixes.json") ) {
+        try (InputStream stream = EonCore.class.getResourceAsStream("/prefixes.json")) {
             return new String(stream.readAllBytes());
         } catch (IOException e) {
             return e.getMessage();

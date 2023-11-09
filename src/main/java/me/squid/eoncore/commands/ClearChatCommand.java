@@ -1,48 +1,37 @@
 package me.squid.eoncore.commands;
 
+import io.vavr.collection.List;
 import me.squid.eoncore.EonCommand;
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.messaging.ConfigMessenger;
 import me.squid.eoncore.messaging.EonPrefix;
 import me.squid.eoncore.messaging.Messaging;
-import me.squid.eoncore.utils.Utils;
-import org.bukkit.Bukkit;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
+import org.eonnations.eonpluginapi.api.Alias;
+import org.eonnations.eonpluginapi.api.Command;
 
-import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-@RegisterCommand
+@Command(name = "clearchat",
+        usage = "/cc",
+        aliases = {@Alias(name = "cc")},
+        permission = "eoncommands.clearchat",
+        description = "Clears the chat")
 public class ClearChatCommand extends EonCommand {
 
     public ClearChatCommand(EonCore plugin) {
-        super("clearchat", plugin);
+        super(plugin);
     }
 
     public void execute(Player player, String[] args) {
-        Predicate<Player> normalPlayer = online -> !online.hasPermission("eoncommands.clearchat");
-        Bukkit.getOnlinePlayers().stream()
-                .filter(normalPlayer)
-                .forEach(ClearChatCommand::sendEmptyMessage);
-        Bukkit.getOnlinePlayers().stream()
-                .filter(normalPlayer.negate())
-                .forEach(this::sendImmuneMessage);
-        Bukkit.getOnlinePlayers().forEach(online -> sendClearMessage(online, player.getName()));
+        List<Player> normalPlayers = List.ofAll(player.getServer().getOnlinePlayers().stream()
+                        .filter(online -> !online.hasPermission("eoncommands.clearchat"))
+                        .collect(Collectors.toList()));
+        Audience audience = Audience.audience(normalPlayers);
+        IntStream.range(0, 25).forEach(i -> audience.sendMessage(Component.text("")));
     }
 
-    private void sendImmuneMessage(Player player) {
-        ConfigMessenger messenger = Messaging.setupConfigMessenger(core.getConfig(), EonPrefix.MODERATION);
-        messenger.sendMessage(player, "Clear-Chat-Immune");
-    }
-
-    private static void sendEmptyMessage(Player player) {
-        IntStream stream = IntStream.range(0, 100);
-        stream.forEach(index -> player.sendMessage(""));
-    }
-
-    private static void sendClearMessage(Player p, String senderName) {
-        p.sendMessage(Utils.chat("[--------------------------]"));
-        p.sendMessage(Utils.chat("Chat has been cleared by " + senderName));
-        p.sendMessage(Utils.chat("[--------------------------]"));
-    }
 }

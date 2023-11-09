@@ -7,15 +7,16 @@ import me.squid.eoncore.messaging.EonPrefix;
 import me.squid.eoncore.messaging.Messaging;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
+import org.eonnations.eonpluginapi.api.Command;
 
 import static me.squid.eoncore.utils.FunctionalBukkit.getPlayerOrSendMessage;
 
-@RegisterCommand
+@Command(name = "gmsp", usage = "/gmsp <player>", permission = "eoncommands.gmsp")
 public class SpectatorCommand extends EonCommand {
     static final String OTHERS_NODE = "eoncommands.gmsp.others";
 
     public SpectatorCommand(EonCore plugin) {
-        super("gmsp", plugin);
+        super(plugin);
     }
 
     @Override

@@ -12,6 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
+import org.eonnations.eonpluginapi.api.Command;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,12 +20,12 @@ import java.util.Optional;
 
 import static me.squid.eoncore.utils.FunctionalBukkit.getPlayerOrSendMessage;
 
-@RegisterCommand
+@Command(name = "revive", usage = "/revive <player>", permission = "eoncommands.revive")
 public class ReviveCommand extends EonCommand implements Listener {
     private final HashMap<Player, List<ItemStack>> items = new HashMap<>();
 
     public ReviveCommand(EonCore plugin) {
-        super("revive", plugin);
+        super(plugin);
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 

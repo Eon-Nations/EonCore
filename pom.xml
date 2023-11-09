@@ -86,7 +86,7 @@
         <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.19-R0.1-SNAPSHOT</version>
+            <version>1.20.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -108,8 +108,8 @@
         </dependency>
         <dependency>
             <groupId>com.github.seeseemelk</groupId>
-            <artifactId>MockBukkit-v1.19</artifactId>
-            <version>2.43.2</version>
+            <artifactId>MockBukkit-v1.20</artifactId>
+            <version>3.44.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -128,6 +128,11 @@
             <artifactId>mockito-junit-jupiter</artifactId>
             <version>5.0.0</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.Eon-Nations</groupId>
+            <artifactId>EonPluginAPI</artifactId>
+            <version>0.1.2</version>
         </dependency>
     </dependencies>
 </project>

@@ -7,17 +7,22 @@ import me.squid.eoncore.messaging.EonPrefix;
 import me.squid.eoncore.messaging.Messaging;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.eonnations.eonpluginapi.api.Alias;
+import org.eonnations.eonpluginapi.api.Command;
 
 import java.util.function.Consumer;
 
 import static me.squid.eoncore.utils.FunctionalBukkit.getPlayerOrSendMessage;
 
-@RegisterCommand
+@Command(name = "clearinventory",
+        usage = "/ci <player>",
+        aliases = {@Alias(name = "ci")},
+        permission = "eoncommands.clearinventory")
 public class ClearInventoryCommand extends EonCommand {
     private static final String OTHERS_NODE = "eoncommands.clearinventory.others";
 
     public ClearInventoryCommand(EonCore plugin) {
-        super("clearinventory", plugin);
+        super(plugin);
     }
 
     @Override

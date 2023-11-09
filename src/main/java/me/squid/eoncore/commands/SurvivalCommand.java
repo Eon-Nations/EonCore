@@ -7,15 +7,16 @@ import me.squid.eoncore.messaging.EonPrefix;
 import me.squid.eoncore.messaging.Messaging;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
+import org.eonnations.eonpluginapi.api.Command;
 
 import static me.squid.eoncore.utils.FunctionalBukkit.getPlayerOrSendMessage;
 
-@RegisterCommand
+@Command(name = "gms", usage = "/gms <player>", permission = "eoncommands.gms")
 public class SurvivalCommand extends EonCommand {
     static final String OTHERS_NODE = "eoncommands.gms.others";
 
     public SurvivalCommand(EonCore plugin) {
-        super("gms", plugin);
+        super(plugin);
     }
 
     @Override
