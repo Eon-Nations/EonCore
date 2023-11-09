@@ -1,16 +1,10 @@
 package me.squid.eoncore;
 
-import me.squid.eoncore.commands.BanMuteCommand;
-import me.squid.eoncore.database.EconomySetup;
-import me.squid.eoncore.database.RedisClient;
-import me.squid.eoncore.misc.listeners.ChatFormatListener;
 import me.squid.eoncore.misc.listeners.JoinLeaveListener;
 import me.squid.eoncore.misc.listeners.PortalListener;
 import me.squid.eoncore.misc.listeners.WildTpListener;
 import me.squid.eoncore.misc.managers.InventoryManager;
-import me.squid.eoncore.misc.managers.MutedManager;
 import me.squid.eoncore.misc.tasks.AutoAnnouncementTask;
-import me.squid.eoncore.misc.tasks.RestartTask;
 import me.squid.eoncore.utils.WorldLoader;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
@@ -24,7 +18,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 
 public class EonCore extends JavaPlugin {
-    private RedisClient client;
 
     public EonCore() {
         super();
@@ -36,14 +29,11 @@ public class EonCore extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        this.client = new RedisClient(this);
-        EconomySetup.hookToVault(this, client);
         saveDefaultConfig();
         WorldLoader.initializeWorlds();
-        EonCommand.registerAllCommands(this);
+        EonCommand.registerCommandsInPackage(this);
         registerListeners();
         runTasks();
-        registerModeration();
     }
 
     @Override
@@ -58,15 +48,8 @@ public class EonCore extends JavaPlugin {
         InventoryManager.registerInventories(this);
     }
 
-    public void registerModeration() {
-        MutedManager mutedManager = new MutedManager(this);
-        new ChatFormatListener(this, mutedManager);
-        new BanMuteCommand(this, mutedManager);
-    }
-
     public void runTasks() {
         new AutoAnnouncementTask(this).runTaskTimerAsynchronously(this, 0, getConfig().getLong("Announcement-Delay") * 20L);
-        RestartTask.runRestartTask(this);
     }
 
     @NotNull

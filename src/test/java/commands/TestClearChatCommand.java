@@ -2,7 +2,6 @@ package commands;
 
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import mockbukkit.TestUtility;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +13,7 @@ public class TestClearChatCommand extends TestUtility {
         PlayerMock player = server.addPlayer();
         player.setOp(true);
         player.performCommand("clearchat");
-        Assertions.assertTrue(player.nextMessage().contains("immune"));
+        player.assertNoMoreSaid();
     }
 
     @Test

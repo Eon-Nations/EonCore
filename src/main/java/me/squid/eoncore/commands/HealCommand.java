@@ -12,15 +12,16 @@ import me.squid.eoncore.utils.FunctionalBukkit;
 import me.squid.eoncore.utils.Utils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
+import org.eonnations.eonpluginapi.api.Command;
 
-@RegisterCommand
+@Command(name = "heal", usage = "/heal <player>", permission = "eoncommands.heal")
 public class HealCommand extends EonCommand {
     final CooldownManager cooldownManager = new CooldownManager();
     static final String OTHERS_PERMISSION = "eoncommands.heal.others";
     static final long HEAL_COOLDOWN_MINUTES = 60L;
 
     public HealCommand(EonCore plugin) {
-        super("heal", plugin);
+        super(plugin);
     }
 
     @Override

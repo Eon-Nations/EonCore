@@ -13,12 +13,17 @@ import java.util.Optional;
 import static me.squid.eoncore.misc.listeners.ChatFormatListener.isChatLocked;
 import static me.squid.eoncore.misc.listeners.ChatFormatListener.toggleChatLock;
 
-@RegisterCommand
+/*
+@Command(name = "clock",
+        usage = "/clock",
+        permission = "eoncommands.clock")
+Registration is held off until new chat formatting software is implemented
+ */
 public class ClockCommand extends EonCommand {
     static final String DEFAULT_MESSAGE = "Chat is locked. Please wait while we resolve the conflict. Thank you for your patience!";
 
     public ClockCommand(EonCore plugin) {
-        super("clock", plugin);
+        super(plugin);
     }
 
     @Override

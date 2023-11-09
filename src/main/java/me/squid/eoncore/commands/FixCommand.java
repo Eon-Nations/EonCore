@@ -15,20 +15,20 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
+import org.eonnations.eonpluginapi.api.Command;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-@RegisterCommand
+@Command(name = "fix", usage = "/fix <hand/all>", permission = "eoncommands.fix")
 public class FixCommand extends EonCommand {
     // 10 Minutes converted to second converted to milliseconds
     static final long COOLDOWN_LENGTH = 10L * 60L * 1000L;
     final CooldownManager cooldownManager = new CooldownManager();
 
     public FixCommand(EonCore plugin) {
-        super("fix", plugin);
-        core.getCommand("fix").setTabCompleter(getTabComplete());
+        super(plugin);
     }
 
 
@@ -103,7 +103,4 @@ public class FixCommand extends EonCommand {
         }
     }
 
-    public TabCompleter getTabComplete() {
-        return ((sender, command, alias, args) -> List.of("hand", "all"));
-    }
 }

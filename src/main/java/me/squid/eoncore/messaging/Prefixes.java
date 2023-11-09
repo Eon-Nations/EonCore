@@ -2,6 +2,7 @@ package me.squid.eoncore.messaging;
 
 import java.util.Map;
 
+// GSON Class
 public class Prefixes {
     private Map<String, String> prefixMap;
 

@@ -9,15 +9,18 @@ import me.squid.eoncore.utils.FunctionalBukkit;
 import me.squid.eoncore.utils.Utils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
+import org.eonnations.eonpluginapi.api.Command;
 
 import java.util.Arrays;
 import java.util.function.Consumer;
 
-@RegisterCommand
+@Command(name = "kick",
+        usage = "/kick <player>",
+        permission = "eoncommands.kick")
 public class KickCommand extends EonCommand {
 
     public KickCommand(EonCore plugin) {
-        super("kick", plugin);
+        super(plugin);
     }
 
     @Override

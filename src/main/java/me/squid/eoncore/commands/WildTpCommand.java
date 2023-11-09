@@ -6,12 +6,13 @@ import me.squid.eoncore.misc.events.WildTeleportEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.eonnations.eonpluginapi.api.Command;
 
-@RegisterCommand
+@Command(name = "wild", usage = "/wild")
 public class WildTpCommand extends EonCommand {
 
     public WildTpCommand(EonCore plugin) {
-        super("wild", plugin);
+        super(plugin);
     }
 
     @Override

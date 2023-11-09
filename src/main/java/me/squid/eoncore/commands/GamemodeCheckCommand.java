@@ -9,12 +9,17 @@ import me.squid.eoncore.utils.FunctionalBukkit;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.entity.Player;
+import org.eonnations.eonpluginapi.api.Alias;
+import org.eonnations.eonpluginapi.api.Command;
 
-@RegisterCommand
+@Command(name = "gamemodecheck",
+        usage = "/gamemodecheck <player>",
+        aliases = @Alias(name = "gmcheck"),
+        permission = "eoncommands.gamemodecheck")
 public class GamemodeCheckCommand extends EonCommand {
 
     public GamemodeCheckCommand(EonCore plugin) {
-        super("gamemodecheck", plugin);
+        super(plugin);
     }
 
     private void sendGamemodeMessage(Player sender, Player target) {

@@ -7,14 +7,15 @@ import me.squid.eoncore.messaging.Messaging;
 import me.squid.eoncore.messaging.Messenger;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.eonnations.eonpluginapi.api.Command;
 
 import static me.squid.eoncore.messaging.Messaging.fromFormatString;
 
-@RegisterCommand
+@Command(name = "tppos", usage = "/tppos <x> <y> <z>", permission = "eoncommands.tppos")
 public class TpposCommand extends EonCommand {
 
     public TpposCommand(EonCore plugin) {
-        super("tppos", plugin);
+        super(plugin);
     }
 
     @Override

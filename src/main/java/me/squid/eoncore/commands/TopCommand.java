@@ -4,12 +4,13 @@ import me.squid.eoncore.EonCommand;
 import me.squid.eoncore.EonCore;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.eonnations.eonpluginapi.api.Command;
 
-@RegisterCommand
+@Command(name = "top", usage = "/top", permission = "eoncommands.top")
 public class TopCommand extends EonCommand {
 
     public TopCommand(EonCore plugin) {
-        super("top", plugin);
+        super(plugin);
     }
 
     @Override

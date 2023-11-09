@@ -4,16 +4,17 @@ import me.squid.eoncore.EonCommand;
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.utils.Utils;
 import org.bukkit.entity.Player;
+import org.eonnations.eonpluginapi.api.Command;
 
 import static me.squid.eoncore.utils.FunctionalBukkit.getPlayerOrSendMessage;
 
-@RegisterCommand
+@Command(name = "spawn", usage = "/spawn")
 public class SpawnCommand extends EonCommand {
     static final String OTHERS_PERM = "eoncommands.spawn.others";
     static final String SPAWN_PATH = "Spawn-Message";
 
     public SpawnCommand(EonCore plugin) {
-        super("spawn", plugin);
+        super(plugin);
     }
 
     @Override

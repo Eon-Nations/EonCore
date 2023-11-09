@@ -3,12 +3,13 @@ package me.squid.eoncore.commands;
 import me.squid.eoncore.EonCommand;
 import me.squid.eoncore.EonCore;
 import org.bukkit.entity.Player;
+import org.eonnations.eonpluginapi.api.Command;
 
-@RegisterCommand
+@Command(name = "workbench", usage = "/workbench <player>", permission = "eoncommands.workbench")
 public class WorkbenchCommand extends EonCommand {
 
     public WorkbenchCommand(EonCore plugin) {
-        super("workbench", plugin);
+        super(plugin);
     }
 
     @Override

@@ -11,17 +11,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.eonnations.eonpluginapi.api.Command;
 
 import java.util.HashSet;
 import java.util.Set;
 
-@RegisterCommand
+@Command(name = "commandspy",
+        usage = "/commandspy",
+        permission = "eoncommands.commandspy")
 public class CommandSpyCommand extends EonCommand implements Listener {
     private final Set<Player> peopleSpying = new HashSet<>();
     private static final String IMMUNE_PERM = "eoncommands.commandspy.immune";
 
     public CommandSpyCommand(EonCore plugin) {
-        super("commandspy", plugin);
+        super(plugin);
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 

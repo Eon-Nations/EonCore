@@ -7,17 +7,18 @@ import me.squid.eoncore.messaging.Messaging;
 import me.squid.eoncore.messaging.Messenger;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
+import org.eonnations.eonpluginapi.api.Command;
 
 import java.util.Optional;
 
 import static me.squid.eoncore.utils.FunctionalBukkit.getPlayerFromName;
 
-@RegisterCommand
+@Command(name = "teleport", usage = "/teleport <player>", permission = "eoncommands.teleport")
 public class TeleportCommand extends EonCommand {
     static final String MESSAGE_PATH = "Teleport-Successful";
 
     public TeleportCommand(EonCore plugin) {
-        super("teleport", plugin);
+        super(plugin);
     }
 
     @Override

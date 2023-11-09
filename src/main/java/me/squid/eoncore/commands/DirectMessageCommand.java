@@ -7,14 +7,16 @@ import me.squid.eoncore.utils.FunctionalBukkit;
 import me.squid.eoncore.utils.Utils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
+import org.eonnations.eonpluginapi.api.Alias;
+import org.eonnations.eonpluginapi.api.Command;
 
-import java.util.function.Consumer;
-
-@RegisterCommand
+@Command(name = "message",
+        usage = "/message <player> <message>",
+        aliases = {@Alias(name = "pm"), @Alias(name = "msg"), @Alias(name = "whisper")})
 public class DirectMessageCommand extends EonCommand {
 
     public DirectMessageCommand(EonCore plugin) {
-        super("message", plugin);
+        super(plugin);
     }
 
     private Component constructMessage(Player sender, Player target, String[] args) {
@@ -28,11 +30,9 @@ public class DirectMessageCommand extends EonCommand {
         sender.sendMessage(message);
     }
 
-    private Consumer<Player> messageFunc(Player sender, String[] args) {
-        return target -> {
-            Component message = constructMessage(sender, target, args);
-            sendDirectMessage(sender, target, message);
-        };
+    private void message(Player sender, Player target, String[] args) {
+        Component message = constructMessage(sender, target, args);
+        sendDirectMessage(sender, target, message);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class DirectMessageCommand extends EonCommand {
         if (args.length >= 2) {
             String targetName = args[0];
             args[0] = "";
-            FunctionalBukkit.getPlayerOrSendMessage(player, messageFunc(player, args), targetName);
+            FunctionalBukkit.getPlayerOrSendMessage(player, target -> message(player, target, args), targetName);
         }
     }
 }
