@@ -1,7 +1,6 @@
 package me.squid.eoncore;
 
 import me.squid.eoncore.misc.listeners.JoinLeaveListener;
-import me.squid.eoncore.misc.listeners.PortalListener;
 import me.squid.eoncore.misc.listeners.WildTpListener;
 import me.squid.eoncore.misc.managers.InventoryManager;
 import me.squid.eoncore.misc.tasks.AutoAnnouncementTask;
@@ -44,7 +43,6 @@ public class EonCore extends JavaPlugin {
     public void registerListeners() {
         new JoinLeaveListener(this);
         new WildTpListener(this);
-        new PortalListener(this);
         InventoryManager.registerInventories(this);
     }
 
