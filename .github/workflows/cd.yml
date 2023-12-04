@@ -55,4 +55,4 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           port: 21
           local-dir: 'new_folder/'
-          server-dir: '/plugins'
+          server-dir: '/plugins/'
