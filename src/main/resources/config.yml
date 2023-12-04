@@ -132,7 +132,7 @@ Revive-Usage: "Usage: /revive <target>"
 Reload-Message: "&bSuccessfully reloaded"
 
 mysql-user: "root"
-mysql-password: "root_password"
+mysql-password: "root"
 mysql-database: "test_db"
 mysql-port: "3306"
 mysql-url: "localhost"
