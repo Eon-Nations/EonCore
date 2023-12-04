@@ -40,7 +40,6 @@ public class EonCore extends EonPlugin {
 
     public void registerDatabase() {
         Credentials credentials = Credentials.credentials(this);
-        System.out.println(credentials);
         SQLDatabase database = new SQLDatabase(credentials);
         provideService(Database.class, database);
     }
