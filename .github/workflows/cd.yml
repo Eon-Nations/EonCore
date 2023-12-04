@@ -42,13 +42,12 @@ jobs:
       - name: Build Project
         run: mvn -B package -f pom.xml
 
-      - name: deploy file to server
-        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+      - name: 📂 Sync files
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          username: ${{ secrets.FTP_USER }}
           server: ${{ secrets.FTP_LINK }}
-          port: 21
+          username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASSWORD }}
-          ssh_private_key: ''
-          local_path: 'target/EonCore-1.0.jar'
-          remote_path: '/plugins'
+          port: 21
+          local-dir: 'target/EonCore-1.0.jar'
+          server-dir: '/plugins'
