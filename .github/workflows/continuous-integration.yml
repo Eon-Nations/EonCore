@@ -17,20 +17,10 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    services:
-      mysql:
-        image: mysql
-        env:
-          MYSQL_ROOT_PASSWORD: 'root_password'
-          MYSQL_DATABASE: 'test_db'
-        ports:
-          - 3306:3306
-        # Set health checks to wait until postgres has started
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+    env:
+      DB_DATABASE: 'test_db'
+      DB_USER: 'root'
+      DB_PASSWORD: 'root_password'
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -44,6 +34,10 @@ jobs:
           java-version: 17
           cache: 'maven'
           distribution: 'zulu'
+      - name: Setup MySQL database
+        run: |
+          sudo /etc/init.d/mysql start
+          mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }} 
 
       - name: Build Project
         run: mvn -B package -f pom.xml
