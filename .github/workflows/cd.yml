@@ -47,7 +47,7 @@ jobs:
         with:
           username: ${{ secrets.FTP_USER }}
           server: ${{ secrets.FTP_LINK }}
-          port: 2022
+          port: 22
           password: ${{ secrets.FTP_PASSWORD }}
           ssh_private_key: ''
           local_path: 'target/EonCore-1.0.jar'
