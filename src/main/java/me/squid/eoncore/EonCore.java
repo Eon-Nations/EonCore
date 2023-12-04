@@ -2,42 +2,46 @@ package me.squid.eoncore;
 
 import me.squid.eoncore.misc.listeners.JoinLeaveListener;
 import me.squid.eoncore.misc.listeners.WildTpListener;
-import me.squid.eoncore.misc.managers.InventoryManager;
 import me.squid.eoncore.misc.tasks.AutoAnnouncementTask;
 import me.squid.eoncore.utils.WorldLoader;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.plugin.java.JavaPluginLoader;
+import org.eonnations.eonpluginapi.EonPlugin;
+import org.eonnations.eonpluginapi.api.database.Database;
+import org.eonnations.eonpluginapi.database.sql.Credentials;
+import org.eonnations.eonpluginapi.database.sql.SQLDatabase;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-
-public class EonCore extends JavaPlugin {
+public class EonCore extends EonPlugin {
 
     public EonCore() {
         super();
     }
 
-    protected EonCore(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
-        super(loader, description, dataFolder, file);
-    }
+    @Override
+    public void load() { }
 
     @Override
-    public void onEnable() {
+    public void setup() {
         saveDefaultConfig();
         WorldLoader.initializeWorlds();
+        registerDatabase();
         EonCommand.registerCommandsInPackage(this);
         registerListeners();
         runTasks();
     }
 
     @Override
-    public void onDisable() {
+    public void cleanup() {
         Bukkit.getScheduler().cancelTasks(this);
+    }
+
+    public void registerDatabase() {
+        Credentials credentials = Credentials.credentials(this);
+        SQLDatabase database = new SQLDatabase(credentials);
+        provideService(Database.class, database);
     }
 
     public void registerListeners() {

@@ -10,6 +10,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.eonnations.eonpluginapi.api.database.Database;
+
+import java.sql.SQLException;
 
 import static java.time.Duration.ofSeconds;
 import static me.squid.eoncore.messaging.Messaging.fromFormatString;
@@ -28,6 +31,8 @@ public class JoinLeaveListener implements Listener {
         e.joinMessage(joinMessage(p));
         sendPlayerTitle(p);
         setSleepingIgnored(p);
+        Database database = plugin.getService(Database.class);
+        database.createPlayer(p.getUniqueId(), p.getName());
         if (!p.hasPlayedBefore()) {
             p.teleport(Utils.getSpawnLocation());
         }
