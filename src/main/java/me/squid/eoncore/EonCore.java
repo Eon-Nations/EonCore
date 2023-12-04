@@ -40,6 +40,7 @@ public class EonCore extends EonPlugin {
 
     public void registerDatabase() {
         Credentials credentials = Credentials.credentials(this);
+        System.out.println(credentials);
         SQLDatabase database = new SQLDatabase(credentials);
         provideService(Database.class, database);
     }
@@ -51,25 +52,5 @@ public class EonCore extends EonPlugin {
 
     public void runTasks() {
         new AutoAnnouncementTask(this).runTaskTimerAsynchronously(this, 0, getConfig().getLong("Announcement-Delay") * 20L);
-    }
-
-    @NotNull
-    public <T extends Listener> T registerListener(@NotNull T listener) {
-        Bukkit.getPluginManager().registerEvents(listener, this);
-        return listener;
-    }
-
-    @NotNull
-    public <T> T getService(@NotNull Class<T> serviceClass) {
-        RegisteredServiceProvider<T> service = Bukkit.getServicesManager().getRegistration(serviceClass);
-        return service.getProvider();
-    }
-
-    public <T> void provideService(@NotNull Class<T> service, @NotNull T t, @NotNull ServicePriority servicePriority) {
-        Bukkit.getServicesManager().register(service, t, this, servicePriority);
-    }
-
-    public <T> void provideService(@NotNull Class<T> service, @NotNull T t) {
-        provideService(service, t, ServicePriority.Normal);
     }
 }
