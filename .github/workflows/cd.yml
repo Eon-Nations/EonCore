@@ -42,6 +42,11 @@ jobs:
       - name: Build Project
         run: mvn -B package -f pom.xml
 
+      - name: Put file in own folder
+        run: |
+          mkdir new_folder
+          mv target/EonCore-1.0.jar new_folder
+
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
@@ -49,5 +54,5 @@ jobs:
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASSWORD }}
           port: 21
-          local-dir: 'target/EonCore-1.0.jar'
+          local-dir: 'new_folder/'
           server-dir: '/plugins'
