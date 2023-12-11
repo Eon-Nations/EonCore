@@ -10,8 +10,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.scheduler.BukkitTask;
 
-import static me.squid.eoncore.messaging.Messaging.fromFormatString;
-
 public class Hologram implements AutoCloseable {
     private final ArmorStand stand;
     private final BukkitTask task;
@@ -22,6 +20,7 @@ public class Hologram implements AutoCloseable {
         stand.setInvisible(true);
         stand.setInvulnerable(true);
         stand.setCustomNameVisible(true);
+        stand.setGravity(false); // Use setGravity instead of hasGravity
         stand.customName(getName(line));
         EonCore plugin = (EonCore) Bukkit.getPluginManager().getPlugin("EonCore");
         task = Bukkit.getScheduler().runTaskTimer(plugin, this::countdown, 0L, 20L);
