@@ -20,7 +20,9 @@ public class HologramCommand extends EonCommand {
 
     @Override
     protected void execute(Player player, String[] args) {
-        List<Component> lines = List.ofAll(Arrays.stream(args))
+        String joinedArgs = String.join(" ", args);
+        String[] rawLines = joinedArgs.split("\\|");
+        List<Component> lines = List.ofAll(Arrays.stream(rawLines))
                 .map(Messaging::fromFormatString);
         Hologram hologram = new Hologram(lines, player.getLocation());
     }

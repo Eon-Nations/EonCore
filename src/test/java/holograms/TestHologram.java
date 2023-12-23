@@ -19,13 +19,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TestHologram extends TestUtility {
 
     private static final List<Component> armorStandTitle = List.of(fromFormatString("Nice one Jim!"));
+    private static final double ALLOWED_RADIUS = 5.0;
 
     @Test
     @DisplayName("Creating a hologram spawns an entity with the correct name")
     void testHologramSpawn() {
         PlayerMock jim = server.addPlayer("Jim");
         Hologram hologram = new Hologram(armorStandTitle, jim.getLocation());
-        Collection<ArmorStand> holograms = jim.getWorld().getNearbyEntitiesByType(ArmorStand.class, jim.getLocation(), 10.0);
+        Collection<ArmorStand> holograms = jim.getWorld().getNearbyEntitiesByType(ArmorStand.class, jim.getLocation(), ALLOWED_RADIUS);
         assertEquals(1, holograms.size());
         ArmorStand armorStand = holograms.stream().toList().get(0);
         assertTrue(armorStand.isCustomNameVisible());
@@ -38,7 +39,7 @@ public class TestHologram extends TestUtility {
     void testHologramInteract() {
         PlayerMock jim = server.addPlayer("Jim");
         Hologram hologram = new Hologram(armorStandTitle, jim.getLocation());
-        Collection<ArmorStand> holograms = jim.getWorld().getNearbyEntitiesByType(ArmorStand.class, jim.getLocation(), 10.0);
+        Collection<ArmorStand> holograms = jim.getWorld().getNearbyEntitiesByType(ArmorStand.class, jim.getLocation(), ALLOWED_RADIUS);
         ArmorStand armorStand = holograms.stream().toList().get(0);
         double health = armorStand.getHealth();
         jim.attack(armorStand);
@@ -51,10 +52,10 @@ public class TestHologram extends TestUtility {
     void testRemoveHologram() {
         PlayerMock jim = server.addPlayer("Jim");
         Hologram hologram = new Hologram(armorStandTitle, jim.getLocation());
-        Collection<ArmorStand> holograms = jim.getWorld().getNearbyEntitiesByType(ArmorStand.class, jim.getLocation(), 10.0);
+        Collection<ArmorStand> holograms = jim.getWorld().getNearbyEntitiesByType(ArmorStand.class, jim.getLocation(), ALLOWED_RADIUS);
         assertEquals(1, holograms.size());
         hologram.close();
-        Collection<ArmorStand> allHolograms = jim.getWorld().getNearbyEntitiesByType(ArmorStand.class, jim.getLocation(), 10.0);
+        Collection<ArmorStand> allHolograms = jim.getWorld().getNearbyEntitiesByType(ArmorStand.class, jim.getLocation(), ALLOWED_RADIUS);
         assertEquals(0, allHolograms.size());
     }
 
@@ -64,7 +65,7 @@ public class TestHologram extends TestUtility {
         PlayerMock jim = server.addPlayer();
         List<Component> lines = armorStandTitle.prepend(fromFormatString("Line 2")).prepend(fromFormatString("Line 3"));
         Hologram hologram = new Hologram(lines, jim.getLocation());
-        Collection<ArmorStand> holograms = jim.getWorld().getNearbyEntitiesByType(ArmorStand.class, jim.getLocation(), 10.0);
+        Collection<ArmorStand> holograms = jim.getWorld().getNearbyEntitiesByType(ArmorStand.class, jim.getLocation(), ALLOWED_RADIUS);
         assertEquals(3, holograms.size());
         List<Double> yCords = List.ofAll(holograms).map(stand -> stand.getLocation().getY());
         assertEquals(yCords.distinct().size(), yCords.size());
@@ -76,7 +77,7 @@ public class TestHologram extends TestUtility {
         PlayerMock jim = server.addPlayer();
         List<Component> lines = armorStandTitle.prepend(fromFormatString("Line 2")).prepend(fromFormatString("Line 3"));
         Hologram hologram = new Hologram(lines, jim.getLocation());
-        Collection<ArmorStand> holograms = jim.getWorld().getNearbyEntitiesByType(ArmorStand.class, jim.getLocation(), 10.0);
+        Collection<ArmorStand> holograms = jim.getWorld().getNearbyEntitiesByType(ArmorStand.class, jim.getLocation(), ALLOWED_RADIUS);
         assertEquals(3, holograms.size());
         for (ArmorStand stand : holograms) {
             assertTrue(stand.isCustomNameVisible());

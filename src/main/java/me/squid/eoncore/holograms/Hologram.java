@@ -8,6 +8,7 @@ import org.bukkit.entity.ArmorStand;
 
 public class Hologram implements AutoCloseable {
     private final List<ArmorStand> stands;
+    private static final double SPACE_BETWEEN_LINES = 0.35;
 
     public Hologram(List<Component> lines, Location base) {
         this.stands = lines.reverse()
@@ -22,13 +23,17 @@ public class Hologram implements AutoCloseable {
     }
 
     private ArmorStand spawnArmorStand(int index, Location base) {
-        double heightBoost = index * 0.5;
-        ArmorStand stand = base.getWorld().spawn(base.add(0, heightBoost, 0), ArmorStand.class);
+        double heightBoost = base.getY() + (index * SPACE_BETWEEN_LINES);
+        Location newLoc = base.clone();
+        newLoc.setY(heightBoost);
+        ArmorStand stand = base.getWorld().spawn(newLoc, ArmorStand.class);
         stand.setInvulnerable(true);
         stand.setCollidable(false);
         stand.setInvisible(true);
+        stand.setMarker(true);
         stand.setCustomNameVisible(true);
         stand.setGravity(false);
+        stand.setAI(false);
         return stand;
     }
 
