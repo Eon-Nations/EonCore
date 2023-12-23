@@ -17,7 +17,7 @@ public class HologramCommand extends EonCommand {
 
     @Override
     protected void execute(Player player, String[] args) {
-        Hologram hologram = new Hologram(args[0], player.getLocation().add(0, 1, 0));
+        Hologram hologram = new Hologram(args[0], player.getLocation());
         list = list.append(hologram);
     }
 }
