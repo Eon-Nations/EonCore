@@ -4,12 +4,15 @@ import io.vavr.collection.List;
 import me.squid.eoncore.EonCommand;
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.holograms.Hologram;
+import me.squid.eoncore.messaging.Messaging;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.eonnations.eonpluginapi.api.Command;
 
+import java.util.Arrays;
+
 @Command(name = "hologram", usage = "/hologram <name>")
 public class HologramCommand extends EonCommand {
-    List<Hologram> list = List.of();
 
     public HologramCommand(EonCore plugin) {
         super(plugin);
@@ -17,7 +20,8 @@ public class HologramCommand extends EonCommand {
 
     @Override
     protected void execute(Player player, String[] args) {
-        Hologram hologram = new Hologram(args[0], player.getLocation());
-        list = list.append(hologram);
+        List<Component> lines = List.ofAll(Arrays.stream(args))
+                .map(Messaging::fromFormatString);
+        Hologram hologram = new Hologram(lines, player.getLocation());
     }
 }

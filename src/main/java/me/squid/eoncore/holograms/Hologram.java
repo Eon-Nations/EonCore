@@ -1,24 +1,39 @@
 package me.squid.eoncore.holograms;
 
+import io.vavr.Tuple2;
+import io.vavr.collection.List;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 
-import static me.squid.eoncore.messaging.Messaging.fromFormatString;
-
 public class Hologram implements AutoCloseable {
-    private final ArmorStand stand;
+    private final List<ArmorStand> stands;
 
-    public Hologram(String line, Location location) {
-        this.stand = location.getWorld().spawn(location, ArmorStand.class);
-        stand.setInvisible(true);
+    public Hologram(List<Component> lines, Location base) {
+        this.stands = lines.reverse()
+                .zipWithIndex()
+                .map(pair -> new Tuple2<>(spawnArmorStand(pair._2(), base), pair._1()))
+                .map(pair -> changeName(pair._2(), pair._1()));
+    }
+
+    private ArmorStand changeName(Component name, ArmorStand stand) {
+        stand.customName(name);
+        return stand;
+    }
+
+    private ArmorStand spawnArmorStand(int index, Location base) {
+        double heightBoost = index * 0.5;
+        ArmorStand stand = base.getWorld().spawn(base.add(0, heightBoost, 0), ArmorStand.class);
         stand.setInvulnerable(true);
+        stand.setCollidable(false);
+        stand.setInvisible(true);
         stand.setCustomNameVisible(true);
-        stand.setGravity(false); // Use setGravity instead of hasGravity
-        stand.customName(fromFormatString(line));
+        stand.setGravity(false);
+        return stand;
     }
 
     @Override
     public void close() {
-        stand.remove();
+        stands.forEach(ArmorStand::remove);
     }
 }
