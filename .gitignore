@@ -28,3 +28,10 @@ target/
 # IDE Files
 .vscode/
 .idea/
+
+# LunarVim Files
+.classpath
+.factorypath
+.project
+.settings/
+
