@@ -10,7 +10,7 @@ public class FloatingItem implements AutoCloseable {
     private Item item;
 
     public FloatingItem(Location location, Material material) {
-        this.item = location.getWorld().spawn(location, Item.class);
+        this.item = location.getWorld().dropItem(location, new ItemStack(material, 1));
         item.setGravity(false);
         item.setVelocity(new Vector(0, 0, 0));
         item.setItemStack(new ItemStack(material, 1));
