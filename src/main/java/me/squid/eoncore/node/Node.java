@@ -27,7 +27,14 @@ public class Node {
     public Node(Location location, Resource resource) {
         Random random = new Random();
         this.outputRate = random.nextInt((MAX_OUTPUT_RATE - MIN_OUTPUT_RATE) + 1) + MIN_OUTPUT_RATE;
-        this.resourceDisplay = new FloatingItem(location.add(new Vector(0, 2, 0)), Material.valueOf(resource.name().toUpperCase() + "_INGOT"));
+        String resourceName = switch (resource) {
+            case COPPER -> "COPPER_INGOT";
+            case IRON -> "IRON_INGOT";
+            case GOLD -> "GOLD_INGOT";
+            case DIAMOND -> "DIAMOND";
+            case EMERALD -> "EMERALD";
+        };
+        this.resourceDisplay = new FloatingItem(location.add(new Vector(0, 2, 0)), Material.valueOf(resourceName));
         String claimString = isClaimed ? "CLAIMED" : "UNCLAIMED";
         List<Component> lines = List.of(fromFormatString("<#F0E442><bold>" + outputRate + "</bold></#F0E442>"), 
             fromFormatString("<D55E00><bold>" + claimString + "</bold></D55E00>"));

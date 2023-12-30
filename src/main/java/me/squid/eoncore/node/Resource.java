@@ -4,6 +4,6 @@ public enum Resource {
     COPPER,
     IRON,
     GOLD,
-    DIAMONDS,
-    EMERALDS
+    DIAMOND,
+    EMERALD
 }
