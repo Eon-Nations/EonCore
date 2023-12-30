@@ -5,15 +5,14 @@ import me.squid.eoncore.EonCore;
 import me.squid.eoncore.messaging.ConfigMessenger;
 import me.squid.eoncore.messaging.EonPrefix;
 import me.squid.eoncore.messaging.Messaging;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.eonnations.eonpluginapi.api.Command;
+import org.eonnations.eonpluginapi.events.EventSubscriber;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -21,12 +20,13 @@ import java.util.Optional;
 import static me.squid.eoncore.utils.FunctionalBukkit.getPlayerOrSendMessage;
 
 @Command(name = "revive", usage = "/revive <player>", permission = "eoncommands.revive")
-public class ReviveCommand extends EonCommand implements Listener {
+public class ReviveCommand extends EonCommand {
     private final HashMap<Player, List<ItemStack>> items = new HashMap<>();
 
     public ReviveCommand(EonCore plugin) {
         super(plugin);
-        Bukkit.getPluginManager().registerEvents(this, plugin);
+        EventSubscriber.subscribe(PlayerDeathEvent.class, EventPriority.NORMAL)
+                      .handler(this::onDeath); 
     }
 
     @Override
@@ -53,12 +53,10 @@ public class ReviveCommand extends EonCommand implements Listener {
         }
     }
 
-    @EventHandler
-    public void onDeath(PlayerDeathEvent e) {
-        items.put(e.getEntity(), e.getDrops());
-        Location deathLocation = e.getEntity().getLocation();
-        // Log the death location in case a bug happens and further investigation should be added
-        core.getLogger().info("Player died at: x=" + deathLocation.getX() + " y=" + deathLocation.getY() +
-                " z=" + deathLocation.getZ() + " world=" + deathLocation.getWorld().getName());
+    public boolean onDeath(PlayerDeathEvent e) {
+        List<ItemStack> currentPendingItems = items.getOrDefault(e.getEntity(), new ArrayList<>());
+        currentPendingItems.addAll(e.getDrops());        
+        items.put(e.getEntity(), currentPendingItems);
+        return false;
     }
 }
