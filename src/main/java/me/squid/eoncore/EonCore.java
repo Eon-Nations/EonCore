@@ -3,7 +3,9 @@ package me.squid.eoncore;
 import me.squid.eoncore.misc.listeners.JoinLeaveListener;
 import me.squid.eoncore.misc.listeners.WildTpListener;
 import me.squid.eoncore.misc.tasks.AutoAnnouncementTask;
+import me.squid.eoncore.node.Node;
 import me.squid.eoncore.utils.WorldLoader;
+
 import org.bukkit.Bukkit;
 import org.eonnations.eonpluginapi.EonPlugin;
 import org.eonnations.eonpluginapi.api.database.Database;
@@ -27,6 +29,7 @@ public class EonCore extends EonPlugin {
         EonCommand.registerCommandsInPackage(this);
         registerListeners();
         runTasks();
+        Node.registerChestPlaceListener();
     }
 
     @Override

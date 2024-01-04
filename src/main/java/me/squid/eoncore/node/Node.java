@@ -1,16 +1,30 @@
 package me.squid.eoncore.node;
 
+import me.squid.eoncore.EonCore;
 import me.squid.eoncore.holograms.FloatingItem;
 import me.squid.eoncore.holograms.Hologram;
 
 import java.util.Random;
+import java.util.Collection;
 
 import io.vavr.collection.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.Block;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
+import org.eonnations.eonpluginapi.events.EventSubscriber;
+import org.eonnations.eonpluginapi.events.EventHandler;
+
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextReplacementConfig;
 
 import static me.squid.eoncore.messaging.Messaging.fromFormatString;
 
@@ -18,11 +32,57 @@ public class Node {
     
     private static final int MIN_OUTPUT_RATE = 10;
     private static final int MAX_OUTPUT_RATE = 100;
+    private static EventHandler<BlockPlaceEvent> chestPlace = registerChestPlaceListener();
+    private static EventHandler<BlockBreakEvent> deepslateCancel = cancelBreakingDeepslate();    
+    private static EventHandler<BlockBreakEvent> replaceHolo = replaceUnclaimed();
 
     private Hologram nodeInfo;
     private FloatingItem resourceDisplay;
     private int outputRate;
     private boolean isClaimed;
+
+    private static boolean claimNode(BlockPlaceEvent event) {
+        Collection<ArmorStand> holograms = event.getPlayer().getLocation().getNearbyEntitiesByType(ArmorStand.class, 5.0);
+        for (ArmorStand stand : holograms) {
+            Component name = stand.customName().replaceText(TextReplacementConfig.builder().match("UNCLAIMED").replacement("CLAIMED").build());
+            stand.customName(name);
+        }
+        // Start dropping items into the chest until it is no longer claimed
+        return false;
+    }
+
+    // Make a listener that listens for breaking the REINFORCED_DEEPSLATE and cancel it
+    private static EventHandler<BlockBreakEvent> cancelBreakingDeepslate() {
+        if (deepslateCancel != null) return deepslateCancel;
+        return EventSubscriber.subscribe(BlockBreakEvent.class, EventPriority.NORMAL)
+            .filter(e -> e.getBlock().getType().equals(Material.REINFORCED_DEEPSLATE))
+            .handler(e -> true);
+    }
+
+    private static boolean claimToUnclaim(BlockBreakEvent e) {
+        Collection<ArmorStand> holograms = e.getPlayer().getLocation().getNearbyEntitiesByType(ArmorStand.class, 5.0);
+        for (ArmorStand stand : holograms) {
+            Component name = stand.customName().replaceText(TextReplacementConfig.builder().match("CLAIMED").replacement("UNCLAIMED").build());
+            stand.customName(name);
+        }
+        return false;
+    }
+
+    private static EventHandler<BlockBreakEvent> replaceUnclaimed() {
+        if (replaceHolo != null) return replaceHolo;
+        return EventSubscriber.subscribe(BlockBreakEvent.class, EventPriority.NORMAL)
+            .filter(e -> e.getBlock().getType().equals(Material.CHEST) && 
+                e.getBlock().getRelative(BlockFace.DOWN).getType().equals(Material.REINFORCED_DEEPSLATE))
+            .handler(Node::claimToUnclaim);
+    }
+
+    public static EventHandler<BlockPlaceEvent> registerChestPlaceListener() {
+        if (chestPlace != null) return chestPlace;
+        return EventSubscriber.subscribe(BlockPlaceEvent.class, EventPriority.NORMAL)  
+            .filter(e -> e.getBlock().getType().equals(Material.CHEST))
+            .filter(e -> e.getBlockAgainst().getType().equals(Material.REINFORCED_DEEPSLATE))
+            .handler(Node::claimNode);
+    }
     
     public Node(Location location, Resource resource) {
         Random random = new Random();
