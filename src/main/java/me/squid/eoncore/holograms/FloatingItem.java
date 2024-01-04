@@ -17,6 +17,7 @@ public class FloatingItem implements AutoCloseable {
         item.setGlowing(true);
         item.setCanPlayerPickup(false);
         item.setPersistent(true);
+        item.setWillAge(false);
     }
 
     @Override
