@@ -1,6 +1,5 @@
 package me.squid.eoncore.node;
 
-import me.squid.eoncore.EonCore;
 import me.squid.eoncore.holograms.FloatingItem;
 import me.squid.eoncore.holograms.Hologram;
 
@@ -9,16 +8,13 @@ import java.util.Collection;
 
 import io.vavr.collection.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 import org.eonnations.eonpluginapi.events.EventSubscriber;
 import org.eonnations.eonpluginapi.events.EventHandler;
