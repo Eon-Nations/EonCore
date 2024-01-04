@@ -34,11 +34,13 @@ public class Node {
             case DIAMOND -> "DIAMOND";
             case EMERALD -> "EMERALD";
         };
-        this.resourceDisplay = new FloatingItem(location.add(new Vector(0, 2, 0)), Material.valueOf(resourceName));
+        Location resourceLoc = location.clone().add(new Vector(0, 2, 0));
+        this.resourceDisplay = new FloatingItem(resourceLoc, Material.valueOf(resourceName));
         String claimString = isClaimed ? "CLAIMED" : "UNCLAIMED";
         List<Component> lines = List.of(fromFormatString("<#F0E442><bold>" + outputRate + "</bold></#F0E442>"), 
-            fromFormatString("<D55E00><bold>" + claimString + "</bold></D55E00>"));
-        this.nodeInfo = new Hologram(lines, location.add(new Vector(0, 1, 0)));
+            fromFormatString("<#D55E00><bold>" + claimString + "</bold></#D55E00>"));
+        Location nodeLoc = location.clone().add(new Vector(0, 1, 0));
+        this.nodeInfo = new Hologram(lines, nodeLoc);
     }
 
 
