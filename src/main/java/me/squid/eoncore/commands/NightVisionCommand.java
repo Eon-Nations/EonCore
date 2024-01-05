@@ -5,12 +5,14 @@ import me.squid.eoncore.EonCore;
 import me.squid.eoncore.messaging.ConfigMessenger;
 import me.squid.eoncore.messaging.EonPrefix;
 import me.squid.eoncore.messaging.Messaging;
-import me.squid.eoncore.utils.FunctionalBukkit;
+
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.eonnations.eonpluginapi.api.Alias;
 import org.eonnations.eonpluginapi.api.Command;
+import io.vavr.control.Option;
 
 @Command(name = "nightvision", usage = "/nightvision <player>", aliases = {@Alias(name = "nv")}, permission = "eoncommands.nightvision")
 public class NightVisionCommand extends EonCommand {
@@ -25,7 +27,12 @@ public class NightVisionCommand extends EonCommand {
         if (args.length == 0) {
             toggleNightVision(player);
         } else if (args.length == 1 && player.hasPermission(OTHERS_IMMUNE_NODE)) {
-            FunctionalBukkit.getPlayerOrSendMessage(player, this::toggleNightVision, args[0]);
+            Option<Player> targetOpt = Option.of(Bukkit.getPlayer(args[0]))
+                .peek(this::toggleNightVision);
+            if (targetOpt.isEmpty()) {
+                Messaging.sendNullMessage(player);
+                return;
+            }
             ConfigMessenger messenger = Messaging.setupConfigMessenger(core.getConfig(), EonPrefix.MODERATION);
             messenger.sendMessage(player, "Target-NV-Message");
         }

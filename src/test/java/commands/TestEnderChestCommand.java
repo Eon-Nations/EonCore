@@ -20,4 +20,15 @@ public class TestEnderChestCommand extends TestUtility {
         assertEquals(player.getOpenInventory().getTopInventory(), player.getEnderChest());
     }
 
+    @Test
+    @DisplayName("Target ender chest is successfully opened when called")
+    void testTargetEC() {
+        PlayerMock player = server.addPlayer();
+        PlayerMock target = server.addPlayer("target");
+        player.setOp(true);
+        player.performCommand("enderchest target");
+        player.assertInventoryView(InventoryType.ENDER_CHEST);
+        assertEquals(target.getEnderChest(), player.getOpenInventory().getTopInventory());
+    }
+
 }

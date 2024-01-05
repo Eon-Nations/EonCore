@@ -5,10 +5,13 @@ import me.squid.eoncore.EonCore;
 import me.squid.eoncore.messaging.ConfigMessenger;
 import me.squid.eoncore.messaging.EonPrefix;
 import me.squid.eoncore.messaging.Messaging;
-import me.squid.eoncore.utils.FunctionalBukkit;
+
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.eonnations.eonpluginapi.api.Command;
+
+import io.vavr.control.Option;
 
 @Command(name = "gmc",
         usage = "/gmc",
@@ -31,7 +34,9 @@ public class CreativeCommand extends EonCommand {
         if (args.length == 0) {
             setPlayerToCreative(player);
         } else if (args.length == 1 && player.hasPermission(OTHERS_NODE)) {
-            FunctionalBukkit.getPlayerOrSendMessage(player, this::setPlayerToCreative, args[0]);
+            Option.of(Bukkit.getPlayer(args[0]))
+                .peek(this::setPlayerToCreative)
+                .onEmpty(() -> Messaging.sendNullMessage(player));
         }
     }
 }

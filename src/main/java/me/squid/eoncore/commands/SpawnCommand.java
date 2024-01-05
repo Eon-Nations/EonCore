@@ -6,8 +6,6 @@ import me.squid.eoncore.utils.Utils;
 import org.bukkit.entity.Player;
 import org.eonnations.eonpluginapi.api.Command;
 
-import static me.squid.eoncore.utils.FunctionalBukkit.getPlayerOrSendMessage;
-
 @Command(name = "spawn", usage = "/spawn")
 public class SpawnCommand extends EonCommand {
     static final String OTHERS_PERM = "eoncommands.spawn.others";
@@ -19,10 +17,6 @@ public class SpawnCommand extends EonCommand {
 
     @Override
     protected void execute(Player player, String[] args) {
-        if (args.length == 0) {
-            teleport.delayedTeleport(player, Utils.getSpawnLocation(), SPAWN_PATH);
-        } else if (args.length == 1 && player.hasPermission(OTHERS_PERM)) {
-            getPlayerOrSendMessage(player, target -> teleport.delayedTeleport(target, Utils.getSpawnLocation(), SPAWN_PATH), args[0]);
-        }
+        teleport.delayedTeleport(player, Utils.getSpawnLocation(), SPAWN_PATH);
     }
 }

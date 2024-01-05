@@ -3,12 +3,13 @@ package me.squid.eoncore.commands;
 import me.squid.eoncore.EonCommand;
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.messaging.Messaging;
-import me.squid.eoncore.utils.FunctionalBukkit;
+
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.eonnations.eonpluginapi.api.Alias;
 import org.eonnations.eonpluginapi.api.Command;
 
-import java.util.Optional;
+import io.vavr.control.Option;
 
 @Command(name = "enderchest",
         usage = "/enderchest <player>",
@@ -21,14 +22,19 @@ public class EnderChestCommand extends EonCommand {
         super(plugin);
     }
 
+    private Player openEnderChest(Player player, Player target) {
+        player.openInventory(target.getEnderChest());
+        return target;
+    }
+
     @Override
     protected void execute(Player player, String[] args) {
         if (args.length == 0) {
             player.openInventory(player.getEnderChest());
         } else if (args.length == 1 && player.hasPermission(OTHERS_NODE)) {
-            Optional<Player> maybeTarget = FunctionalBukkit.getPlayerFromName(args[0]);
-            maybeTarget.ifPresentOrElse(target -> player.openInventory(target.getEnderChest()),
-                    () -> Messaging.sendNullMessage(player));
+            Option.of(Bukkit.getPlayer(args[0]))
+                .map(target -> openEnderChest(player, target))
+                .onEmpty(() -> Messaging.sendNullMessage(player));
         }
     }
 }

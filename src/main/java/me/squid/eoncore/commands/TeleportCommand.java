@@ -6,13 +6,13 @@ import me.squid.eoncore.messaging.EonPrefix;
 import me.squid.eoncore.messaging.Messaging;
 import me.squid.eoncore.messaging.Messenger;
 import net.kyori.adventure.text.Component;
+
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.eonnations.eonpluginapi.api.Alias;
 import org.eonnations.eonpluginapi.api.Command;
 
-import java.util.Optional;
-
-import static me.squid.eoncore.utils.FunctionalBukkit.getPlayerFromName;
+import io.vavr.control.Option;
 
 @Command(name = "teleport",
         usage = "/teleport <player>",
@@ -33,8 +33,9 @@ public class TeleportCommand extends EonCommand {
             Messenger messenger = Messaging.messenger(EonPrefix.MODERATION);
             messenger.send(player, message);
         } else if (args.length == 1) {
-            Optional<Player> target = getPlayerFromName(args[0]);
-            target.ifPresent(toTeleport -> teleport.delayedTeleport(player, toTeleport.getLocation(), MESSAGE_PATH));
+            Option.of(Bukkit.getPlayer(args[0]))
+                .map(target -> { teleport.teleport(player, target.getLocation(), MESSAGE_PATH); return target; })
+                .onEmpty(() -> Messaging.sendNullMessage(player));
         }
     }
 }

@@ -3,12 +3,14 @@ package me.squid.eoncore.commands;
 import me.squid.eoncore.EonCommand;
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.messaging.Messaging;
-import me.squid.eoncore.utils.FunctionalBukkit;
 import me.squid.eoncore.utils.Utils;
 import net.kyori.adventure.text.Component;
+
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.eonnations.eonpluginapi.api.Alias;
 import org.eonnations.eonpluginapi.api.Command;
+import io.vavr.control.Option;
 
 @Command(name = "message",
         usage = "/message <player> <message>",
@@ -30,9 +32,10 @@ public class DirectMessageCommand extends EonCommand {
         sender.sendMessage(message);
     }
 
-    private void message(Player sender, Player target, String[] args) {
+    private Player message(Player sender, Player target, String[] args) {
         Component message = constructMessage(sender, target, args);
         sendDirectMessage(sender, target, message);
+        return target;
     }
 
     @Override
@@ -40,7 +43,9 @@ public class DirectMessageCommand extends EonCommand {
         if (args.length >= 2) {
             String targetName = args[0];
             args[0] = "";
-            FunctionalBukkit.getPlayerOrSendMessage(player, target -> message(player, target, args), targetName);
+            Option.of(Bukkit.getPlayer(targetName))
+                .map(target -> message(player, target, args))
+                .onEmpty(() -> Messaging.sendNullMessage(player));
         }
     }
 }

@@ -8,12 +8,13 @@ import me.squid.eoncore.messaging.ConfigMessenger;
 import me.squid.eoncore.messaging.EonPrefix;
 import me.squid.eoncore.messaging.Messaging;
 import me.squid.eoncore.messaging.Messenger;
-import me.squid.eoncore.utils.FunctionalBukkit;
 import me.squid.eoncore.utils.Utils;
+
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.eonnations.eonpluginapi.api.Command;
 
-import java.util.Optional;
+import io.vavr.control.Option;
 
 import static me.squid.eoncore.messaging.Messaging.fromFormatString;
 
@@ -30,12 +31,13 @@ public class FeedCommand extends EonCommand {
         cooldownManager = new CooldownManager();
     }
 
-    private void feedPlayer(Player player, ConfigMessenger messenger) {
+    private Player feedPlayer(Player player, ConfigMessenger messenger) {
         final int MAX_FOOD = 20;
         final int MAX_SATURATION = 14;
         player.setFoodLevel(MAX_FOOD);
         player.setSaturation(MAX_SATURATION);
         messenger.sendMessage(player, "Feed-Message");
+        return player;
     }
 
     private void applyCooldown(Player player) {
@@ -68,10 +70,12 @@ public class FeedCommand extends EonCommand {
                 applyCooldown(player);
             }
         } else if (args.length == 1 && player.hasPermission(OTHERS_IMMUNE_NODE)) {
-            Optional<Player> maybeTarget = FunctionalBukkit.getPlayerFromName(args[0]);
-            maybeTarget.ifPresentOrElse(target -> feedPlayer(target, messenger),
-                    () -> Messaging.sendNullMessage(player));
-            messenger.sendMessage(player, "Feed-Other");
+            Option<Player> targetOpt = Option.of(Bukkit.getPlayer(args[0]))
+                .map(target -> feedPlayer(target, messenger))
+                .onEmpty(() -> Messaging.sendNullMessage(player));
+            if (targetOpt.isDefined()) {
+                messenger.sendMessage(player, "Feed-Other");
+            }
         }
     }
 }
