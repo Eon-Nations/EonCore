@@ -5,14 +5,14 @@ import me.squid.eoncore.EonCore;
 import me.squid.eoncore.messaging.ConfigMessenger;
 import me.squid.eoncore.messaging.EonPrefix;
 import me.squid.eoncore.messaging.Messaging;
+
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.eonnations.eonpluginapi.api.Alias;
 import org.eonnations.eonpluginapi.api.Command;
 
-import java.util.function.Consumer;
-
-import static me.squid.eoncore.utils.FunctionalBukkit.getPlayerOrSendMessage;
+import io.vavr.control.Option;
 
 @Command(name = "clearinventory",
         usage = "/ci <player>",
@@ -29,17 +29,21 @@ public class ClearInventoryCommand extends EonCommand {
     protected void execute(Player player, String[] args) {
         FileConfiguration config = core.getConfig();
         ConfigMessenger messenger = Messaging.setupConfigMessenger(config, EonPrefix.MODERATION);
-        Consumer<Player> inventoryClear = clearInventory(messenger);
         if (args.length == 0) {
-            inventoryClear.accept(player);
+            clearInventory(player, messenger);
         } else if (args.length == 1 && player.hasPermission(OTHERS_NODE)) {
-            getPlayerOrSendMessage(player, inventoryClear, args[0]);
-            messenger.sendMessage(player, "Clear-Other-Inventory");
+            Option<Player> target = Option.of(Bukkit.getPlayer(args[0]))
+                .map(p -> clearInventory(p, messenger))
+                .onEmpty(() -> Messaging.sendNullMessage(player));
+            if (target.isDefined()) {
+                messenger.sendMessage(player, "Clear-Other-Inventory");
+            }
         }
     }
 
-    private Consumer<Player> clearInventory(ConfigMessenger messenger) {
-        Consumer<Player> clearInventory = player -> player.getInventory().clear();
-        return clearInventory.andThen(player -> messenger.sendMessage(player, "Clear-Self-Inventory"));
+    private Player clearInventory(Player player, ConfigMessenger messenger) {
+        player.getInventory().clear();
+        messenger.sendMessage(player, "Clear-Self-Inventory");
+        return player;
     }
 }

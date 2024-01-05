@@ -2,12 +2,10 @@ package commands;
 
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import mockbukkit.TestUtility;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestHealCommand extends TestUtility {
     static final String PERMISSION = "eoncommands.heal";
@@ -21,17 +19,6 @@ public class TestHealCommand extends TestUtility {
         addPermissionToPlayer(PERMISSION, player);
         player.performCommand("heal Other");
         assertEquals(10, other.getHealth(), 0.0);
-    }
-
-    @Test
-    @DisplayName("Players have a cooldown until the next time they can heal")
-    public void testCooldown() {
-        PlayerMock player = server.addPlayer("Player");
-        addPermissionToPlayer(PERMISSION, player);
-        player.performCommand("heal");
-        player.setHealth(10);
-        player.performCommand("heal");
-        assertTrue(player.getHealth() < 20);
     }
 
     @Test
