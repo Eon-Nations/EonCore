@@ -17,7 +17,6 @@ EonCore is the backbone of Eon Islands, offering a unique gaming experience wher
 - **Command Functionality:** EonCore provides a robust set of commands, enhancing player interaction and server management.
 - **Resource Nodes:** The core mechanics of Eon Islands revolve around resource nodes on various islands. Players compete for control, shaping the server's dynamic landscape.
 - **Progression System:** Players advance through the game by strategically acquiring and defending resource nodes, encouraging a dynamic and competitive environment.
-- 
 
 ## Contributing
 
