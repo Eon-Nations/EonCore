@@ -14,6 +14,7 @@ public class FloatingItem implements AutoCloseable {
         item.setGravity(false);
         item.setVelocity(new Vector(0, 0, 0));
         item.setItemStack(new ItemStack(material, 1));
+        item.setCanMobPickup(false);
         item.setGlowing(true);
         item.setCanPlayerPickup(false);
         item.setPersistent(true);
