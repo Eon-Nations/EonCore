@@ -147,7 +147,7 @@ public class Utils {
     }
 
     public static Location getSpawnLocation() {
-        return new Location(Bukkit.getWorld("spawn_void"), -12, 87, -16);
+        return new Location(Bukkit.getWorld("spawn_void"), 0, 63, 0);
     }
 
     public static String getMessageFromArgs(String[] args) {
