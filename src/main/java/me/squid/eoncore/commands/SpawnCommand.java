@@ -18,7 +18,6 @@ public class SpawnCommand extends EonCommand {
         super(plugin);
         EventSubscriber.subscribe(PlayerDeathEvent.class, EventPriority.NORMAL)
             .handler(e -> {
-                e.getPlayer().spigot().respawn(); 
                 e.getPlayer().teleport(Utils.getSpawnLocation());
                 return false;
             });
