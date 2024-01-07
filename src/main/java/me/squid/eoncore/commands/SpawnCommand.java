@@ -4,7 +4,10 @@ import me.squid.eoncore.EonCommand;
 import me.squid.eoncore.EonCore;
 import me.squid.eoncore.utils.Utils;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.eonnations.eonpluginapi.api.Command;
+import org.eonnations.eonpluginapi.events.EventSubscriber;
 
 @Command(name = "spawn", usage = "/spawn")
 public class SpawnCommand extends EonCommand {
@@ -13,6 +16,12 @@ public class SpawnCommand extends EonCommand {
 
     public SpawnCommand(EonCore plugin) {
         super(plugin);
+        EventSubscriber.subscribe(PlayerDeathEvent.class, EventPriority.NORMAL)
+            .handler(e -> {
+                e.getPlayer().spigot().respawn(); 
+                e.getPlayer().teleport(Utils.getSpawnLocation());
+                return false;
+            });
     }
 
     @Override
