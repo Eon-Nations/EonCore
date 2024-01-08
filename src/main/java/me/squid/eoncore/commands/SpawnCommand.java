@@ -5,7 +5,7 @@ import me.squid.eoncore.EonCore;
 import me.squid.eoncore.utils.Utils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.eonnations.eonpluginapi.api.Command;
 import org.eonnations.eonpluginapi.events.EventSubscriber;
 
@@ -16,7 +16,7 @@ public class SpawnCommand extends EonCommand {
 
     public SpawnCommand(EonCore plugin) {
         super(plugin);
-        EventSubscriber.subscribe(PlayerDeathEvent.class, EventPriority.NORMAL)
+        EventSubscriber.subscribe(PlayerRespawnEvent.class, EventPriority.NORMAL)
             .handler(e -> {
                 e.getPlayer().teleport(Utils.getSpawnLocation());
                 return false;
