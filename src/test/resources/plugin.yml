@@ -1,6 +1,6 @@
 name: EonCore
 version: ${project.version}
-main: me.squid.eoncore.EonCore
-api-version: 1.17
+main: com.eonnations.eoncore.EonCore
+api-version: 1.21
 authors: [Squid]
 description: Epic description

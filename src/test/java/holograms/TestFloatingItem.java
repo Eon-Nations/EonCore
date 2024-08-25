@@ -1,18 +1,18 @@
 package holograms;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.Collection;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import com.eonnations.eoncore.holograms.FloatingItem;
+
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
-import me.squid.eoncore.holograms.FloatingItem;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.util.Collection;
-
 import mockbukkit.TestUtility;
 
 public class TestFloatingItem extends TestUtility {
