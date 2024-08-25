@@ -1,20 +1,20 @@
 package node;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.Collection;
+
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Item;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import com.eonnations.eoncore.node.Node;
+import com.eonnations.eoncore.node.Resource;
+
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import mockbukkit.TestUtility;
-import net.kyori.adventure.text.Component;
-import me.squid.eoncore.node.*;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.Collection;
 
 public class TestNode extends TestUtility {
     
