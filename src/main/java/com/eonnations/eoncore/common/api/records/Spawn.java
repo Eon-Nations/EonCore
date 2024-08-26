@@ -3,6 +3,9 @@ package com.eonnations.eoncore.common.api.records;
 import org.bukkit.Location;
 import org.bukkit.World;
 
+import lombok.ToString;
+
+@ToString
 public class Spawn extends Location {
 
     public Spawn(double x, double y, double z, float yaw, float pitch) {
