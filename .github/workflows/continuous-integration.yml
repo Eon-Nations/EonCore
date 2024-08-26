@@ -31,7 +31,7 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v2
         with:
-          java-version: 17
+          java-version: 21
           cache: 'maven'
           distribution: 'zulu'
       - name: Setup MySQL database
