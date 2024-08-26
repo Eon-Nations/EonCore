@@ -13,9 +13,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.util.Vector;
-import org.eonnations.eonpluginapi.events.EventHandler;
-import org.eonnations.eonpluginapi.events.EventSubscriber;
 
+import com.eonnations.eoncore.common.events.EventHandler;
+import com.eonnations.eoncore.common.events.EventSubscriber;
 import com.eonnations.eoncore.holograms.FloatingItem;
 import com.eonnations.eoncore.holograms.Hologram;
 

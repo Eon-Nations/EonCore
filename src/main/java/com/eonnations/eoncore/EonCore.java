@@ -1,8 +1,8 @@
 package com.eonnations.eoncore;
 
 import org.bukkit.Bukkit;
-import org.eonnations.eonpluginapi.EonPlugin;
 
+import com.eonnations.eoncore.common.EonPlugin;
 import com.eonnations.eoncore.node.Node;
 import com.eonnations.eoncore.utils.WorldLoader;
 

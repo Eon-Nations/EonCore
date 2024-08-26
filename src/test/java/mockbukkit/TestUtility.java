@@ -1,5 +1,8 @@
 package mockbukkit;
 
+import java.lang.reflect.Field;
+
+import org.bukkit.Bukkit;
 import org.bukkit.permissions.PermissionAttachment;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,8 +19,18 @@ public class TestUtility {
     protected EonCore plugin;
     protected WorldMock otherWorld;
 
+    // Bukkit is a static class, and JUnit is making multiple threads to test the code
+    // In order for MockBukkit to try not to override Bukkit, the server is set to null every time
+    // Bukkit.setServer(Server) throws an error when attempting, so reflection is needed
+    private void setBukkitServerNull() throws NoSuchFieldException, IllegalAccessException {
+        Field serverField = Bukkit.class.getDeclaredField("server");
+        serverField.setAccessible(true);
+        serverField.set(serverField, null);
+    }
+
     @BeforeEach
-    public void setup() {
+    public void setup() throws NoSuchFieldException, IllegalAccessException {
+        setBukkitServerNull();
         server = MockBukkit.getOrCreateMock();
         server.addSimpleWorld("spawn_void");
         otherWorld = server.addSimpleWorld("other");
