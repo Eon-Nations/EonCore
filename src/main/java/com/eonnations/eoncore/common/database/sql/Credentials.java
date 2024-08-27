@@ -1,12 +1,12 @@
 package com.eonnations.eoncore.common.database.sql;
 
-import com.eonnations.eoncore.common.EonPlugin;
-
 import java.util.Optional;
+
+import com.eonnations.eoncore.EonCore;
 
 public record Credentials(String url, String port, String user, String password, String database) {
 
-    public static Credentials credentials(EonPlugin plugin) {
+    public static Credentials credentials(EonCore plugin) {
         String url = Optional.ofNullable(plugin.getConfig().getString("mysql-url"))
                 .orElse("localhost");
         String port = Optional.ofNullable(plugin.getConfig().getString("mysql-port"))

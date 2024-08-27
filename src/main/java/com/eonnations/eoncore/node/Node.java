@@ -16,8 +16,8 @@ import org.bukkit.util.Vector;
 
 import com.eonnations.eoncore.common.events.EventHandler;
 import com.eonnations.eoncore.common.events.EventSubscriber;
-import com.eonnations.eoncore.holograms.FloatingItem;
-import com.eonnations.eoncore.holograms.Hologram;
+import com.eonnations.eoncore.node.holograms.FloatingItem;
+import com.eonnations.eoncore.node.holograms.Hologram;
 
 import io.vavr.collection.List;
 import net.kyori.adventure.text.Component;

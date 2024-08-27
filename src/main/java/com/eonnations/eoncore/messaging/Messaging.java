@@ -63,7 +63,7 @@ public class Messaging {
     }
 
     public static void sendNullMessage(Player player) {
-        Messenger messenger = messenger(EonPrefix.NATIONS);
+        Messenger messenger = messenger(EonPrefix.ISLANDS);
         Component message = Component.text(NULL_MESSAGE)
                 .color(TextColor.color(96, 96, 96));
         messenger.send(player, message);
