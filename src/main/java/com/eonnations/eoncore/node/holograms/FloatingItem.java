@@ -1,4 +1,4 @@
-package com.eonnations.eoncore.holograms;
+package com.eonnations.eoncore.node.holograms;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -19,6 +19,7 @@ public class FloatingItem implements AutoCloseable {
         item.setCanPlayerPickup(false);
         item.setPersistent(true);
         item.setWillAge(false);
+        item.setNoPhysics(true);
     }
 
     @Override

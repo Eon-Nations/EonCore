@@ -1,29 +1,42 @@
 package com.eonnations.eoncore;
 
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.reflections.Reflections;
 
-import com.eonnations.eoncore.common.EonPlugin;
-import com.eonnations.eoncore.node.Node;
+import com.eonnations.eoncore.common.EonModule;
 import com.eonnations.eoncore.utils.WorldLoader;
 
-public class EonCore extends EonPlugin {
+import io.vavr.collection.List;
+import io.vavr.control.Try;
 
-    public EonCore() {
-        super();
+public class EonCore extends JavaPlugin {
+
+    private List<EonModule> loadedModules = registerAllModules();
+
+    private List<EonModule> registerAllModules() {
+        Reflections reflections = new Reflections("com.eonnations.eoncore");
+        return List.ofAll(reflections.getSubTypesOf(EonModule.class))
+            .map(moduleClass -> Try.of(() -> moduleClass.getDeclaredConstructor().newInstance(this)))
+            .filter(Try::isSuccess)
+            .map(moduleTry -> moduleTry.get());
     }
 
     @Override
-    public void load() { }
+    public void onLoad() {
+        loadedModules.forEach(EonModule::load);
+    }
 
     @Override
-    public void setup() {
+    public void onEnable() {
         saveDefaultConfig();
         WorldLoader.initializeWorlds();
-        Node.registerChestPlaceListener();
+        loadedModules.forEach(EonModule::setup);
     }
 
     @Override
-    public void cleanup() {
+    public void onDisable() {
+        loadedModules.forEach(EonModule::cleanup);
         Bukkit.getScheduler().cancelTasks(this);
     }
 }

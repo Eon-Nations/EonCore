@@ -12,7 +12,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
 public enum EonPrefix {
-    NATIONS,
+    ISLANDS,
     MODERATION,
     INFO,
     CURRENCY,

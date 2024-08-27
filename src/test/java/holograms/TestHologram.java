@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.eonnations.eoncore.holograms.Hologram;
+import com.eonnations.eoncore.node.holograms.Hologram;
 
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import io.vavr.collection.List;

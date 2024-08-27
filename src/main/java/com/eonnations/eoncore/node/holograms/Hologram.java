@@ -1,4 +1,4 @@
-package com.eonnations.eoncore.holograms;
+package com.eonnations.eoncore.node.holograms;
 
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;

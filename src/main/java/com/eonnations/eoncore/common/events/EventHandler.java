@@ -1,17 +1,21 @@
 package com.eonnations.eoncore.common.events;
 
-import io.vavr.Function1;
-import io.vavr.collection.List;
-import io.vavr.control.Either;
-import io.vavr.control.Try;
-import org.bukkit.event.*;
+import java.lang.reflect.Method;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import org.bukkit.event.Event;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.EventExecutor;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Method;
-import java.util.concurrent.atomic.AtomicBoolean;
+import io.vavr.Function1;
+import io.vavr.collection.List;
+import io.vavr.control.Either;
+import io.vavr.control.Try;
 
 public class EventHandler<T extends Event> implements EventExecutor, Listener, AutoCloseable {
     private final Class<T> eventClass;
