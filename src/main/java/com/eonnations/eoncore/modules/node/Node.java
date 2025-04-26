@@ -1,4 +1,4 @@
-package com.eonnations.eoncore.node;
+package com.eonnations.eoncore.modules.node;
 
 import static com.eonnations.eoncore.messaging.Messaging.fromFormatString;
 
@@ -16,8 +16,8 @@ import org.bukkit.util.Vector;
 
 import com.eonnations.eoncore.common.events.EventHandler;
 import com.eonnations.eoncore.common.events.EventSubscriber;
-import com.eonnations.eoncore.node.holograms.FloatingItem;
-import com.eonnations.eoncore.node.holograms.Hologram;
+import com.eonnations.eoncore.modules.node.holograms.FloatingItem;
+import com.eonnations.eoncore.modules.node.holograms.Hologram;
 
 import io.vavr.collection.List;
 import net.kyori.adventure.text.Component;

@@ -1,4 +1,4 @@
-package com.eonnations.eoncore.node;
+package com.eonnations.eoncore.modules.node;
 
 import com.eonnations.eoncore.EonCore;
 import com.eonnations.eoncore.common.EonModule;
@@ -6,7 +6,7 @@ import com.eonnations.eoncore.common.EonModule;
 public class NodeModule extends EonModule {
     
     public NodeModule(EonCore plugin) {
-        super(plugin);
+        super(plugin, LoadOrder.MOST);
     }
 
     @Override
@@ -24,6 +24,6 @@ public class NodeModule extends EonModule {
 
     @Override
     public String name() {
-        return "NodeModule";
+        return "Node";
     }
 }

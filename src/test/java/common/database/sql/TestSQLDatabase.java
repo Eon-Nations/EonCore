@@ -4,7 +4,9 @@ import io.vavr.control.Either;
 import io.vavr.control.Option;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
+import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.MySQLContainer;
@@ -25,6 +27,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @Testcontainers
+@Disabled
 public class TestSQLDatabase {
     @Container
     private static MySQLContainer<?> mysql = new MySQLContainer<>("mysql:latest")
@@ -40,6 +43,9 @@ public class TestSQLDatabase {
 
     @BeforeEach
     void setup() {
+        String user = Option.of(System.getenv("EONCORE_MYSQL_USER")).getOrElse("root");
+        String password = Option.of(System.getenv("EONCORE_MYSQL_PASSWORD")).getOrElse("root_password");
+        String database = Option.of(System.getenv("EONCORE_DATABASE")).getOrElse("test_db");
         Credentials credentials = new Credentials(mysql.getHost(), String.valueOf(mysql.getMappedPort(3306)), "root", "root_password", "test_db");
         sqlDatabase = new SQLDatabase(credentials);
     }

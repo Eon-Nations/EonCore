@@ -32,8 +32,7 @@ public enum EonPrefix {
     }
 
     private static Component transformPrefix(String prefix) {
-        MiniMessage miniMessage = MiniMessage.miniMessage();
-        return miniMessage.deserialize(prefix);
+        return MiniMessage.miniMessage().deserialize(prefix);
     }
 
     private static String prefixesString() {

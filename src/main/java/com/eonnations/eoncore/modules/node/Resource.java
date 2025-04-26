@@ -1,4 +1,4 @@
-package com.eonnations.eoncore.node;
+package com.eonnations.eoncore.modules.node;
 
 public enum Resource {
     COPPER,
