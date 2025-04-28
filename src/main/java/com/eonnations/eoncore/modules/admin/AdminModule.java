@@ -2,18 +2,12 @@ package com.eonnations.eoncore.modules.admin;
 
 import com.eonnations.eoncore.EonCore;
 import com.eonnations.eoncore.common.EonModule;
-import com.eonnations.eoncore.common.database.sql.Credentials;
-import com.eonnations.eoncore.common.database.sql.SQLDatabase;
-import com.eonnations.eoncore.messaging.EonPrefix;
-import com.eonnations.eoncore.messaging.Messaging;
-import com.eonnations.eoncore.messaging.Messenger;
+import com.eonnations.eoncore.messaging.*;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.ArgumentSuggestions;
 import dev.jorel.commandapi.arguments.PlayerArgument;
 import dev.jorel.commandapi.arguments.StringArgument;
-import lombok.Getter;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.World;
@@ -70,7 +64,7 @@ public class AdminModule extends EonModule {
                     player.teleportAsync(world.getSpawnLocation()).thenAccept(teleported -> {
                         if (teleported) {
                             Messenger messenger = Messaging.messenger(EonPrefix.MODERATION);
-                            messenger.send(player, Component.text("Teleported to world " + worldChoice));
+                            messenger.send(player, Component.text("Teleported to world: " + worldChoice));
                         }
                     });
                 }).register(plugin);
@@ -86,11 +80,19 @@ public class AdminModule extends EonModule {
                     player.openInventory(target.getInventory());
                 }).register(plugin);
         new CommandAPICommand("trash")
-                .withPermission(ADMIN_PERMISSION_STRING)
                 .executesPlayer((player, args) -> {
                     Inventory trashInventory = Bukkit.createInventory(null, 27, Component.text("Trash"));
                     player.openInventory(trashInventory);
                 }).register(plugin);
+        new CommandAPICommand("config")
+                .withPermission(ADMIN_PERMISSION_STRING)
+                .withSubcommand(new CommandAPICommand("reload")
+                        .executesPlayer((sender, args) -> {
+                            plugin.reloadConfig();
+                            SimpleConfigMessenger messenger = Messaging.setupSimpleConfigMessenger(plugin.getConfig(), EonPrefix.MODERATION);
+                            messenger.sendMessage(sender, "Config_Reload");
+                        }))
+                .register(plugin);
     }
 
     @Override

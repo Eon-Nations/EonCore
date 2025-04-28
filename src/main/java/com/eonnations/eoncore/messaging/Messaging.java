@@ -2,6 +2,7 @@ package com.eonnations.eoncore.messaging;
 
 import java.util.Map;
 
+import io.vavr.Tuple2;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -41,23 +42,22 @@ public class Messaging {
     }
 
     public static ConfigMessenger setupConfigMessenger(FileConfiguration config, EonPrefix prefix) {
-        return (target, path) -> {
-            String format = config.getString(path)
-                    .replace("<player>", target.getName());
+        return (target, path, args) -> {
+            String format = config.getString(path);
+            for (Tuple2<String, String> keyValue : args) {
+                format = format.replace(keyValue._1(), keyValue._2());
+            }
             Component messagePrefix = prefixMap.get(prefix);
             Component suffix = fromFormatString(format);
             target.sendMessage(messagePrefix.append(suffix));
         };
     }
 
-    public static ConfigMessenger setupConfigMessenger(FileConfiguration config, EonPrefix prefix, Map<String, String> mappings) {
+    public static SimpleConfigMessenger setupSimpleConfigMessenger(FileConfiguration config, EonPrefix prefix) {
         return (target, path) -> {
-            String format = config.getString(path);
-            for (Map.Entry<String, String> entry : mappings.entrySet()) {
-                format = format.replace(entry.getKey(), entry.getValue());
-            }
+            String message = config.getString(path);
             Component messagePrefix = prefixMap.get(prefix);
-            Component suffix = fromFormatString(format);
+            Component suffix = fromFormatString(message);
             target.sendMessage(messagePrefix.append(suffix));
         };
     }

@@ -1,4 +1,3 @@
-
 CREATE TABLE IF NOT EXISTS vaults (
     vault_id INT PRIMARY KEY AUTO_INCREMENT,
     copper INT DEFAULT 0 NOT NULL,
@@ -37,6 +36,186 @@ BEGIN
         diamonds,
         emeralds
     FROM vaults
+    WHERE vault_id = in_vault_id;
+END //
+
+CREATE PROCEDURE IF NOT EXISTS add_copper_to_vault(IN in_vault_id INT, IN copper_to_add INT)
+MODIFIES SQL DATA
+BEGIN
+    DECLARE new_copper_amount INT DEFAULT 0;
+
+    SELECT
+        copper
+        INTO new_copper_amount
+    FROM vaults
+    WHERE vault_id = in_vault_id;
+
+    SET new_copper_amount = new_copper_amount + copper_to_add;
+
+    UPDATE vaults
+    SET copper = new_copper_amount
+    WHERE vault_id = in_vault_id;
+END //
+
+CREATE PROCEDURE IF NOT EXISTS add_iron_to_vault(IN in_vault_id INT, IN iron_to_add INT)
+    MODIFIES SQL DATA
+BEGIN
+    DECLARE new_iron_amount INT DEFAULT 0;
+
+    SELECT
+        iron
+    INTO new_iron_amount
+    FROM vaults
+    WHERE vault_id = in_vault_id;
+
+    SET new_iron_amount = new_iron_amount + iron_to_add;
+
+    UPDATE vaults
+    SET iron = new_iron_amount
+    WHERE vault_id = in_vault_id;
+END //
+
+CREATE PROCEDURE IF NOT EXISTS add_gold_to_vault(IN in_vault_id INT, IN gold_to_add INT)
+    MODIFIES SQL DATA
+BEGIN
+    DECLARE new_gold_amount INT DEFAULT 0;
+
+    SELECT
+        gold
+    INTO new_gold_amount
+    FROM vaults
+    WHERE vault_id = in_vault_id;
+
+    SET new_gold_amount = new_gold_amount + gold_to_add;
+
+    UPDATE vaults
+    SET gold = new_gold_amount
+    WHERE vault_id = in_vault_id;
+END //
+
+CREATE PROCEDURE IF NOT EXISTS add_diamond_to_vault(IN in_vault_id INT, IN diamond_to_add INT)
+    MODIFIES SQL DATA
+BEGIN
+    DECLARE new_diamond_amount INT DEFAULT 0;
+
+    SELECT
+        diamonds
+    INTO new_diamond_amount
+    FROM vaults
+    WHERE vault_id = in_vault_id;
+
+    SET new_diamond_amount = new_diamond_amount + diamond_to_add;
+
+    UPDATE vaults
+    SET diamonds = new_diamond_amount
+    WHERE vault_id = in_vault_id;
+END //
+
+CREATE PROCEDURE IF NOT EXISTS add_emeralds_to_vault(IN in_vault_id INT, IN emeralds_to_add INT)
+    MODIFIES SQL DATA
+BEGIN
+    DECLARE new_emeralds_amount INT DEFAULT 0;
+
+    SELECT
+        emeralds
+    INTO new_emeralds_amount
+    FROM vaults
+    WHERE vault_id = in_vault_id;
+
+    SET new_emeralds_amount = new_emeralds_amount + emeralds_to_add;
+
+    UPDATE vaults
+    SET emeralds = new_emeralds_amount
+    WHERE vault_id = in_vault_id;
+END //
+
+CREATE PROCEDURE IF NOT EXISTS remove_copper_from_vault(IN in_vault_id INT, IN copper_to_remove INT)
+    MODIFIES SQL DATA
+BEGIN
+    DECLARE new_copper_amount INT DEFAULT 0;
+
+    SELECT
+        copper
+    INTO new_copper_amount
+    FROM vaults
+    WHERE vault_id = in_vault_id;
+
+    SET new_copper_amount = new_copper_amount - copper_to_remove;
+
+    UPDATE vaults
+    SET copper = new_copper_amount
+    WHERE vault_id = in_vault_id;
+END //
+
+CREATE PROCEDURE IF NOT EXISTS remove_iron_from_vault(IN in_vault_id INT, IN iron_to_remove INT)
+    MODIFIES SQL DATA
+BEGIN
+    DECLARE new_iron_amount INT DEFAULT 0;
+
+    SELECT
+        iron
+    INTO new_iron_amount
+    FROM vaults
+    WHERE vault_id = in_vault_id;
+
+    SET new_iron_amount = new_iron_amount - iron_to_remove;
+
+    UPDATE vaults
+    SET iron = new_iron_amount
+    WHERE vault_id = in_vault_id;
+END //
+
+CREATE PROCEDURE IF NOT EXISTS remove_gold_from_vault(IN in_vault_id INT, IN gold_to_remove INT)
+    MODIFIES SQL DATA
+BEGIN
+    DECLARE new_gold_amount INT DEFAULT 0;
+
+    SELECT
+        gold
+    INTO new_gold_amount
+    FROM vaults
+    WHERE vault_id = in_vault_id;
+
+    SET new_gold_amount = new_gold_amount - gold_to_remove;
+
+    UPDATE vaults
+    SET gold = new_gold_amount
+    WHERE vault_id = in_vault_id;
+END //
+
+CREATE PROCEDURE IF NOT EXISTS remove_diamond_from_vault(IN in_vault_id INT, IN diamond_to_remove INT)
+    MODIFIES SQL DATA
+BEGIN
+    DECLARE new_diamond_amount INT DEFAULT 0;
+
+    SELECT
+        diamonds
+    INTO new_diamond_amount
+    FROM vaults
+    WHERE vault_id = in_vault_id;
+
+    SET new_diamond_amount = new_diamond_amount - diamond_to_remove;
+
+    UPDATE vaults
+    SET diamonds = new_diamond_amount
+    WHERE vault_id = in_vault_id;
+END //
+
+CREATE PROCEDURE IF NOT EXISTS remove_emeralds_from_vault(IN in_vault_id INT, IN emeralds_to_remove INT)
+    MODIFIES SQL DATA
+BEGIN
+    DECLARE new_emeralds_amount INT DEFAULT 0;
+
+    SELECT
+        emeralds
+    INTO new_emeralds_amount
+    FROM vaults
+    WHERE vault_id = in_vault_id;
+
+    SET new_emeralds_amount = new_emeralds_amount - emeralds_to_remove;
+
+    UPDATE vaults
+    SET emeralds = new_emeralds_amount
     WHERE vault_id = in_vault_id;
 END //
 

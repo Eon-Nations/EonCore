@@ -1,10 +1,6 @@
 package com.eonnations.eoncore.common.database.sql;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -70,6 +66,123 @@ public class SQLDatabase implements Database {
                 }
             }
             return Option.none();
+        } catch (SQLException e) {
+            return Option.of(e);
+        }
+    }
+
+    @Override
+    public Either<SQLException, Integer> playerVaultId(UUID uuid) {
+        try (Connection conn = dataSource.getConnection()) {
+            return playerVaultId(uuid, conn);
+        } catch (SQLException e) {
+            return Either.left(e);
+        }
+    }
+
+    private Either<SQLException, Integer> playerVaultId(UUID uuid, Connection connection) {
+        try (PreparedStatement statement = connection.prepareStatement("SELECT vault_id FROM players WHERE player_uuid = UUID_TO_BIN(?)")) {
+            statement.setString(1, uuid.toString());
+            ResultSet set = statement.executeQuery();
+            if (set.next()) {
+                return Either.right(set.getInt("vault_id"));
+            }
+            return Either.left(new SQLException("No vault ID found", "99001"));
+        } catch (SQLException e) {
+            return Either.left(e);
+        }
+    }
+
+    @Override
+    public Option<SQLException> addCopperToPlayer(UUID uuid, int copperToAdd) {
+        try (Connection conn = dataSource.getConnection()) {
+            int vaultId = playerVaultId(uuid, conn)
+                    .getOrElse(-1);
+            try (CallableStatement prodCall = conn.prepareCall("CALL add_copper_to_vault(?, ?)")) {
+                prodCall.setInt(1, vaultId);
+                prodCall.setInt(2, copperToAdd);
+                int updated = prodCall.executeUpdate();
+                if (updated == 0) {
+                    return Option.of(new SQLException("No copper found", "99001"));
+                }
+                return Option.none();
+            }
+        } catch (SQLException e) {
+            return Option.of(e);
+        }
+    }
+
+    @Override
+    public Option<SQLException> addIronToPlayer(UUID uuid, int ironToAdd) {
+        try (Connection conn = dataSource.getConnection()) {
+            try (CallableStatement prodCall = conn.prepareCall("CALL add_iron_to_vault(?, ?)")) {
+                int vaultId = playerVaultId(uuid, conn)
+                        .getOrElse(-1);
+                prodCall.setInt(1, vaultId);
+                prodCall.setInt(2, ironToAdd);
+                int updated = prodCall.executeUpdate();
+                if (updated == 0) {
+                    return Option.of(new SQLException("No copper found", "99001"));
+                }
+                return Option.none();
+            }
+        } catch (SQLException e) {
+            return Option.of(e);
+        }
+    }
+
+    @Override
+    public Option<SQLException> addGoldToPlayer(UUID uuid, int goldToAdd) {
+        try (Connection conn = dataSource.getConnection()) {
+            try (CallableStatement prodCall = conn.prepareCall("CALL add_gold_to_vault(?, ?)")) {
+                int vaultId = playerVaultId(uuid, conn)
+                        .getOrElse(-1);
+                prodCall.setInt(1, vaultId);
+                prodCall.setInt(2, goldToAdd);
+                int updated = prodCall.executeUpdate();
+                if (updated == 0) {
+                    return Option.of(new SQLException("No copper found", "99001"));
+                }
+                return Option.none();
+            }
+        } catch (SQLException e) {
+            return Option.of(e);
+        }
+    }
+
+    @Override
+    public Option<SQLException> addDiamondToPlayer(UUID uuid, int diamondToAdd) {
+        try (Connection conn = dataSource.getConnection()) {
+            try (CallableStatement prodCall = conn.prepareCall("CALL add_diamond_to_vault(?, ?)")) {
+                int vaultId = playerVaultId(uuid, conn)
+                        .getOrElse(-1);
+                prodCall.setInt(1, vaultId);
+                prodCall.setInt(2, diamondToAdd);
+                int updated = prodCall.executeUpdate();
+                if (updated == 0) {
+                    return Option.of(new SQLException("No copper found", "99001"));
+                }
+                return Option.none();
+            }
+        } catch (SQLException e) {
+            return Option.of(e);
+        }
+    }
+
+    @Override
+    public Option<SQLException> addEmeraldToPlayer(UUID uuid, int emeraldToAdd) {
+        try (Connection conn = dataSource.getConnection()) {
+            try (CallableStatement prodCall = conn.prepareCall("CALL add_emeralds_to_vault(?, ?)")) {
+                int vaultId = playerVaultId(uuid, conn)
+                        .getOrElse(-1);
+                prodCall.setInt(1, vaultId);
+                prodCall.setInt(2, emeraldToAdd);
+                int updated = prodCall.executeUpdate();
+                if (updated == 0) {
+                    return Option.of(new SQLException("No copper found", "99001"));
+                }
+                return Option.none();
+            }
         } catch (SQLException e) {
             return Option.of(e);
         }

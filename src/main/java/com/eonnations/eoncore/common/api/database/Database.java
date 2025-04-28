@@ -11,6 +11,15 @@ public interface Database {
     Either<SQLException, Vault> retrieveVault(int vaultId);
     Option<SQLException> removeVault(int vaultId);
 
+    Either<SQLException, Integer> playerVaultId(UUID uuid);
+
+
+    Option<SQLException> addCopperToPlayer(UUID uuid, int copperToAdd);
+    Option<SQLException> addIronToPlayer(UUID uuid, int ironToAdd);
+    Option<SQLException> addGoldToPlayer(UUID uuid, int goldToAdd);
+    Option<SQLException> addDiamondToPlayer(UUID uuid, int diamondToAdd);
+    Option<SQLException> addEmeraldToPlayer(UUID uuid, int emeraldToAdd);
+
     Either<SQLException, Integer> createSpawn(int x, int y, int z);
     Either<SQLException, Integer> createSpawn(int x, int y, int z, float yaw, float pitch);
 

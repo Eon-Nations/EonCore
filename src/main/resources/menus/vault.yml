@@ -1,0 +1,33 @@
+﻿title: "Vault"
+structure:
+  - "# # # # t # # # #"
+  - "# # e d g i c # #"
+  - "# # # # b # # # #"
+items:
+  '#':
+    type: "BLACK_STAINED_GLASS_PANE"
+    name: "<black></black>"
+  'e':
+    type: "EMERALD"
+    name: "<green>Emeralds: <emerald></green>"
+  'd':
+    type: "DIAMOND"
+    name: "<blue>Diamonds: <diamond></blue>"
+  'g':
+    type: "GOLD_INGOT"
+    name: "<yellow>Gold: <currency_gold></yellow>"
+  'i':
+    type: "IRON_INGOT"
+    name: "<white>Iron: <iron></white>"
+  'c':
+    type: "COPPER_INGOT"
+    name: "<#FBC02D>Copper: <copper></#FBC02D>"
+  't':
+    type: "BELL"
+    name: "<#FBC02D>Town Vault</#FBC02D>"
+    lore:
+      - "<green>Go to your town's vault</green>"
+      - "Current Town: <town>"
+  'b':
+    type: "BARRIER"
+    name: "<red>Go Back</red>"

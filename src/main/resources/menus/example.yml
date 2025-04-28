@@ -1,0 +1,9 @@
+﻿title: ""
+structure:
+  - "# # # # # # # # #"
+  - "# # # # # # # # #"
+  - "# # # # # # # # #"
+items:
+  '#':
+    type: "BLACK_STAINED_GLASS_PANE"
+    name: ""
