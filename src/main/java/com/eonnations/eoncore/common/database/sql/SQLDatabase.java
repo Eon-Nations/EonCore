@@ -3,6 +3,7 @@ package com.eonnations.eoncore.common.database.sql;
 import java.sql.*;
 import java.util.UUID;
 
+import com.eonnations.eoncore.modules.node.Resource;
 import org.bukkit.Bukkit;
 
 import com.eonnations.eoncore.common.api.database.Database;
@@ -16,6 +17,7 @@ import com.zaxxer.hikari.HikariDataSource;
 
 import io.vavr.control.Either;
 import io.vavr.control.Option;
+import org.bukkit.Location;
 
 public class SQLDatabase implements Database {
     private final HikariDataSource dataSource;
@@ -494,6 +496,51 @@ public class SQLDatabase implements Database {
             }
         } catch (SQLException e) {
             return false;
+        }
+    }
+
+    @Override
+    public Option<SQLException> addNode(Location location, Resource resource, int outputRate) {
+        return addNode(location, resource, "__NONE__", outputRate);
+    }
+
+    @Override
+    public Option<SQLException> addNode(Location location, Resource resource, String townName, int outputRate) {
+        try (Connection conn = dataSource.getConnection()) {
+            try (CallableStatement statement = conn.prepareCall("CALL create_node(?, ?, ?, ?, ?, ?)")) {
+                statement.setString(1, townName);
+                statement.setInt(2, location.getBlockX());
+                statement.setInt(3, location.getBlockY());
+                statement.setInt(4, location.getBlockZ());
+                statement.setString(5, resource.toString().toLowerCase());
+                statement.setInt(6, outputRate);
+                int updated = statement.executeUpdate();
+                if (updated == 0) {
+                    return Option.of(new SQLException("Node does not exist", "99001"));
+                }
+                return Option.none();
+            }
+        } catch (SQLException e) {
+            return Option.of(e);
+        }
+    }
+
+    @Override
+    public Option<SQLException> claimNode(Location location, String townName) {
+        try (Connection conn = dataSource.getConnection()) {
+            try (CallableStatement statement = conn.prepareCall("CALL claim_node(?, ?, ?, ?)")) {
+                statement.setString(1, townName);
+                statement.setInt(2, location.getBlockX());
+                statement.setInt(3, location.getBlockY());
+                statement.setInt(4, location.getBlockZ());
+                int updated = statement.executeUpdate();
+                if (updated == 0) {
+                    return Option.of(new SQLException("Node does not exist", "99001"));
+                }
+                return Option.none();
+            }
+        } catch (SQLException e) {
+            return Option.of(e);
         }
     }
 

@@ -560,6 +560,18 @@ BEGIN
         VALUES (in_owner, in_x, in_y, in_z, in_resource, in_output);
 END //
 
+CREATE PROCEDURE IF NOT EXISTS claim_node(IN in_owner INT, IN in_x INT, IN in_y INT, IN in_z INT)
+BEGIN
+    DECLARE id INT DEFAULT 0;
+    SELECT
+        node_id INTO id
+    FROM nodes
+    WHERE x = in_x AND y = in_y AND z = in_z;
+    UPDATE nodes
+    SET owner_town = in_owner
+    WHERE node_id = id;
+END //
+
 CREATE TABLE IF NOT EXISTS wars (
     declaring_entity VARCHAR(20) NOT NULL,
     defending_entity VARCHAR(20) NOT NULL,
