@@ -1,5 +1,0 @@
-mysql-url: "localhost"
-mysql-user: "root"
-mysql-password: ""
-mysql-port: "3306"
-mysql-database: "test_db"

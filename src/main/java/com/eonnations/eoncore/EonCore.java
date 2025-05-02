@@ -16,8 +16,6 @@ import com.eonnations.eoncore.utils.WorldLoader;
 import io.vavr.collection.List;
 import io.vavr.control.Try;
 
-import java.util.logging.Level;
-
 public class EonCore extends JavaPlugin {
     private List<EonModule> loadedModules;
     @Getter
@@ -53,7 +51,7 @@ public class EonCore extends JavaPlugin {
     public void onEnable() {
         CommandAPI.onEnable();
         saveDefaultConfig();
-        WorldLoader.initializeWorlds();
+        WorldLoader.initializeWorlds(this);
         loadedModules.forEach(EonModule::setup);
     }
 
