@@ -2,12 +2,15 @@ package com.eonnations.eoncore;
 
 import com.eonnations.eoncore.common.database.sql.Credentials;
 import com.eonnations.eoncore.common.database.sql.SQLDatabase;
+import com.eonnations.eoncore.modules.worldgen.IslandGenerator;
 import com.eonnations.eoncore.utils.menus.MenuRegistry;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIBukkitConfig;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jspecify.annotations.Nullable;
 import org.reflections.Reflections;
 
 import com.eonnations.eoncore.common.EonModule;
@@ -51,7 +54,6 @@ public class EonCore extends JavaPlugin {
     public void onEnable() {
         CommandAPI.onEnable();
         saveDefaultConfig();
-        WorldLoader.initializeWorlds(this);
         loadedModules.forEach(EonModule::setup);
     }
 
@@ -60,5 +62,10 @@ public class EonCore extends JavaPlugin {
         CommandAPI.onDisable();
         loadedModules.forEach(EonModule::cleanup);
         Bukkit.getScheduler().cancelTasks(this);
+    }
+
+    @Override
+    public @Nullable ChunkGenerator getDefaultWorldGenerator(String worldName, @Nullable String id) {
+        return new IslandGenerator();
     }
 }

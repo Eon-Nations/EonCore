@@ -91,7 +91,7 @@ public class Node {
         Location resourceLoc = location.clone().add(0, 2, 0);
         this.resourceDisplay = new FloatingItem(resourceLoc, Material.valueOf(resourceName));
         String claimString = isClaimed ? "CLAIMED" : "UNCLAIMED";
-        List<Component> lines = List.of(fromFormatString("<#F0E442><bold>" + outputRate + "</bold></#F0E442>"), 
+        List<Component> lines = List.of(fromFormatString("<#F0E442><bold>" + outputRate + "/min</bold></#F0E442>"),
             fromFormatString("<#D55E00><bold>" + claimString + "</bold></#D55E00>"));
         Location nodeLoc = location.clone().add(0, 1, 0);
         this.nodeInfo = new Hologram(lines, nodeLoc);

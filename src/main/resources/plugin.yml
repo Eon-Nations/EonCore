@@ -4,4 +4,4 @@ main: com.eonnations.eoncore.EonCore
 api-version: 1.21
 authors: [SerenityCodes]
 description: Epic description
-folia-supported: true
+load: STARTUP

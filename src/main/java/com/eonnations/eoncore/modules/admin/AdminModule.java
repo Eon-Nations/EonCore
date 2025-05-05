@@ -7,6 +7,7 @@ import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.ArgumentSuggestions;
 import dev.jorel.commandapi.arguments.PlayerArgument;
 import dev.jorel.commandapi.arguments.StringArgument;
+import io.vavr.control.Option;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -31,22 +32,31 @@ public class AdminModule extends EonModule {
     public void setup() {
         new CommandAPICommand("gmc")
                 .withPermission(ADMIN_PERMISSION_STRING)
+                .withOptionalArguments(new PlayerArgument("target"))
                 .executesPlayer((player, args) -> {
-                     player.setGameMode(GameMode.CREATIVE);
+                    Option<Player> targetOpt = Option.of(args.getByClass("target", Player.class));
+                    Player playerToSwitch = targetOpt.isDefined() ? targetOpt.get() : player;
+                    playerToSwitch.setGameMode(GameMode.CREATIVE);
                      Messenger messenger = Messaging.messenger(EonPrefix.MODERATION);
                      messenger.send(player, Component.text("Switched to creative mode"));
                 }).register(plugin);
         new CommandAPICommand("gms")
                 .withPermission(ADMIN_PERMISSION_STRING)
+                .withOptionalArguments(new PlayerArgument("target"))
                 .executesPlayer((player, args) -> {
-                    player.setGameMode(GameMode.SURVIVAL);
+                    Option<Player> targetOpt = Option.of(args.getByClass("target", Player.class));
+                    Player playerToSwitch = targetOpt.isDefined() ? targetOpt.get() : player;
+                    playerToSwitch.setGameMode(GameMode.SURVIVAL);
                     Messenger messenger = Messaging.messenger(EonPrefix.MODERATION);
                     messenger.send(player, Component.text("Switched to survival mode"));
                 }).register(plugin);
         new CommandAPICommand("gmsp")
                 .withPermission(ADMIN_PERMISSION_STRING)
+                .withOptionalArguments(new PlayerArgument("target"))
                 .executesPlayer((player, args) -> {
-                    player.setGameMode(GameMode.SPECTATOR);
+                    Option<Player> targetOpt = Option.of(args.getByClass("target", Player.class));
+                    Player playerToSwitch = targetOpt.isDefined() ? targetOpt.get() : player;
+                    playerToSwitch.setGameMode(GameMode.SPECTATOR);
                     Messenger messenger = Messaging.messenger(EonPrefix.MODERATION);
                     messenger.send(player, Component.text("Switched to spectator mode"));
                 }).register(plugin);
