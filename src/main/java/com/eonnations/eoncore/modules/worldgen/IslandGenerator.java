@@ -1,17 +1,14 @@
 package com.eonnations.eoncore.modules.worldgen;
 
-import io.vavr.Function1;
 import io.vavr.Tuple;
 import io.vavr.Tuple2;
 import io.vavr.collection.List;
 import io.vavr.collection.Map;
 import io.vavr.collection.Set;
 import io.vavr.collection.Stream;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.generator.WorldInfo;
-import org.bukkit.util.noise.PerlinOctaveGenerator;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,16 +20,17 @@ public class IslandGenerator extends ChunkGenerator {
     private SimplexOctaveGenerator regionGen;
     private SimplexOctaveGenerator bottomGen;
 
-    private Set<Tuple2<Double, Double>> islandCenters;
-    private Map<Tuple2<Double, Double>, List<Tuple2<Double, Double>>> islandShapes;
+    private final Set<Tuple2<Double, Double>> islandCenters;
+    private final Map<Tuple2<Double, Double>, List<Tuple2<Double, Double>>> islandShapes;
 
     private static final int WORLD_SIZE = 10000;
-    private static final int NUM_ISLANDS = 100;
+    private static final int WORLD_RADIUS = WORLD_SIZE / 2;
+    private static final int NUM_ISLANDS = 500;
     private static final int ISLAND_RADIUS = 100;
 
     public IslandGenerator() {
         Random random = new Random();
-        islandCenters = Stream.continually(() -> Tuple.of(random.nextDouble(-WORLD_SIZE, WORLD_SIZE), random.nextDouble(-WORLD_SIZE, WORLD_SIZE)))
+        islandCenters = Stream.continually(() -> Tuple.of(random.nextDouble(-WORLD_RADIUS, WORLD_RADIUS), random.nextDouble(-WORLD_RADIUS, WORLD_RADIUS)))
                 .take(NUM_ISLANDS)
                 .append(Tuple.of(0.0, 0.0))
                 .toSet();
@@ -57,14 +55,7 @@ public class IslandGenerator extends ChunkGenerator {
         return Math.sqrt(dx * dx + dz * dz);
     }
 
-    private double distanceFromCenterWithY(Tuple2<Double, Double> center, int topY, int x, int y, int z) {
-        double dx = x - center._1;
-        double dz = z - center._2;
-        double dy = topY - y;
-        return Math.sqrt(dx * dx + dy * dy + dz * dz);
-    }
-
-    private Tuple2<Tuple2<Double, Double>, Boolean> isInIsland(int x, int z) {
+    private @NotNull Tuple2<Tuple2<Double, Double>, Boolean> isInIsland(int x, int z) {
         Tuple2<Tuple2<Double, Double>, Double> closestIsland = islandCenters
                 .map(k -> Tuple.of(k, distanceFromCenter(k, x, z)))
                 .minBy(Comparator.comparing(v -> v._2))
@@ -89,7 +80,7 @@ public class IslandGenerator extends ChunkGenerator {
                     continue;
                 }
                 double regionNoise = regionGen.noise(worldX * 0.001, worldZ * 0.001, 0.5, 0.5);
-                double scale = lerp(0.0005, 0.002, regionNoise);
+                double scale = lerp(0.0005, 0.001, regionNoise);
 
                 double height = Math.abs(generatePerlinNoise(worldX, worldZ, noiseGenerator, scale));
                 int islandHeight = (int) (worldHeight * height);
@@ -99,10 +90,13 @@ public class IslandGenerator extends ChunkGenerator {
                 int spikeOffsetFromZero = (int) spikeNoise * spikeDepth;
                 // Place blocks based on the noise
                 for (int y = -spikeOffsetFromZero; y < islandHeight; y++) {
-                    // Generate height map for the island
+                    // Calculate cone taper modifier using 2D noise to "bend" the cone
+                    double coneWarp = bottomGen.noise(worldX * 0.01, worldZ * 0.01, 0.5, 0.5); // smooth 2D warp
                     double yNormal = y / (double) islandHeight;
-                    // Base radius taper (like a cone)
-                    double baseRadius = ISLAND_RADIUS * (1.0 - yNormal);
+
+                    // Make the taper shallower or steeper depending on position
+                    double taperModifier = 0.75 + 0.5 * (coneWarp - 0.5);  // from ~0.5 to ~1.0
+                    double baseRadius = ISLAND_RADIUS * (1.0 - yNormal * taperModifier);
 
                     double bottomNoise = bottomGen.noise(worldX * 0.08, y * 0.08, worldZ * 0.08, 0.5, 0.5);
                     double noiseModifier = (bottomNoise - 0.5) * 20.0; // Range: [-10, +10] tweak strength here
@@ -127,11 +121,16 @@ public class IslandGenerator extends ChunkGenerator {
         return noiseGenerator.noise(worldX * scale, worldZ * scale, 0.5, 0.5);
     }
 
+    @Override
     public boolean shouldGenerateNoise() { return false; }
+    @Override
     public boolean shouldGenerateSurface() { return true; }
-    public boolean shouldGenerateBedrock() { return false; }
+    @Override
     public boolean shouldGenerateCaves() { return false; }
+    @Override
     public boolean shouldGenerateDecorations() { return true; }
+    @Override
     public boolean shouldGenerateMobs() { return true; }
+    @Override
     public boolean shouldGenerateStructures() { return false; }
 }

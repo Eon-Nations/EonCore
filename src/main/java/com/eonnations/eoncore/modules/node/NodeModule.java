@@ -10,8 +10,8 @@ import dev.jorel.commandapi.arguments.StringArgument;
 import io.vavr.collection.List;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import org.bukkit.Bukkit;
-import org.checkerframework.checker.units.qual.N;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Item;
 
 import java.util.Arrays;
 
@@ -22,7 +22,9 @@ public class NodeModule extends EonModule {
     }
 
     @Override
-    public void load() { }
+    public void load() {
+        // Nothing to do here
+    }
 
     @Override
     public void setup() {
@@ -35,7 +37,7 @@ public class NodeModule extends EonModule {
                             String rawText = args.getByArgument(new GreedyStringArgument("lines"));
                             List<Component> lines = List.ofAll(Arrays.stream(rawText.split("\\|")))
                                     .map(MiniMessage.miniMessage()::deserialize);
-                            Hologram hologram = new Hologram(lines, sender.getLocation());
+                            new Hologram(lines, sender.getLocation());
                         }))
                 .register(plugin);
         List<String> resources = List.ofAll(Arrays.stream(Resource.values()))
@@ -48,14 +50,25 @@ public class NodeModule extends EonModule {
                                 .replaceSuggestions(ArgumentSuggestions.strings(resources.toJavaList())))
                         .executesPlayer((sender, args) -> {
                             String resource = args.getByClass("resource", String.class);
-                            Node node = new Node(sender.getLocation(), Resource.valueOf(resource.toUpperCase()));
+                            new Node(sender.getLocation(), Resource.valueOf(resource.toUpperCase()));
+                        }))
+                .withSubcommand(new CommandAPICommand("remove")
+                        .executesPlayer((sender, args) -> {
+                            for (ArmorStand stand : sender.getWorld().getNearbyEntitiesByType(ArmorStand.class, sender.getLocation(), 10.0)) {
+                                stand.remove();
+                            }
+                            for (Item item : sender.getWorld().getNearbyEntitiesByType(Item.class, sender.getLocation(), 10.0)) {
+                                if (item.hasNoPhysics()) {
+                                    item.remove();
+                                }
+                            }
                         }))
                 .register(plugin);
     }
 
     @Override
     public void cleanup() {
-
+        // Nothing to clean up
     }
 
     @Override
