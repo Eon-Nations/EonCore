@@ -34,7 +34,6 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: 25
-          cache: 'maven'
           distribution: 'zulu'
       - name: Setup MySQL database
         run: |
