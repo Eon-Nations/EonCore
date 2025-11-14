@@ -28,7 +28,8 @@ public class SQLDatabase implements Database {
 
     private static HikariDataSource setupDataSource(Credentials credentials) {
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:mysql://" + credentials.url() + ":" + credentials.port() + "/" + credentials.database());
+        config.setJdbcUrl(
+                "jdbc:mysql://" + credentials.url() + ":" + credentials.port() + "/" + credentials.database());
         config.setUsername(credentials.user());
         config.setPassword(credentials.password());
         config.setMaximumPoolSize(3);
@@ -83,7 +84,8 @@ public class SQLDatabase implements Database {
     }
 
     private Either<SQLException, Integer> playerVaultId(UUID uuid, Connection connection) {
-        try (PreparedStatement statement = connection.prepareStatement("SELECT vault_id FROM players WHERE player_uuid = UUID_TO_BIN(?)")) {
+        try (PreparedStatement statement = connection
+                .prepareStatement("SELECT vault_id FROM players WHERE player_uuid = UUID_TO_BIN(?)")) {
             statement.setString(1, uuid.toString());
             ResultSet set = statement.executeQuery();
             if (set.next()) {
@@ -289,7 +291,8 @@ public class SQLDatabase implements Database {
                 if (result.next()) {
                     String donorRank = result.getString("donor_rank");
                     int level = result.getInt("level");
-                    Option<String> townName = result.wasNull() ? Option.none() : Option.of(result.getString("town_name"));
+                    Option<String> townName = result.wasNull() ? Option.none()
+                            : Option.of(result.getString("town_name"));
                     Vault vault = parseVault(result, Option.none());
                     return Either.right(new EonPlayer(uuid, level, donorRank, townName, vault));
                 }

@@ -34,7 +34,6 @@ import java.util.Arrays;
 import java.util.UUID;
 
 public class EconomyModule extends EonModule {
-
     private static final List<String> currencies = List.of("copper", "iron", "gold", "diamond", "emerald");
 
     public EconomyModule(EonCore plugin) {
@@ -53,22 +52,20 @@ public class EconomyModule extends EonModule {
         return false;
     }
 
-    private Option<SQLException> giveResourceToPlayer(Player sender, OfflinePlayer target, String resource, int amount) {
+    private Option<SQLException> giveResourceToPlayer(Player sender, OfflinePlayer target, String resource,
+            int amount) {
         Database database = plugin.getDatabase();
         int vaultId = database.playerVaultId(target.getUniqueId())
-                .getOrElse(-1);
+                .getOrElseGet(e -> -1);
         if (vaultId == -1) {
             return Option.some(new SQLException("Could not find vault for " + target.getUniqueId()));
         }
-        Function1<OfflinePlayer, Option<SQLException>> giveFunc = switch (resource) {
-            case "copper" -> t -> database.addCopperToPlayer(t.getUniqueId(), amount);
-            case "iron" -> t -> database.addIronToPlayer(t.getUniqueId(), amount);
-            case "gold" -> t -> database.addGoldToPlayer(t.getUniqueId(), amount);
-            case "diamond" -> t -> database.addDiamondToPlayer(t.getUniqueId(), amount);
-            case "emerald" -> t -> database.addEmeraldToPlayer(t.getUniqueId(), amount);
-            default -> t -> Option.of(new SQLException("Invalid type"));
-        };
-        return giveFunc.apply(target);
+        Option<SQLException> res = database.addResourceToPlayer(target.getUniqueId(), resource, amount);
+        res.peek(e -> {
+            ConfigMessenger messenger = Messaging.setupConfigMessenger(plugin.getConfig(), EonPrefix.ISLANDS);
+            messenger.sendMessage(sender, "Error occured giving a player a resource", HashMap.empty());
+        });
+        return res;
     }
 
     private void economyGiveTakeCommand(Player sender, CommandArguments args, boolean isTake) {
@@ -84,7 +81,7 @@ public class EconomyModule extends EonModule {
             return;
         }
         Map<String, String> replacementVals = List.of(Tuple.of("<type>", type),
-                        Tuple.of("<amount>", String.valueOf(Math.abs(amount))))
+                Tuple.of("<amount>", String.valueOf(Math.abs(amount))))
                 .toMap(Tuple2::_1, Tuple2::_2);
         String configPath = isTake ? "ECO_Successful_Take" : "ECO_Successful_Give";
         messenger.sendMessage(sender, configPath, replacementVals);
@@ -101,54 +98,54 @@ public class EconomyModule extends EonModule {
                 .fold(e -> Vault.getDefault(), Function1.identity());
         ConfigMessenger messenger = Messaging.setupConfigMessenger(plugin.getConfig(), EonPrefix.MODERATION);
         Map<String, String> replacementVals = List.ofAll(Arrays.stream(Vault.ResourceType.values()))
-                        .map(Vault.ResourceType::toString)
-                        .map(String::toLowerCase)
-                        .toMap(Function1.identity(), resource -> String.valueOf(vault.getAmount(resource)))
-                        .put("id", String.valueOf(vault.id()))
-                        .mapKeys(k -> "<" + k + ">");
+                .map(Vault.ResourceType::toString)
+                .map(String::toLowerCase)
+                .toMap(Function1.identity(), resource -> String.valueOf(vault.getAmount(resource)))
+                .put("id", String.valueOf(vault.id()))
+                .mapKeys(k -> "<" + k + ">");
         messenger.sendMessage(sender, "ECO_Info", replacementVals);
     }
 
     private void economyTakeCommand(Player sender, CommandArguments args) {
         economyGiveTakeCommand(sender, args, true);
-}
+    }
 
-private Map<String, String> vaultPlaceholderMap(UUID uuid) {
-    Vault vault = plugin.getDatabase().playerVault(uuid)
-        .peekLeft(SQLException::printStackTrace)
-        .fold(e -> Vault.getDefault(), Function1.identity());
-    return List.ofAll(Arrays.stream(Vault.ResourceType.values()))
-            .map(Vault.ResourceType::toString)
-            .map(String::toLowerCase)
-            .map(s -> {
-                if (s.equals("gold")) {
-                    return "currency_gold";
-                }
-                return s;
-            })
-            .map(type -> "<" + type + ">")
-            .toMap(Function1.identity(), resource -> String.valueOf(vault.getAmountFromPlaceholder(resource)));
-}
+    private Map<String, String> vaultPlaceholderMap(UUID uuid) {
+        Vault vault = plugin.getDatabase().playerVault(uuid)
+                .peekLeft(SQLException::printStackTrace)
+                .fold(e -> Vault.getDefault(), Function1.identity());
+        return List.ofAll(Arrays.stream(Vault.ResourceType.values()))
+                .map(Vault.ResourceType::toString)
+                .map(String::toLowerCase)
+                .map(s -> {
+                    if (s.equals("gold")) {
+                        return "currency_gold";
+                    }
+                    return s;
+                })
+                .map(type -> "<" + type + ">")
+                .toMap(Function1.identity(), resource -> String.valueOf(vault.getAmountFromPlaceholder(resource)));
+    }
 
-private void openVaultMenu(Player sender, CommandArguments args) {
-    Option<OfflinePlayer> targetOpt = Option.ofOptional(args.getOptionalByClass("target", OfflinePlayer.class));
-    UUID targetId = targetOpt.isDefined() ? targetOpt.get().getUniqueId() : sender.getUniqueId();
-    ButtonFunction closeFunc = (p, e) -> {
-        p.closeInventory();
-        return null;
-    };
-    Map<Character, ButtonFunction> buttons = List.of(Tuple.of('b', closeFunc))
-            .toMap(Tuple2::_1, Tuple2::_2);
-    YamlConfiguration menuConfig = plugin.getMenuRegistry().getMenu("vault").get();
-    Window window = MenuParser.parse(menuConfig, sender, vaultPlaceholderMap(targetId), buttons);
-    window.open();
-}
+    private void openVaultMenu(Player sender, CommandArguments args) {
+        Option<OfflinePlayer> targetOpt = Option.ofOptional(args.getOptionalByClass("target", OfflinePlayer.class));
+        UUID targetId = targetOpt.isDefined() ? targetOpt.get().getUniqueId() : sender.getUniqueId();
+        ButtonFunction closeFunc = (p, e) -> {
+            p.closeInventory();
+            return null;
+        };
+        Map<Character, ButtonFunction> buttons = List.of(Tuple.of('b', closeFunc))
+                .toMap(Tuple2::_1, Tuple2::_2);
+        YamlConfiguration menuConfig = plugin.getMenuRegistry().getMenu("vault").get();
+        Window window = MenuParser.parse(menuConfig, sender, vaultPlaceholderMap(targetId), buttons);
+        window.open();
+    }
 
-@Override
+    @Override
     public void setup() {
         EventSubscriber.subscribe(PlayerJoinEvent.class, EventPriority.NORMAL)
                 .handler(this::handleNewPlayerJoin);
-        List<Argument<?>> giveTakeArguments = List.of(new OfflinePlayerArgument("target"),
+        List<Argument<?>> giveTakeArguments = List.of(new EntitySelectorArgument.OnePlayer("target"),
                 new StringArgument("type").replaceSuggestions(ArgumentSuggestions.strings(currencies.toJavaList())),
                 new IntegerArgument("amount"));
         new CommandAPICommand("economy")
@@ -157,14 +154,14 @@ private void openVaultMenu(Player sender, CommandArguments args) {
                         .withArguments(giveTakeArguments.toJavaList())
                         .executesPlayer(this::economyGiveCommand))
                 .withSubcommand(new CommandAPICommand("info")
-                        .withArguments(new OfflinePlayerArgument("target"))
+                        .withArguments(new EntitySelectorArgument.OnePlayer("target"))
                         .executesPlayer(this::economyInfoCommand))
                 .withSubcommand(new CommandAPICommand("take")
                         .withArguments(giveTakeArguments.toJavaList())
                         .executesPlayer(this::economyTakeCommand))
                 .register(plugin);
         new CommandAPICommand("vault")
-                .withOptionalArguments(new OfflinePlayerArgument("target"))
+                .withOptionalArguments(new EntitySelectorArgument.OnePlayer("target"))
                 .executesPlayer(this::openVaultMenu)
                 .register(plugin);
     }

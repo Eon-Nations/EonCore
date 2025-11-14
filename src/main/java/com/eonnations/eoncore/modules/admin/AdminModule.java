@@ -5,7 +5,7 @@ import com.eonnations.eoncore.common.EonModule;
 import com.eonnations.eoncore.messaging.*;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.ArgumentSuggestions;
-import dev.jorel.commandapi.arguments.PlayerArgument;
+import dev.jorel.commandapi.arguments.EntitySelectorArgument;
 import dev.jorel.commandapi.arguments.StringArgument;
 import io.vavr.control.Option;
 import net.kyori.adventure.text.Component;
@@ -32,17 +32,17 @@ public class AdminModule extends EonModule {
     public void setup() {
         new CommandAPICommand("gmc")
                 .withPermission(ADMIN_PERMISSION_STRING)
-                .withOptionalArguments(new PlayerArgument("target"))
+                .withOptionalArguments(new EntitySelectorArgument.OnePlayer("target"))
                 .executesPlayer((player, args) -> {
                     Option<Player> targetOpt = Option.of(args.getByClass("target", Player.class));
                     Player playerToSwitch = targetOpt.isDefined() ? targetOpt.get() : player;
                     playerToSwitch.setGameMode(GameMode.CREATIVE);
-                     Messenger messenger = Messaging.messenger(EonPrefix.MODERATION);
-                     messenger.send(player, Component.text("Switched to creative mode"));
+                    Messenger messenger = Messaging.messenger(EonPrefix.MODERATION);
+                    messenger.send(player, Component.text("Switched to creative mode"));
                 }).register(plugin);
         new CommandAPICommand("gms")
                 .withPermission(ADMIN_PERMISSION_STRING)
-                .withOptionalArguments(new PlayerArgument("target"))
+                .withOptionalArguments(new EntitySelectorArgument.OnePlayer("target"))
                 .executesPlayer((player, args) -> {
                     Option<Player> targetOpt = Option.of(args.getByClass("target", Player.class));
                     Player playerToSwitch = targetOpt.isDefined() ? targetOpt.get() : player;
@@ -52,7 +52,7 @@ public class AdminModule extends EonModule {
                 }).register(plugin);
         new CommandAPICommand("gmsp")
                 .withPermission(ADMIN_PERMISSION_STRING)
-                .withOptionalArguments(new PlayerArgument("target"))
+                .withOptionalArguments(new EntitySelectorArgument.OnePlayer("target"))
                 .executesPlayer((player, args) -> {
                     Option<Player> targetOpt = Option.of(args.getByClass("target", Player.class));
                     Player playerToSwitch = targetOpt.isDefined() ? targetOpt.get() : player;
@@ -63,7 +63,8 @@ public class AdminModule extends EonModule {
         new CommandAPICommand("world")
                 .withPermission(ADMIN_PERMISSION_STRING)
                 .withArguments(new StringArgument("world")
-                        .replaceSuggestions(ArgumentSuggestions.strings(Bukkit.getWorlds().stream().map(World::getName).toList())))
+                        .replaceSuggestions(
+                                ArgumentSuggestions.strings(Bukkit.getWorlds().stream().map(World::getName).toList())))
                 .executesPlayer((player, args) -> {
                     String worldChoice = args.getUnchecked("world");
                     World world = Bukkit.getWorld(worldChoice);
@@ -80,7 +81,7 @@ public class AdminModule extends EonModule {
                 }).register(plugin);
         new CommandAPICommand("invsee")
                 .withPermission(ADMIN_PERMISSION_STRING)
-                .withArguments(new PlayerArgument("target"))
+                .withArguments(new EntitySelectorArgument.OnePlayer("target"))
                 .executesPlayer((player, args) -> {
                     Player target = args.getByClass("target", Player.class);
                     if (target.hasPermission(ADMIN_PERMISSION_STRING)) {
@@ -99,7 +100,8 @@ public class AdminModule extends EonModule {
                 .withSubcommand(new CommandAPICommand("reload")
                         .executesPlayer((sender, args) -> {
                             plugin.reloadConfig();
-                            SimpleConfigMessenger messenger = Messaging.setupSimpleConfigMessenger(plugin.getConfig(), EonPrefix.MODERATION);
+                            SimpleConfigMessenger messenger = Messaging.setupSimpleConfigMessenger(plugin.getConfig(),
+                                    EonPrefix.MODERATION);
                             messenger.sendMessage(sender, "Config_Reload");
                         }))
                 .register(plugin);

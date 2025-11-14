@@ -35,7 +35,8 @@ public class TestSQLDatabase {
             .withPassword("root_password")
             .withDatabaseName("test_db")
             .withExposedPorts(3306)
-            .withCopyFileToContainer(MountableFile.forClasspathResource("tables_functions.sql"), "/docker-entrypoint-initdb.d/tables_functions.sql");
+            .withCopyFileToContainer(MountableFile.forClasspathResource("tables_functions.sql"),
+                    "/docker-entrypoint-initdb.d/tables_functions.sql");
 
     private SQLDatabase sqlDatabase;
     private static final NameGenerator nameGen = new NameGenerator();
@@ -46,14 +47,17 @@ public class TestSQLDatabase {
         String user = Option.of(System.getenv("EONCORE_MYSQL_USER")).getOrElse("root");
         String password = Option.of(System.getenv("EONCORE_MYSQL_PASSWORD")).getOrElse("root_password");
         String database = Option.of(System.getenv("EONCORE_DATABASE")).getOrElse("test_db");
-        Credentials credentials = new Credentials(mysql.getHost(), String.valueOf(mysql.getMappedPort(3306)), "root", "root_password", "test_db");
+        Credentials credentials = new Credentials(mysql.getHost(), String.valueOf(mysql.getMappedPort(3306)), "root",
+                "root_password", "test_db");
         sqlDatabase = new SQLDatabase(credentials);
     }
 
     private Vault createVault() throws SQLException {
         int vaultId = -1;
         try (Connection conn = DriverManager.getConnection(sqlDatabase.getUrl(), "root", "root_password")) {
-            PreparedStatement statement = conn.prepareStatement("INSERT INTO vaults (copper, iron, gold, diamonds, emeralds) VALUES (10, 5, 2, 1, 15)", PreparedStatement.RETURN_GENERATED_KEYS);
+            PreparedStatement statement = conn.prepareStatement(
+                    "INSERT INTO vaults (copper, iron, gold, diamonds, emeralds) VALUES (10, 5, 2, 1, 15)",
+                    PreparedStatement.RETURN_GENERATED_KEYS);
             statement.executeUpdate();
             ResultSet set = statement.getGeneratedKeys();
             if (set.next()) {
@@ -193,7 +197,7 @@ public class TestSQLDatabase {
         sqlDatabase.createPlayer(uuid, nameGen.name());
         Either<SQLException, EonPlayer> playerResult = sqlDatabase.retrievePlayer(uuid);
         assertTrue(playerResult.isRight());
-        assertEquals(uuid.toString(), playerResult.get().getUuid().toString());
+        assertEquals(uuid.toString(), playerResult.get().uuid().toString());
     }
 
     @Test
@@ -221,8 +225,8 @@ public class TestSQLDatabase {
         Either<SQLException, EonPlayer> playerResult = sqlDatabase.retrievePlayer(uuid);
         assertTrue(playerResult.isRight());
         EonPlayer result = playerResult.getOrElseThrow(() -> new Exception("No player"));
-        assertFalse(result.getTownName().isEmpty());
-        assertEquals(townName, result.getTownName().get());
+        assertFalse(result.townName().isEmpty());
+        assertEquals(townName, result.townName().get());
     }
 
     @Test

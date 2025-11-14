@@ -5,3 +5,4 @@ api-version: 1.21
 authors: [SerenityCodes]
 description: Epic description
 load: STARTUP
+depend: [CommandAPI]

@@ -41,14 +41,6 @@
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
-                    <relocations>
-                        <relocation>
-                            <pattern>dev.jorel.commandapi</pattern>
-                            <shadedPattern>com.eonnations.commandapi</shadedPattern>
-                        </relocation>
-                    </relocations>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -99,13 +91,14 @@
         <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.21.5-R0.1-SNAPSHOT</version>
+            <version>1.21.10-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>dev.jorel</groupId>
-            <artifactId>commandapi-bukkit-shade</artifactId>
-            <version>10.0.0</version>
+            <artifactId>commandapi-paper-core</artifactId>
+            <version>11.0.0</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.reflections</groupId>
@@ -127,12 +120,12 @@
         <dependency>
             <groupId>xyz.xenondevs.invui</groupId>
             <artifactId>invui-core</artifactId>
-            <version>1.45</version>
+            <version>1.47</version>
         </dependency>
         <dependency>
             <groupId>xyz.xenondevs.invui</groupId>
-            <artifactId>inventory-access-r22</artifactId>
-            <version>1.45</version>
+            <artifactId>inventory-access-r25</artifactId>
+            <version>1.47</version>
         </dependency>
         <dependency>
             <groupId>org.mockbukkit.mockbukkit</groupId>
