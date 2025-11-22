@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 public class FloatingItem implements AutoCloseable {
-    private Item item;
+    private final Item item;
 
     public FloatingItem(Location location, Material material) {
         this.item = location.getWorld().dropItem(location, new ItemStack(material, 1));
@@ -19,6 +19,7 @@ public class FloatingItem implements AutoCloseable {
         item.setPersistent(true);
         item.setWillAge(false);
         item.setNoPhysics(true);
+        item.setInvulnerable(true);
     }
 
     @Override
